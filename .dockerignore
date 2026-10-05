@@ -10,3 +10,4 @@ blob-report
 !.env.example
 .harness/evidence
 *.db
+backups

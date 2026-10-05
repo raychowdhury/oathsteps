@@ -51,16 +51,17 @@ SQLite is a single-file database. It is only safe when:
 - the file lives on a persistent volume (compose: `oathsteps-data` mounted at `/data`), never on an ephemeral or serverless filesystem;
 - exactly one app instance writes to it.
 
-**Backup** (consistent even while the app runs, using SQLite's online backup):
+**Backup and restore:** `scripts/backup.sh` (online backup, integrity check, compression, rotation, optional off-machine copy with rclone) and `scripts/restore.sh` (keeps the replaced database as `pre-restore-<time>.db`). Schedule and settings are in [DEPLOY.md](DEPLOY.md#backups). Keep the `/data/mail` folder out of backups unless you need it. Account deletion removes live data immediately but backups persist until rotated, which is what the in-app deletion notice says.
 
-```bash
-docker compose exec app node -e "require('better-sqlite3')('/data/oathsteps.db').backup('/data/backup-'+Date.now()+'.db').then(()=>console.log('ok'))"
-docker compose cp app:/data/ ./backups/
-```
+## iPhone and iPad
 
-Keep the `/data/mail` folder out of backups unless you need it. Rotate backups on a schedule and delete old ones; account deletion removes live data immediately but backups persist until rotated, which is what the in-app deletion notice says.
+Tested on the iOS 26.5 simulator (iPhone 17) in Safari and as an installed Home Screen app, on 2026-10-05:
 
-**Restore**: stop the app, copy the backup file over `/data/oathsteps.db`, start the app. Migrations are idempotent, so `migrate` can run again safely.
+- Safari on iOS deletes a site's storage after about seven days without a visit unless the site is installed to the Home Screen. Guest progress lives in that storage, so iOS learners in Safari see a tip on Welcome and Today (`src/components/InstallTip.tsx`).
+- The installed Home Screen app has its own storage and starts empty. Progress made in Safari does not move over by itself; an account carries it (sign up and consent in Safari, sign in from the app). The tip says so.
+- On current iOS, Share sits under Safari's ⋯ button; the tip mentions both places.
+- Fixed during that pass: date fields overflowing the screen, the light page showing behind Safari's bars in dark mode, and the action bar sitting under the home indicator in the installed app.
+- Voice practice offers speech recognition in Safari; the typed and self-check paths remain the dependable ones. Microphone input was not tested in the simulator.
 
 ## Moving to PostgreSQL
 

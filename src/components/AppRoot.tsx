@@ -31,7 +31,8 @@ export function AppRoot({ children }: { children: ReactNode }) {
   }, [rev]);
   useEffect(() => {
     document.documentElement.classList.toggle("o-dark-page", dark);
-    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#172530" : "#FFFFFF");
+    document.documentElement.classList.toggle("o-light-page", !dark);
+    for (const m of document.querySelectorAll('meta[name="theme-color"]')) m.setAttribute("content", dark ? "#172530" : "#FFFFFF");
   }, [dark]);
   return (
     <div className={`o-app ${dark ? "o-dark" : ""} ${profile?.reduceMotion ? "o-rm" : ""}`} id="o-app">

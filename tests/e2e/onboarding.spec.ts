@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { devices, expect, test } from "@playwright/test";
 import { answerCard, errorLine, setupProfile, startToday } from "./helpers";
 
 test.describe.configure({ timeout: 120_000 });
@@ -109,5 +109,28 @@ test.describe("welcome, setup and first practice", () => {
     await page.getByRole("button", { name: "Clear demo" }).click();
     await expect(page.getByRole("heading", { name: "OathSteps" })).toBeVisible();
     await expect(page.getByText("Demo", { exact: true })).toHaveCount(0);
+  });
+
+  test("iPhone Safari without a Home Screen install shows how to keep progress; other browsers never do", async ({ page, browser }) => {
+    await setupProfile(page, { filingDate: "2026-01-15" });
+    await expect(page.getByTestId("install-tip")).toHaveCount(0);
+
+    const { userAgent, viewport, deviceScaleFactor, isMobile, hasTouch } = devices["iPhone 13"];
+    const ctx = await browser.newContext({ userAgent, viewport, deviceScaleFactor, isMobile, hasTouch });
+    const iphone = await ctx.newPage();
+    await iphone.goto("/");
+    await expect(iphone.getByTestId("install-tip")).toContainText("Add OathSteps to your Home Screen first");
+    await expect(iphone.getByTestId("install-tip")).toContainText("progress made in Safari does not move to the Home Screen app");
+    await setupProfile(iphone, { filingDate: "2026-01-15" });
+    const tip = iphone.getByTestId("install-tip");
+    await expect(tip).toContainText("Safari can clear saved progress if you don’t open OathSteps for about a week.");
+    await expect(tip).toContainText("then Add to Home Screen");
+    await expect(tip).toContainText("The Home Screen app starts empty. To bring your progress along, create a free account");
+    await tip.getByRole("button", { name: "Got it" }).click();
+    await expect(tip).toHaveCount(0);
+    await iphone.reload();
+    await expect(iphone.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(iphone.getByTestId("install-tip")).toHaveCount(0);
+    await ctx.close();
   });
 });

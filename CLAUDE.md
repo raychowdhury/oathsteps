@@ -16,6 +16,7 @@ Mobile-first installable web app (PWA) that helps adults prepare for the U.S. na
 | Review packet | `pnpm content:review-packet` (PDF, spreadsheets and cover sheet for an expert reviewer) |
 | Legal pages for GitHub Pages | `pnpm legal:site` (writes `site/`; `.github/workflows/pages.yml` publishes it) |
 | Container smoke test | `bash scripts/docker-smoke.sh` (needs a Docker daemon; CI runs it) |
+| Backup / restore (host) | `bash scripts/backup.sh`, `bash scripts/restore.sh <file>` (see docs/DEPLOY.md) |
 | Everything | `pnpm verify` (writes `.harness/evidence/latest.json`, nonzero on any required failure); `pnpm verify:quick` skips build and e2e |
 
 ## Architecture

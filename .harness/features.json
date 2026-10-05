@@ -735,7 +735,9 @@
         "Brevo and Resend transports unit-tested against mocked calls; sender parsing validated",
         "Cloudflare Tunnel and Caddy compose overlays validate in CI; trusted client IP header configurable and validated",
         "Privacy notice and Terms text shared by the app and the static GitHub Pages build, covered by rendering tests",
-        "pnpm content:review-packet writes a PDF with check boxes, comment columns and a sign-off page"
+        "pnpm content:review-packet writes a PDF with check boxes, comment columns and a sign-off page",
+        "Backup and restore scripts: online backup with integrity check, rotation, optional off-machine copy; restore keeps the replaced database; round trip verified against a running container",
+        "iPhone: tested on the iOS 26.5 simulator in Safari and as a Home Screen app; date fields, dark page background and home-indicator spacing fixed; Home Screen tip states that installed apps start empty and how an account carries progress"
       ],
       "status": "verified",
       "evidence": [

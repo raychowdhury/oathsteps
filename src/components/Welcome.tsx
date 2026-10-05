@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { InstallTip } from "./InstallTip";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { todayDateOnly } from "@/domain/dates";
@@ -71,6 +72,7 @@ export function Welcome() {
             </div>
             <div>We never ask for your SSN, A-Number, ID or USCIS password.</div>
           </div>
+          <InstallTip before />
           <p className="o-meta">
             <Link href="/privacy">Privacy notice</Link> · <Link href="/terms">Terms of use</Link>
           </p>

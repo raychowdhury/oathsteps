@@ -6,6 +6,7 @@ import { fmtDate } from "@/domain/validation";
 import { FilingSheet } from "@/components/FilingSheet";
 import { MilestoneSheet } from "@/components/MilestoneSheet";
 import { Icon } from "@/components/icons";
+import { InstallTip } from "@/components/InstallTip";
 import { Screen } from "@/components/Screen";
 import { Welcome } from "@/components/Welcome";
 import { countdown, greeting, journeyNext, lastEnglish, loadSnapshot, planTasks, readinessTeaser, suggestWriting, uncertainIds } from "@/lib/today";
@@ -64,6 +65,7 @@ export default function TodayPage() {
             <span className="o-meta">Saved on this device</span>
           </div>
         </div>
+        <InstallTip />
         {s.route.key === "none" && (
           <div className="o-card o-card-amber" data-testid="no-version">
             <div className="o-row o-strong" style={{ color: "var(--am)" }}>

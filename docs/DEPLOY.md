@@ -53,6 +53,9 @@ It prints a random `https://….trycloudflare.com` address that changes every ru
    LEGAL_CONTACT_URL=https://github.com/raychowdhury/oathsteps/issues
    LEGAL_JURISDICTION=<for example "the State of New York, USA">
    # Leave LEGAL_REVIEWED_ON empty until a lawyer signs off. The pages then show "Draft".
+
+   # Optional: copy each nightly backup off the machine (see "Backups")
+   BACKUP_RCLONE_REMOTE=
    ```
 6. **Start it:**
 
@@ -114,14 +117,29 @@ The server refuses to start in production with a missing or weak secret, a non-H
 
 ## Backups
 
-The database is `/data/oathsteps.db` in the `oathsteps-data` volume. Back it up daily with SQLite's online backup and copy the file off the machine. A backup that lives only on the same disk is not a backup. Account deletion removes live data at once; backups keep it until they rotate out, which the Privacy notice says.
+The database is one SQLite file in the `oathsteps-data` volume. `scripts/backup.sh` copies it while the app keeps running (SQLite's online backup), checks that the copy opens and passes an integrity check, compresses it into `./backups`, and deletes local copies older than 14 days. Run it from the repository folder:
 
 ```bash
-# daily, for example from cron on the machine (adjust the folder and compose files)
-docker compose exec -T app node -e "require('better-sqlite3')('/data/oathsteps.db').backup('/data/backup-'+new Date().toISOString().slice(0,10)+'.db').then(()=>process.exit(0))"
+bash scripts/backup.sh
 ```
 
-To restore, stop the app, copy a backup over `/data/oathsteps.db`, start the app.
+Schedule it daily with cron on the machine (`crontab -e`), adjusting the folder:
+
+```bash
+15 3 * * * cd /srv/oathsteps && bash scripts/backup.sh >> backups/backup.log 2>&1
+```
+
+A backup that lives only on the same disk is not a backup. Install `rclone`, configure any remote with `rclone config` (Cloudflare R2, Backblaze B2, Google Drive and others work), and set `BACKUP_RCLONE_REMOTE`, for example `r2:oathsteps-backups`, in `.env`. Every backup is then copied off the machine too. `BACKUP_DIR` and `BACKUP_KEEP_DAYS` change the folder and the retention.
+
+Backups contain learner data. `./backups` is excluded from git and from the Docker build. Account deletion removes live data at once; backups keep it until they rotate out, which the Privacy notice says.
+
+**Restore:**
+
+```bash
+bash scripts/restore.sh backups/oathsteps-2026-10-05T031500Z.db.gz
+```
+
+It asks for confirmation, stops the app for a moment, keeps the current database in the volume as `pre-restore-<time>.db` so the restore can be undone, swaps in the backup, and starts the app again. This round trip (backup, new data, restore, sign-in, new writes) was tested against a running container.
 
 ## Updating and rolling back
 

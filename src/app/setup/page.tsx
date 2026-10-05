@@ -4,6 +4,7 @@ import { useState } from "react";
 import { todayDateOnly } from "@/domain/dates";
 import { fmtDate, validateFiling, validateInterviewDate } from "@/domain/validation";
 import { LOCALES } from "@/i18n";
+import { requestPersistentStorage } from "@/lib/install";
 import { routeFor } from "@/lib/path";
 import { getJourney, getProfile, setChecklist, setJourneySlot, saveProfile } from "@/lib/store/repo";
 import { useData } from "@/lib/store/useData";
@@ -56,6 +57,7 @@ export default function SetupPage() {
     if (step === 5) {
       setSaving(true);
       await saveProfile({ filingDate: f.unsure ? null : f.date, filingDateUnknown: f.unsure, specialConsideration: f.s6520, state: st || null, onboarded: true });
+      void requestPersistentStorage();
       if (ivDate) await setJourneySlot("interview", { status: ivDate >= today ? "scheduled" : "attended", date: ivDate });
       if (!f.unsure && f.date) await setChecklist({ itemId: "path", completedAt: new Date().toISOString(), remind: false });
       toast("You’re set. Your study path is saved on this device.");

@@ -20,6 +20,8 @@ These are different skills. One person's approval of one scope does not cover an
 - Offer a bounded task: the packet below, a deadline, and a clear yes/no per scope. Say plainly that OathSteps is a free study tool and that the reviewer is not being asked to take on clients or give advice to learners.
 - Ask whether they consent to being named. Their credential and the date appear in the app. Their name stays in this repository only with their consent; if they decline, ask them to confirm in writing and record the credential only, with a note, and keep the signed message outside the repository.
 
+Ready-to-send request emails for the reviewer and for the lawyer who reviews the Privacy notice and Terms are in [OUTREACH.md](OUTREACH.md).
+
 ## Steps
 
 1. Generate the packet: `pnpm content:review-packet`. It writes `content/review/out/` (not committed): `OathSteps-content-review-packet.pdf` (about 40 pages, Letter landscape, with check boxes, comment columns and a sign-off page; print it or annotate it on screen), plus `REVIEW-PACKET.md` and the same material as spreadsheets (`questions-2025.csv`, `questions-2008.csv`, `guide.csv`, `english-and-interview.csv`). Give the reviewer the PDF and, if they want to verify wording, the two source PDFs in `content/sources/`.

@@ -195,6 +195,10 @@ textarea.o-input{min-height:4.5em;resize:vertical}
 .o-sheet{max-width:34em;border-radius:18px;padding:1.5em}
 .o-toast{left:auto;right:1.5em;bottom:1.5em;max-width:26em}
 }
+/* Phones: when no tab bar sits below, the action bar is the bottom edge and must clear the home indicator. */
+@container os (max-width: 719px){
+.o-shell:not(:has(> .o-tabs)) .o-actions{padding-bottom:max(.75em,env(safe-area-inset-bottom))}
+}
 @container os (max-width: 340px){
 .o-actions-row{grid-template-columns:minmax(0,1fr)}
 .o-grid2{grid-template-columns:minmax(0,1fr)}
@@ -233,4 +237,11 @@ html,body{margin:0;height:100%;background:#F7FAF9;color:#17324B}
 .o-dark .o-toast .o-btn-g:hover{background:#0000001a;color:var(--bg)}
 .o-dark .o-swatch{border-color:var(--line)}
 .o-dark .o-skip{background:var(--sf)}
-html.o-dark-page,body.o-dark-page{background:#0F1A22}
+/* The page behind the app shows under Safari's status bar and toolbar, so it follows the theme. Before scripts run it
+   follows the system setting; AppRoot then applies the learner's choice. */
+@media (prefers-color-scheme: dark){html,body{background:#0F1A22}}
+html.o-dark-page,html.o-dark-page body{background:#0F1A22}
+html.o-light-page,html.o-light-page body{background:#F7FAF9}
+/* iOS Safari gives date inputs an intrinsic minimum width that ignores width:100% and overflows small screens. */
+.o-app input[type="date"].o-input{-webkit-appearance:none;appearance:none;min-width:0;display:block}
+.o-app input[type="date"].o-input::-webkit-date-and-time-value{text-align:left}
