@@ -12,11 +12,13 @@ Done. Every `track: core` feature (F-001 … F-024) is `verified` with evidence 
 - `pnpm test`: 78 unit tests pass (routing boundary 2025-10-19 vs 2025-10-20, full and walkthrough stop rules, answer matching, writing word diff, filing/interview/milestone validation, journey slots and .ics, scheduler, plan, readiness, sync server, same-origin guard, integrations, i18n).
 - `pnpm build`: production build passes.
 - `pnpm test:e2e`: 29 browser tests pass against the production build (phone 375px and desktop 1280px projects): onboarding and routing, practice modes and sheets, dynamic answers, walkthrough and full mocks incl. pause/resume and 2008 path, interview reading/writing/instructions/N-400/voice fallbacks, readiness, journey milestones/guide/reminders/.ics, settings export/reset/delete, offline download, accounts with migration/sync/sign-out/delete, security headers and cross-origin rejection, axe sweep in light and dark with no serious or critical violations, keyboard-only card.
+- Fresh clone of origin/main (2026-10-05, commit 4760245): `bash scripts/bootstrap.sh --no-browsers`, `pnpm build` and `pnpm start` succeed; main routes, manifest and service worker return 200; security headers present; cross-origin sign-up returns 403. This found `.env.example` was gitignored; fixed in 4760245.
+- CI on 99fafdd: all jobs green, including `docker build --target runner` and the browser suite, so the Docker image build is verified there.
 - Manual walkthrough (dev server, 2026-10-05): 375px phone and 1280px desktop, light and dark; Today, Setup, Practice, recall card, mock, Interview hub, Journey, Guide, Settings render as in the design handoff.
 
 ## Open findings (owner decisions, not code gaps)
 - Content is machine-checked only; a qualified reviewer has not signed off on wording, guide text or English tasks. The UI says so.
-- Docker image build was not verified on this machine (Docker daemon not running); `docker compose config` validated locally and CI builds the `runner` target.
+- Docker image build could not run on this machine (daemon off); CI built the `runner` target successfully on 99fafdd.
 - Production mail provider, hosting and `BETTER_AUTH_SECRET` are owner-provisioned. Dev uses the mail sink directory.
 - Conditional integrations (speech provider, USCIS case status, payments, push) ship as disabled contracts with tests; the UI never presents them as working.
 - Voice practice uses the browser's Web Speech API and is labeled experimental; typed and self-check paths are the supported fallbacks.
