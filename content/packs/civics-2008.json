@@ -1,0 +1,2132 @@
+{
+  "packId": "civics-2008",
+  "bank": "2008",
+  "title": "2008 civics test (100 questions)",
+  "appliesWhen": "Form N-400 filed before 2025-10-20",
+  "rules": {
+    "standard": {
+      "asked": 10,
+      "pass": 6,
+      "stopIncorrect": 5
+    },
+    "special": {
+      "asked": 10,
+      "pass": 6,
+      "stopIncorrect": 5
+    }
+  },
+  "source": {
+    "id": "uscis-2008-100q",
+    "title": "Civics (History and Government) Questions for the Naturalization Test (2008 test, rev. 01/19)",
+    "url": "https://www.uscis.gov/sites/default/files/document/questions-and-answers/100q.pdf",
+    "sha256": "a19050dcb6f64f97596c75089459de3a5ff8a84606924b26f149669ac7c4a379",
+    "retrievedAt": "2026-10-05T04:40:00Z"
+  },
+  "review": {
+    "machineChecked": true,
+    "humanReviewed": false,
+    "note": "Wording and answers were machine-extracted from the official PDF and validated for counts and structure. No qualified human or legal review has been performed yet."
+  },
+  "questions": [
+    {
+      "id": "2008-001",
+      "number": 1,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What is the supreme law of the land?",
+      "answers": [
+        {
+          "text": "the Constitution"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-002",
+      "number": 2,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What does the Constitution do?",
+      "answers": [
+        {
+          "text": "sets up the government"
+        },
+        {
+          "text": "defines the government"
+        },
+        {
+          "text": "protects basic rights of Americans"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-003",
+      "number": 3,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "The idea of self-government is in the first three words of the Constitution. What are these words?",
+      "answers": [
+        {
+          "text": "We the People"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-004",
+      "number": 4,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What is an amendment?",
+      "answers": [
+        {
+          "text": "a change (to the Constitution)"
+        },
+        {
+          "text": "an addition (to the Constitution)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-005",
+      "number": 5,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What do we call the first ten amendments to the Constitution?",
+      "answers": [
+        {
+          "text": "the Bill of Rights"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-006",
+      "number": 6,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What is one right or freedom from the First Amendment?",
+      "answers": [
+        {
+          "text": "speech"
+        },
+        {
+          "text": "religion"
+        },
+        {
+          "text": "assembly"
+        },
+        {
+          "text": "press"
+        },
+        {
+          "text": "petition the government"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-007",
+      "number": 7,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "How many amendments does the Constitution have?",
+      "answers": [
+        {
+          "text": "twenty-seven (27)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-008",
+      "number": 8,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What did the Declaration of Independence do?",
+      "answers": [
+        {
+          "text": "announced our independence (from Great Britain)"
+        },
+        {
+          "text": "declared our independence (from Great Britain)"
+        },
+        {
+          "text": "said that the United States is free (from Great Britain)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-009",
+      "number": 9,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What are two rights in the Declaration of Independence?",
+      "answers": [
+        {
+          "text": "life"
+        },
+        {
+          "text": "liberty"
+        },
+        {
+          "text": "pursuit of happiness"
+        }
+      ],
+      "requiredCount": 2,
+      "special": false
+    },
+    {
+      "id": "2008-010",
+      "number": 10,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What is freedom of religion?",
+      "answers": [
+        {
+          "text": "You can practice any religion, or not practice a religion."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-011",
+      "number": 11,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What is the economic system in the United States?",
+      "answers": [
+        {
+          "text": "capitalist economy"
+        },
+        {
+          "text": "market economy"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-012",
+      "number": 12,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Principles of American Democracy",
+      "prompt": "What is the “rule of law”?",
+      "answers": [
+        {
+          "text": "Everyone must follow the law."
+        },
+        {
+          "text": "Leaders must obey the law."
+        },
+        {
+          "text": "Government must obey the law."
+        },
+        {
+          "text": "No one is above the law."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-013",
+      "number": 13,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Name one branch or part of the government.",
+      "answers": [
+        {
+          "text": "Congress"
+        },
+        {
+          "text": "legislative"
+        },
+        {
+          "text": "President"
+        },
+        {
+          "text": "executive"
+        },
+        {
+          "text": "the courts"
+        },
+        {
+          "text": "judicial"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-014",
+      "number": 14,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What stops one branch of government from becoming too powerful?",
+      "answers": [
+        {
+          "text": "checks and balances"
+        },
+        {
+          "text": "separation of powers"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-015",
+      "number": 15,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Who is in charge of the executive branch?",
+      "answers": [
+        {
+          "text": "the President"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-016",
+      "number": 16,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Who makes federal laws?",
+      "answers": [
+        {
+          "text": "Congress"
+        },
+        {
+          "text": "Senate and House (of Representatives)"
+        },
+        {
+          "text": "(U.S. or national) legislature"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-017",
+      "number": 17,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What are the two parts of the U.S. Congress?",
+      "answers": [
+        {
+          "text": "the Senate and House (of Representatives)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-018",
+      "number": 18,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "How many U.S. Senators are there?",
+      "answers": [
+        {
+          "text": "one hundred (100)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-019",
+      "number": 19,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "We elect a U.S. Senator for how many years?",
+      "answers": [
+        {
+          "text": "six (6)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-020",
+      "number": 20,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Who is one of your state’s U.S. Senators now?",
+      "answers": [
+        {
+          "text": "Answers will vary.",
+          "note": "District of Columbia residents and residents of U.S. territories should answer that D.C. (or the territory where the applicant lives) has no U.S. Senators."
+        }
+      ],
+      "requiredCount": 1,
+      "special": true,
+      "dynamic": {
+        "kind": "senator",
+        "lookupUrl": "https://www.senate.gov/senators/senators-contact.htm",
+        "lookupLabel": "Find your state's senators on senate.gov",
+        "scope": "state"
+      }
+    },
+    {
+      "id": "2008-021",
+      "number": 21,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "The House of Representatives has how many voting members?",
+      "answers": [
+        {
+          "text": "four hundred thirty-five (435)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-022",
+      "number": 22,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "We elect a U.S. Representative for how many years?",
+      "answers": [
+        {
+          "text": "two (2)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-023",
+      "number": 23,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Name your U.S. Representative.",
+      "answers": [
+        {
+          "text": "Answers will vary.",
+          "note": "Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) Representatives in Congress."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false,
+      "dynamic": {
+        "kind": "representative",
+        "lookupUrl": "https://www.house.gov/representatives/find-your-representative",
+        "lookupLabel": "Find your representative on house.gov (a ZIP code can span districts; confirm your address)",
+        "scope": "district"
+      }
+    },
+    {
+      "id": "2008-024",
+      "number": 24,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Who does a U.S. Senator represent?",
+      "answers": [
+        {
+          "text": "all people of the state"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-025",
+      "number": 25,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Why do some states have more Representatives than other states?",
+      "answers": [
+        {
+          "text": "(because of) the state’ s population"
+        },
+        {
+          "text": "(because) they have more people"
+        },
+        {
+          "text": "(because) some states have more people"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-026",
+      "number": 26,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "We elect a President for how many years?",
+      "answers": [
+        {
+          "text": "four (4)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-027",
+      "number": 27,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "In what month do we vote for President?",
+      "answers": [
+        {
+          "text": "November"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-028",
+      "number": 28,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What is the name of the President of the United States now?",
+      "answers": [
+        {
+          "text": "Visit uscis.gov/citizenship/testupdates for the name of the President of the United States."
+        }
+      ],
+      "requiredCount": 1,
+      "special": true,
+      "dynamic": {
+        "kind": "president",
+        "lookupUrl": "https://www.uscis.gov/citizenship/testupdates",
+        "lookupLabel": "Check USCIS test updates for the current President",
+        "scope": "federal"
+      }
+    },
+    {
+      "id": "2008-029",
+      "number": 29,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What is the name of the Vice President of the United States now?",
+      "answers": [
+        {
+          "text": "Visit uscis.gov/citizenship/testupdates for the name of the Vice President of the United States."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false,
+      "dynamic": {
+        "kind": "vice-president",
+        "lookupUrl": "https://www.uscis.gov/citizenship/testupdates",
+        "lookupLabel": "Check USCIS test updates for the current Vice President",
+        "scope": "federal"
+      }
+    },
+    {
+      "id": "2008-030",
+      "number": 30,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "If the President can no longer serve, who becomes President?",
+      "answers": [
+        {
+          "text": "the Vice President"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-031",
+      "number": 31,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "If both the President and the Vice President can no longer serve, who becomes President?",
+      "answers": [
+        {
+          "text": "the Speaker of the House"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-032",
+      "number": 32,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Who is the Commander in Chief of the military?",
+      "answers": [
+        {
+          "text": "the President"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-033",
+      "number": 33,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Who signs bills to become laws?",
+      "answers": [
+        {
+          "text": "the President"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-034",
+      "number": 34,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Who vetoes bills?",
+      "answers": [
+        {
+          "text": "the President"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-035",
+      "number": 35,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What does the President’s Cabinet do?",
+      "answers": [
+        {
+          "text": "advises the President"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-036",
+      "number": 36,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What are two Cabinet-level positions?",
+      "answers": [
+        {
+          "text": "Secretary of Agriculture"
+        },
+        {
+          "text": "Secretary of Commerce"
+        },
+        {
+          "text": "Secretary of Defense"
+        },
+        {
+          "text": "Secretary of Education"
+        },
+        {
+          "text": "Secretary of Energy"
+        },
+        {
+          "text": "Secretary of Health and Human Services"
+        },
+        {
+          "text": "Secretary of Homeland Security"
+        },
+        {
+          "text": "Secretary of Housing and Urban Development"
+        },
+        {
+          "text": "Secretary of the Interior"
+        },
+        {
+          "text": "Secretary of Labor"
+        },
+        {
+          "text": "Secretary of State"
+        },
+        {
+          "text": "Secretary of Transportation"
+        },
+        {
+          "text": "Secretary of the Treasury"
+        },
+        {
+          "text": "Secretary of Veterans Affairs"
+        },
+        {
+          "text": "Attorney General"
+        },
+        {
+          "text": "Vice President"
+        }
+      ],
+      "requiredCount": 2,
+      "special": false
+    },
+    {
+      "id": "2008-037",
+      "number": 37,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What does the judicial branch do?",
+      "answers": [
+        {
+          "text": "reviews laws"
+        },
+        {
+          "text": "explains laws"
+        },
+        {
+          "text": "resolves disputes (disagreements)"
+        },
+        {
+          "text": "decides if a law goes against the Constitution"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-038",
+      "number": 38,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What is the highest court in the United States?",
+      "answers": [
+        {
+          "text": "the Supreme Court"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-039",
+      "number": 39,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "How many justices are on the Supreme Court?",
+      "answers": [
+        {
+          "text": "Visit uscis.gov/citizenship/testupdates for the number of justices on the Supreme Court."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false,
+      "dynamic": {
+        "kind": "justice-count",
+        "lookupUrl": "https://www.uscis.gov/citizenship/testupdates",
+        "lookupLabel": "Check USCIS test updates for the current number of justices",
+        "scope": "federal"
+      }
+    },
+    {
+      "id": "2008-040",
+      "number": 40,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Who is the Chief Justice of the United States now?",
+      "answers": [
+        {
+          "text": "Visit uscis.gov/citizenship/testupdates for the name of the Chief Justice of the United States."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false,
+      "dynamic": {
+        "kind": "chief-justice",
+        "lookupUrl": "https://www.supremecourt.gov/about/biographies.aspx",
+        "lookupLabel": "Check the Supreme Court's justice biographies",
+        "scope": "federal"
+      }
+    },
+    {
+      "id": "2008-041",
+      "number": 41,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Under our Constitution, some powers belong to the federal government. What is one power of the federal government?",
+      "answers": [
+        {
+          "text": "to print money"
+        },
+        {
+          "text": "to declare war"
+        },
+        {
+          "text": "to create an army"
+        },
+        {
+          "text": "to make treaties"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-042",
+      "number": 42,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Under our Constitution, some powers belong to the states. What is one power of the states?",
+      "answers": [
+        {
+          "text": "provide schooling and education"
+        },
+        {
+          "text": "provide protection (police)"
+        },
+        {
+          "text": "provide safety (fire departments)"
+        },
+        {
+          "text": "give a driver’ s license"
+        },
+        {
+          "text": "approve zoning and land use"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-043",
+      "number": 43,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "Who is the Governor of your state now?",
+      "answers": [
+        {
+          "text": "Answers will vary.",
+          "note": "District of Columbia residents should answer that D.C. does not have a Governor."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false,
+      "dynamic": {
+        "kind": "governor",
+        "lookupUrl": "https://www.usa.gov/state-governor",
+        "lookupLabel": "Find your governor on usa.gov",
+        "scope": "state"
+      }
+    },
+    {
+      "id": "2008-044",
+      "number": 44,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What is the capital of your state?",
+      "answers": [
+        {
+          "text": "Answers will vary.",
+          "note": "District of Columbia residents should answer that D.C. is not a state and does not have a capital. Residents of U.S. territories should name the capital of the territory."
+        }
+      ],
+      "requiredCount": 1,
+      "special": true,
+      "dynamic": {
+        "kind": "state-capital",
+        "lookupUrl": "https://www.usa.gov/state-governments",
+        "lookupLabel": "Find your state government site on usa.gov",
+        "scope": "state"
+      }
+    },
+    {
+      "id": "2008-045",
+      "number": 45,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What are the two major political parties in the United States?",
+      "answers": [
+        {
+          "text": "Democratic and Republican"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-046",
+      "number": 46,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What is the political party of the President now?",
+      "answers": [
+        {
+          "text": "Visit uscis.gov/citizenship/testupdates for the political party of the President."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false,
+      "dynamic": {
+        "kind": "president-party",
+        "lookupUrl": "https://www.uscis.gov/citizenship/testupdates",
+        "lookupLabel": "Check USCIS test updates for the current President's party",
+        "scope": "federal"
+      }
+    },
+    {
+      "id": "2008-047",
+      "number": 47,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "System of Government",
+      "prompt": "What is the name of the Speaker of the House of Representatives now?",
+      "answers": [
+        {
+          "text": "Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false,
+      "dynamic": {
+        "kind": "speaker",
+        "lookupUrl": "https://www.house.gov/leadership",
+        "lookupLabel": "Check House leadership on house.gov",
+        "scope": "federal"
+      }
+    },
+    {
+      "id": "2008-048",
+      "number": 48,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "There are four amendments to the Constitution about who can vote. Describe one of them.",
+      "answers": [
+        {
+          "text": "Citizens eighteen (18) and older (can vote)."
+        },
+        {
+          "text": "You don’t have to pay (a poll tax) to vote."
+        },
+        {
+          "text": "Any citizen can vote. (Women and men can vote.)"
+        },
+        {
+          "text": "A male citizen of any race (can vote)."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-049",
+      "number": 49,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "What is one responsibility that is only for United States citizens?",
+      "answers": [
+        {
+          "text": "serve on a jury"
+        },
+        {
+          "text": "vote in a federal election"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-050",
+      "number": 50,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "Name one right only for United States citizens.",
+      "answers": [
+        {
+          "text": "vote in a federal election"
+        },
+        {
+          "text": "run for federal office"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-051",
+      "number": 51,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "What are two rights of everyone living in the United States?",
+      "answers": [
+        {
+          "text": "freedom of expression"
+        },
+        {
+          "text": "freedom of speech"
+        },
+        {
+          "text": "freedom of assembly"
+        },
+        {
+          "text": "freedom to petition the government"
+        },
+        {
+          "text": "freedom of religion"
+        },
+        {
+          "text": "the right to bear arms"
+        }
+      ],
+      "requiredCount": 2,
+      "special": false
+    },
+    {
+      "id": "2008-052",
+      "number": 52,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "What do we show loyalty to when we say the Pledge of Allegiance?",
+      "answers": [
+        {
+          "text": "the United States"
+        },
+        {
+          "text": "the flag"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-053",
+      "number": 53,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "What is one promise you make when you become a United States citizen?",
+      "answers": [
+        {
+          "text": "give up loyalty to other countries"
+        },
+        {
+          "text": "defend the Constitution and laws of the United States"
+        },
+        {
+          "text": "obey the laws of the United States"
+        },
+        {
+          "text": "serve in the U.S. military (if needed)"
+        },
+        {
+          "text": "serve (do important work for) the nation (if needed)"
+        },
+        {
+          "text": "be loyal to the United States"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-054",
+      "number": 54,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "How old do citizens have to be to vote for President?",
+      "answers": [
+        {
+          "text": "eighteen (18) and older"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-055",
+      "number": 55,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "What are two ways that Americans can participate in their democracy?",
+      "answers": [
+        {
+          "text": "vote"
+        },
+        {
+          "text": "join a political party"
+        },
+        {
+          "text": "help with a campaign"
+        },
+        {
+          "text": "join a civic group"
+        },
+        {
+          "text": "join a community group"
+        },
+        {
+          "text": "give an elected official your opinion on an issue"
+        },
+        {
+          "text": "call Senators and Representatives"
+        },
+        {
+          "text": "publicly support or oppose an issue or policy"
+        },
+        {
+          "text": "run for office"
+        },
+        {
+          "text": "write to a newspaper"
+        }
+      ],
+      "requiredCount": 2,
+      "special": false
+    },
+    {
+      "id": "2008-056",
+      "number": 56,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "When is the last day you can send in federal income tax forms?",
+      "answers": [
+        {
+          "text": "April 15"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-057",
+      "number": 57,
+      "bank": "2008",
+      "section": "AMERICAN GOVERNMENT",
+      "subsection": "Rights and Responsibilities",
+      "prompt": "When must all men register for the Selective Service?",
+      "answers": [
+        {
+          "text": "at age eighteen (18)"
+        },
+        {
+          "text": "between eighteen (18) and twenty-six (26)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-058",
+      "number": 58,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "What is one reason colonists came to America?",
+      "answers": [
+        {
+          "text": "freedom"
+        },
+        {
+          "text": "political liberty"
+        },
+        {
+          "text": "religious freedom"
+        },
+        {
+          "text": "economic opportunity"
+        },
+        {
+          "text": "practice their religion"
+        },
+        {
+          "text": "escape persecution"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-059",
+      "number": 59,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "Who lived in America before the Europeans arrived?",
+      "answers": [
+        {
+          "text": "American Indians"
+        },
+        {
+          "text": "Native Americans"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-060",
+      "number": 60,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "What group of people was taken to America and sold as slaves?",
+      "answers": [
+        {
+          "text": "Africans"
+        },
+        {
+          "text": "people from Africa"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-061",
+      "number": 61,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "Why did the colonists fight the British?",
+      "answers": [
+        {
+          "text": "because of high taxes (taxation without representation)"
+        },
+        {
+          "text": "because the British army stayed in their houses (boarding, quartering)"
+        },
+        {
+          "text": "because they didn’t have self-government"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-062",
+      "number": 62,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "Who wrote the Declaration of Independence?",
+      "answers": [
+        {
+          "text": "(Thomas) Jefferson"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-063",
+      "number": 63,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "When was the Declaration of Independence adopted?",
+      "answers": [
+        {
+          "text": "July 4, 1776"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-064",
+      "number": 64,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "There were 13 original states. Name three.",
+      "answers": [
+        {
+          "text": "New Hampshire"
+        },
+        {
+          "text": "Massachusetts"
+        },
+        {
+          "text": "Rhode Island"
+        },
+        {
+          "text": "Connecticut"
+        },
+        {
+          "text": "New York"
+        },
+        {
+          "text": "New Jersey"
+        },
+        {
+          "text": "Pennsylvania"
+        },
+        {
+          "text": "Delaware"
+        },
+        {
+          "text": "Maryland"
+        },
+        {
+          "text": "Virginia"
+        },
+        {
+          "text": "North Carolina"
+        },
+        {
+          "text": "South Carolina"
+        },
+        {
+          "text": "Georgia"
+        }
+      ],
+      "requiredCount": 3,
+      "special": false
+    },
+    {
+      "id": "2008-065",
+      "number": 65,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "What happened at the Constitutional Convention?",
+      "answers": [
+        {
+          "text": "The Constitution was written."
+        },
+        {
+          "text": "The Founding Fathers wrote the Constitution."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-066",
+      "number": 66,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "When was the Constitution written?",
+      "answers": [
+        {
+          "text": "1787"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-067",
+      "number": 67,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.",
+      "answers": [
+        {
+          "text": "(James) Madison"
+        },
+        {
+          "text": "(Alexander) Hamilton"
+        },
+        {
+          "text": "(John) Jay"
+        },
+        {
+          "text": "Publius"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-068",
+      "number": 68,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "What is one thing Benjamin Franklin is famous for?",
+      "answers": [
+        {
+          "text": "U.S. diplomat"
+        },
+        {
+          "text": "oldest member of the Constitutional Convention"
+        },
+        {
+          "text": "first Postmaster General of the United States"
+        },
+        {
+          "text": "writer of “Poor Richard’ s Almanac”"
+        },
+        {
+          "text": "started the first free libraries"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-069",
+      "number": 69,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "Who is the “Father of Our Country”?",
+      "answers": [
+        {
+          "text": "(George) Washington"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-070",
+      "number": 70,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Colonial Period and Independence",
+      "prompt": "Who was the first President?",
+      "answers": [
+        {
+          "text": "(George) Washington"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-071",
+      "number": 71,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "1800s",
+      "prompt": "What territory did the United States buy from France in 1803?",
+      "answers": [
+        {
+          "text": "the Louisiana Territory"
+        },
+        {
+          "text": "Louisiana"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-072",
+      "number": 72,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "1800s",
+      "prompt": "Name one war fought by the United States in the 1800s.",
+      "answers": [
+        {
+          "text": "War of 1812"
+        },
+        {
+          "text": "Mexican-American War"
+        },
+        {
+          "text": "Civil War"
+        },
+        {
+          "text": "Spanish-American War"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-073",
+      "number": 73,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "1800s",
+      "prompt": "Name the U.S. war between the North and the South.",
+      "answers": [
+        {
+          "text": "the Civil War"
+        },
+        {
+          "text": "the War between the States"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-074",
+      "number": 74,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "1800s",
+      "prompt": "Name one problem that led to the Civil War.",
+      "answers": [
+        {
+          "text": "slavery"
+        },
+        {
+          "text": "economic reasons"
+        },
+        {
+          "text": "states’ rights"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-075",
+      "number": 75,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "1800s",
+      "prompt": "What was one important thing that Abraham Lincoln did?",
+      "answers": [
+        {
+          "text": "freed the slaves (Emancipation Proclamation)"
+        },
+        {
+          "text": "saved (or preserved) the Union"
+        },
+        {
+          "text": "led the United States during the Civil War"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-076",
+      "number": 76,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "1800s",
+      "prompt": "What did the Emancipation Proclamation do?",
+      "answers": [
+        {
+          "text": "freed the slaves"
+        },
+        {
+          "text": "freed slaves in the Confederacy"
+        },
+        {
+          "text": "freed slaves in the Confederate states"
+        },
+        {
+          "text": "freed slaves in most Southern states"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-077",
+      "number": 77,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "1800s",
+      "prompt": "What did Susan B. Anthony do?",
+      "answers": [
+        {
+          "text": "fought for women’s rights"
+        },
+        {
+          "text": "fought for civil rights"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-078",
+      "number": 78,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "Name one war fought by the United States in the 1900s.",
+      "answers": [
+        {
+          "text": "World War I"
+        },
+        {
+          "text": "World War II"
+        },
+        {
+          "text": "Korean War"
+        },
+        {
+          "text": "Vietnam War"
+        },
+        {
+          "text": "(Persian) Gulf War"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-079",
+      "number": 79,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "Who was President during World War I?",
+      "answers": [
+        {
+          "text": "(Woodrow) Wilson"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-080",
+      "number": 80,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "Who was President during the Great Depression and World War II?",
+      "answers": [
+        {
+          "text": "(Franklin) Roosevelt"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-081",
+      "number": 81,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "Who did the United States fight in World War II?",
+      "answers": [
+        {
+          "text": "Japan, Germany, and Italy"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-082",
+      "number": 82,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "Before he was President, Eisenhower was a general. What war was he in?",
+      "answers": [
+        {
+          "text": "World War II"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-083",
+      "number": 83,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "During the Cold War, what was the main concern of the United States?",
+      "answers": [
+        {
+          "text": "Communism"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-084",
+      "number": 84,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "What movement tried to end racial discrimination?",
+      "answers": [
+        {
+          "text": "civil rights (movement)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-085",
+      "number": 85,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "What did Martin Luther King, Jr. do?",
+      "answers": [
+        {
+          "text": "fought for civil rights"
+        },
+        {
+          "text": "worked for equality for all Americans"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-086",
+      "number": 86,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "What major event happened on September 11, 2001, in the United States?",
+      "answers": [
+        {
+          "text": "Terrorists attacked the United States."
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-087",
+      "number": 87,
+      "bank": "2008",
+      "section": "AMERICAN HISTORY",
+      "subsection": "Recent American History and Other Important Historical Information",
+      "prompt": "Name one American Indian tribe in the United States.",
+      "answers": [
+        {
+          "text": "Cherokee"
+        },
+        {
+          "text": "Navajo"
+        },
+        {
+          "text": "Sioux"
+        },
+        {
+          "text": "Chippewa"
+        },
+        {
+          "text": "Choctaw"
+        },
+        {
+          "text": "Pueblo"
+        },
+        {
+          "text": "Apache"
+        },
+        {
+          "text": "Iroquois"
+        },
+        {
+          "text": "Creek"
+        },
+        {
+          "text": "Blackfeet"
+        },
+        {
+          "text": "Seminole"
+        },
+        {
+          "text": "Cheyenne"
+        },
+        {
+          "text": "Arawak"
+        },
+        {
+          "text": "Shawnee"
+        },
+        {
+          "text": "Mohegan"
+        },
+        {
+          "text": "Huron"
+        },
+        {
+          "text": "Oneida"
+        },
+        {
+          "text": "Lakota"
+        },
+        {
+          "text": "Crow"
+        },
+        {
+          "text": "Teton"
+        },
+        {
+          "text": "Hopi"
+        },
+        {
+          "text": "Inuit"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false,
+      "note": "USCIS Officers will be supplied with a list of federally recognized American Indian tribes."
+    },
+    {
+      "id": "2008-088",
+      "number": 88,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Geography",
+      "prompt": "Name one of the two longest rivers in the United States.",
+      "answers": [
+        {
+          "text": "Missouri (River)"
+        },
+        {
+          "text": "Mississippi (River)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-089",
+      "number": 89,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Geography",
+      "prompt": "What ocean is on the West Coast of the United States?",
+      "answers": [
+        {
+          "text": "Pacific (Ocean)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-090",
+      "number": 90,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Geography",
+      "prompt": "What ocean is on the East Coast of the United States?",
+      "answers": [
+        {
+          "text": "Atlantic (Ocean)"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-091",
+      "number": 91,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Geography",
+      "prompt": "Name one U.S. territory.",
+      "answers": [
+        {
+          "text": "Puerto Rico"
+        },
+        {
+          "text": "U.S. Virgin Islands"
+        },
+        {
+          "text": "American Samoa"
+        },
+        {
+          "text": "Northern Mariana Islands"
+        },
+        {
+          "text": "Guam"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-092",
+      "number": 92,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Geography",
+      "prompt": "Name one state that borders Canada.",
+      "answers": [
+        {
+          "text": "Maine"
+        },
+        {
+          "text": "New Hampshire"
+        },
+        {
+          "text": "Vermont"
+        },
+        {
+          "text": "New York"
+        },
+        {
+          "text": "Pennsylvania"
+        },
+        {
+          "text": "Ohio"
+        },
+        {
+          "text": "Michigan"
+        },
+        {
+          "text": "Minnesota"
+        },
+        {
+          "text": "North Dakota"
+        },
+        {
+          "text": "Montana"
+        },
+        {
+          "text": "Idaho"
+        },
+        {
+          "text": "Washington"
+        },
+        {
+          "text": "Alaska"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-093",
+      "number": 93,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Geography",
+      "prompt": "Name one state that borders Mexico.",
+      "answers": [
+        {
+          "text": "California"
+        },
+        {
+          "text": "Arizona"
+        },
+        {
+          "text": "New Mexico"
+        },
+        {
+          "text": "Texas"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-094",
+      "number": 94,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Geography",
+      "prompt": "What is the capital of the United States?",
+      "answers": [
+        {
+          "text": "Washington, D.C."
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-095",
+      "number": 95,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Geography",
+      "prompt": "Where is the Statue of Liberty?",
+      "answers": [
+        {
+          "text": "New York (Harbor)"
+        },
+        {
+          "text": "Liberty Island",
+          "note": "Also acceptable are New Jersey, near New York City, and on the Hudson (River)."
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-096",
+      "number": 96,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Symbols",
+      "prompt": "Why does the flag have 13 stripes?",
+      "answers": [
+        {
+          "text": "because there were 13 original colonies"
+        },
+        {
+          "text": "because the stripes represent the original colonies"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-097",
+      "number": 97,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Symbols",
+      "prompt": "Why does the flag have 50 stars?",
+      "answers": [
+        {
+          "text": "because there is one star for each state"
+        },
+        {
+          "text": "because each star represents a state"
+        },
+        {
+          "text": "because there are 50 states"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-098",
+      "number": 98,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Symbols",
+      "prompt": "What is the name of the national anthem?",
+      "answers": [
+        {
+          "text": "The Star-Spangled Banner"
+        }
+      ],
+      "requiredCount": 1,
+      "special": false
+    },
+    {
+      "id": "2008-099",
+      "number": 99,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Holidays",
+      "prompt": "When do we celebrate Independence Day?",
+      "answers": [
+        {
+          "text": "July 4"
+        }
+      ],
+      "requiredCount": 1,
+      "special": true
+    },
+    {
+      "id": "2008-100",
+      "number": 100,
+      "bank": "2008",
+      "section": "INTEGRATED CIVICS",
+      "subsection": "Holidays",
+      "prompt": "Name two national U.S. holidays.",
+      "answers": [
+        {
+          "text": "New Year’ s Day"
+        },
+        {
+          "text": "Martin Luther King, Jr. Day"
+        },
+        {
+          "text": "Presidents’ Day"
+        },
+        {
+          "text": "Memorial Day"
+        },
+        {
+          "text": "Independence Day"
+        },
+        {
+          "text": "Labor Day"
+        },
+        {
+          "text": "Columbus Day"
+        },
+        {
+          "text": "Veterans Day"
+        },
+        {
+          "text": "Thanksgiving"
+        },
+        {
+          "text": "Christmas"
+        }
+      ],
+      "requiredCount": 2,
+      "special": false
+    }
+  ],
+  "version": "2008.48577aba",
+  "contentHash": "48577aba00c0ca8dc624c941d00c2b42984e008033b1d7c723b14ec3d83bba49",
+  "generatedAt": "2026-10-05T04:55:19.595Z"
+}

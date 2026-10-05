@@ -1,0 +1,40 @@
+{
+  "retrievedAt": "2026-10-05T04:40:00Z",
+  "note": "Primary USCIS and federal sources retrieved with curl on the date above. The .txt files are pypdf text extractions of the PDFs (see content/scripts/extract-pdf-text.py) and are the ingestion input; the PDFs are the authority.",
+  "documents": [
+    {
+      "id": "uscis-2025-128q",
+      "title": "128 Civics Questions and Answers (2025 version), M-1778 (09/25)",
+      "url": "https://www.uscis.gov/sites/default/files/document/questions-and-answers/2025-Civics-Test-128-Questions-and-Answers.pdf",
+      "file": "2025-128q.pdf",
+      "sha256": "f280608c0fb6dc1eba344b4746a7ba52d02fe411fba30cedd4371819f0abe11c",
+      "textFile": "2025-128q.txt",
+      "textSha256": "4c10c9adbdab45d5844d0e8d568f454c8356c141e3d5be2c8bbf504f6e128b86"
+    },
+    {
+      "id": "uscis-2008-100q",
+      "title": "Civics (History and Government) Questions for the Naturalization Test (2008 test, rev. 01/19)",
+      "url": "https://www.uscis.gov/sites/default/files/document/questions-and-answers/100q.pdf",
+      "file": "2008-100q.pdf",
+      "sha256": "a19050dcb6f64f97596c75089459de3a5ff8a84606924b26f149669ac7c4a379",
+      "textFile": "2008-100q.txt",
+      "textSha256": "66d442115d168791d91dc1fe9f3e64a2554673eddc24409c98482b697679c6ce"
+    },
+    {
+      "id": "fr-2025-18050",
+      "title": "Federal Register: Notice of Implementation of 2025 Naturalization Civics Test (2025-18050)",
+      "url": "https://www.federalregister.gov/documents/2025/09/18/2025-18050/notice-of-implementation-of-2025-naturalization-civics-test",
+      "file": "federal-register-2025-18050.html",
+      "sha256": "bd178103de4d47eb30a61fd6e3fea63c5f38227a4563b12e047e634707285bee",
+      "note": "Only the page shell was returned by the server (client-rendered). Retained as a retrieval record; rules below were confirmed from the research report dated 5 October 2026 and the USCIS PDFs."
+    },
+    {
+      "id": "ecfr-8-312",
+      "title": "8 CFR Part 312 - Educational Requirements for Naturalization",
+      "url": "https://www.ecfr.gov/current/title-8/chapter-I/subchapter-C/part-312",
+      "file": "ecfr-8-312.html",
+      "sha256": "bd178103de4d47eb30a61fd6e3fea63c5f38227a4563b12e047e634707285bee",
+      "note": "Page shell only (client-rendered). Retained as a retrieval record."
+    }
+  ]
+}

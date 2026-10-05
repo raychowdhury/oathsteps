@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/post-edit.mjs\"", "timeout": 90, "statusMessage": "OathSteps: lint/content check" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/stop-check.mjs\"", "timeout": 10, "statusMessage": "OathSteps: ledger check" }
+        ]
+      }
+    ]
+  }
+}

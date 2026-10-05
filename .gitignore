@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# OathSteps
+/data/
+*.db
+*.db-journal
+/test-results/
+/playwright-report/
+/blob-report/
+/.harness/evidence/*.json
+!/.harness/evidence/latest.json
+/.harness/pause
+/src/generated/

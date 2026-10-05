@@ -6,7 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "content:ingest": "tsx content/scripts/ingest.ts",
+    "content:validate": "tsx content/scripts/validate.ts",
+    "content:extract": "uv run --with pypdf python3 content/scripts/extract-pdf-text.py",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "verify": "node scripts/verify.mjs",
+    "verify:quick": "node scripts/verify.mjs --quick",
+    "bootstrap": "bash scripts/bootstrap.sh"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.10.0",
@@ -41,5 +56,9 @@
     "typescript": "^5",
     "vitest": "^5.0.3"
   },
-  "packageManager": "pnpm@10.28.2"
+  "packageManager": "pnpm@10.28.2",
+  "description": "OathSteps: US Citizenship Prep. Practice. Prepare. Track your journey.",
+  "engines": {
+    "node": ">=20.9"
+  }
 }
