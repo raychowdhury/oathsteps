@@ -1,0 +1,112 @@
+// OathSteps schema. SQLite via @prisma/adapter-better-sqlite3 (see prisma.config.ts).
+// Learning data is an append-only event log keyed by client-generated ids so sync replays are idempotent.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ---- Better Auth core schema (matches better-auth 1.7 prisma adapter) ----
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  learningEvents LearningEvent[]
+  profile       ServerProfile?
+  consents      Consent[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+// ---- OathSteps data ----
+
+/// Per-user settings mirror. The client profile is the source; this is the last synced copy.
+model ServerProfile {
+  userId    String   @id
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  data      String   // JSON StudyProfile without identifiers beyond what the learner typed
+  updatedAt DateTime @updatedAt
+}
+
+/// Idempotent event log. eventId is the client UUID (attempt id, mock id, ...).
+model LearningEvent {
+  eventId   String   @id
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // attempt | review | mock | milestone | checklist | english | profile | dynamic-answer | bookmark | report
+  payload   String   // JSON
+  clientAt  DateTime
+  receivedAt DateTime @default(now())
+
+  @@index([userId, type])
+  @@index([userId, receivedAt])
+}
+
+model Consent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose   String   // migrate-guest-progress | sync
+  version   String
+  grantedAt DateTime @default(now())
+
+  @@index([userId, purpose])
+}

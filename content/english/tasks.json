@@ -1,0 +1,76 @@
+{
+  "version": "2026-10-05.1",
+  "review": {
+    "machineChecked": true,
+    "humanReviewed": false,
+    "note": "Original OathSteps practice material. Reading and writing sentences use words from the USCIS reading and writing vocabulary lists; they are not the sentences used in interviews. Conversation prompts ask for truthful personal answers and never supply them. Not an official English assessment."
+  },
+  "sources": [
+    { "label": "USCIS: Study for the test (reading and writing vocabulary)", "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test" },
+    { "label": "USCIS: Form N-400", "url": "https://www.uscis.gov/n-400" }
+  ],
+  "reading": [
+    { "id": "r-01", "text": "Who was the first President?" },
+    { "id": "r-02", "text": "What is the capital of the United States?" },
+    { "id": "r-03", "text": "Why do people come to America?" },
+    { "id": "r-04", "text": "When is Independence Day?" },
+    { "id": "r-05", "text": "Who lives in the White House?" },
+    { "id": "r-06", "text": "What country is north of the United States?" },
+    { "id": "r-07", "text": "Name one right in the Bill of Rights." },
+    { "id": "r-08", "text": "How many senators do we have?" },
+    { "id": "r-09", "text": "Who elects Congress?" },
+    { "id": "r-10", "text": "What is the largest state?" },
+    { "id": "r-11", "text": "When is Columbus Day?" },
+    { "id": "r-12", "text": "Who can vote in the United States?" }
+  ],
+  "writing": [
+    { "id": "w-01", "text": "Washington was the first President." },
+    { "id": "w-02", "text": "The capital is Washington, D.C." },
+    { "id": "w-03", "text": "People want to be free." },
+    { "id": "w-04", "text": "Independence Day is in July." },
+    { "id": "w-05", "text": "The President lives in the White House." },
+    { "id": "w-06", "text": "Canada is north of the United States." },
+    { "id": "w-07", "text": "Citizens can vote." },
+    { "id": "w-08", "text": "We have one hundred senators." },
+    { "id": "w-09", "text": "The flag is red, white, and blue." },
+    { "id": "w-10", "text": "Alaska is the largest state." },
+    { "id": "w-11", "text": "Congress meets in Washington, D.C." },
+    { "id": "w-12", "text": "Lincoln was President during the Civil War." }
+  ],
+  "instructions": [
+    { "id": "i-01", "text": "Please raise your right hand.", "meaning": "Lift your right hand; the officer is about to ask you to swear to tell the truth." },
+    { "id": "i-02", "text": "Do you promise to tell the truth, the whole truth, and nothing but the truth?", "meaning": "Answer “Yes” or “I do” if you agree to tell the truth." },
+    { "id": "i-03", "text": "Please have a seat.", "meaning": "Sit down." },
+    { "id": "i-04", "text": "May I see your green card and your passport?", "meaning": "Hand the officer your permanent resident card and passport." },
+    { "id": "i-05", "text": "Please read this sentence aloud.", "meaning": "Read the sentence the officer shows you, out loud." },
+    { "id": "i-06", "text": "Please write this sentence.", "meaning": "Write down the sentence the officer says." },
+    { "id": "i-07", "text": "Have you ever been arrested?", "meaning": "A truthful yes-or-no question about your history. Answer honestly; explain if needed." },
+    { "id": "i-08", "text": "What is your current address?", "meaning": "Say where you live now, the same as on your application." },
+    { "id": "i-09", "text": "Do you understand the question?", "meaning": "It is fine to say “No, could you please repeat it?”" },
+    { "id": "i-10", "text": "Please sign here.", "meaning": "Write your signature where the officer points." }
+  ],
+  "vocabulary": [
+    { "id": "v-01", "term": "Lawful permanent resident", "meaning": "A person allowed to live and work in the United States permanently (green card holder)." },
+    { "id": "v-02", "term": "Oath of Allegiance", "meaning": "The promise you make to the United States at the naturalization ceremony." },
+    { "id": "v-03", "term": "Marital status", "meaning": "Whether you are single, married, divorced, widowed, or separated." },
+    { "id": "v-04", "term": "Employment", "meaning": "Your work or job." },
+    { "id": "v-05", "term": "Residence", "meaning": "The place where you live." },
+    { "id": "v-06", "term": "Trip outside the United States", "meaning": "Any time you left the country, including short visits." },
+    { "id": "v-07", "term": "Citation or ticket", "meaning": "A notice from police or a court, for example for a traffic violation." },
+    { "id": "v-08", "term": "Dependents", "meaning": "People you support financially, such as children." },
+    { "id": "v-09", "term": "Selective Service", "meaning": "The U.S. system that registers men aged 18 to 25 for possible military service." },
+    { "id": "v-10", "term": "Bear arms on behalf of the United States", "meaning": "To serve in the military and fight for the United States if the law requires it." },
+    { "id": "v-11", "term": "Allegiance", "meaning": "Loyalty to a country." },
+    { "id": "v-12", "term": "Deported or removed", "meaning": "Ordered by the government to leave the United States." }
+  ],
+  "conversation": [
+    { "id": "c-01", "prompt": "Tell me about your current job.", "tip": "Say your job title and where you work. Use your own true details." },
+    { "id": "c-02", "prompt": "How long have you lived at your current address?", "tip": "Give the number of years or months, as on your application." },
+    { "id": "c-03", "prompt": "Have you traveled outside the United States since you became a permanent resident?", "tip": "Answer yes or no, then name the countries and roughly how long, as you listed them." },
+    { "id": "c-04", "prompt": "Are you married? Tell me about your spouse.", "tip": "State your marital status. If married, say your spouse's name and whether they are a citizen." },
+    { "id": "c-05", "prompt": "Why do you want to become a U.S. citizen?", "tip": "There is no right answer. Say your own reason in one or two sentences." },
+    { "id": "c-06", "prompt": "Do you have any children? Where do they live?", "tip": "Say how many and where they live, as on your application." },
+    { "id": "c-07", "prompt": "Have you ever failed to file a required tax return?", "tip": "Answer truthfully. If something is complicated, say so and explain." },
+    { "id": "c-08", "prompt": "Are you willing to take the full Oath of Allegiance?", "tip": "Answer yes if you are willing. Ask the officer if you do not understand a part." }
+  ]
+}

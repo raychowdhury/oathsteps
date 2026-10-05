@@ -1,0 +1,34 @@
+services:
+  migrate:
+    build:
+      context: .
+      target: migrate
+    environment:
+      DATABASE_URL: file:/data/oathsteps.db
+    volumes:
+      - oathsteps-data:/data
+    restart: "no"
+
+  app:
+    build:
+      context: .
+      target: runner
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: file:/data/oathsteps.db
+      MAIL_SINK_DIR: /data/mail
+      # Required. Generate with: openssl rand -base64 32
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET in .env}
+      # Public URL users reach the app on (https in production).
+      BETTER_AUTH_URL: ${APP_URL:-http://localhost:3000}
+      NEXT_PUBLIC_APP_URL: ${APP_URL:-http://localhost:3000}
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    volumes:
+      - oathsteps-data:/data
+    restart: unless-stopped
+
+volumes:
+  oathsteps-data:

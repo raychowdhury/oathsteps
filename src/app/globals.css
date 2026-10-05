@@ -1,26 +1,87 @@
 @import "tailwindcss";
 
+@theme {
+  --color-paper: #f7faf9;
+  --color-paper-2: #eef4f2;
+  --color-ink: #17324b;
+  --color-ink-2: #3b5368;
+  --color-ink-3: #5f7384;
+  --color-teal: #087e8b;
+  --color-teal-2: #0a6672;
+  --color-teal-soft: #d9eef0;
+  --color-line: #d5dfe3;
+  --color-good: #1f7a4d;
+  --color-good-soft: #dff3e8;
+  --color-warn: #8a5a00;
+  --color-warn-soft: #fff1d6;
+  --color-bad: #a23b3b;
+  --color-bad-soft: #fbe3e3;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  font-size: 17px;
+}
+:root[data-text-size="large"] {
+  font-size: 19px;
+}
+:root[data-text-size="xlarge"] {
+  font-size: 22px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  min-height: 100%;
+}
+body {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Visible focus for keyboard users on every interactive element. */
+:focus-visible {
+  outline: 3px solid var(--color-teal);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce), (prefers-reduced-motion: no-preference) and (min-width: 0) {
+  :root[data-reduce-motion="true"] *,
+  :root[data-reduce-motion="true"] *::before,
+  :root[data-reduce-motion="true"] *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Subtle path motif used on the Today header. */
+.path-motif {
+  background-image: radial-gradient(circle at 12% 30%, rgba(8, 126, 139, 0.12) 0 6px, transparent 7px), radial-gradient(circle at 38% 70%, rgba(8, 126, 139, 0.1) 0 5px, transparent 6px),
+    radial-gradient(circle at 64% 35%, rgba(8, 126, 139, 0.08) 0 5px, transparent 6px), radial-gradient(circle at 90% 65%, rgba(8, 126, 139, 0.12) 0 6px, transparent 7px);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
