@@ -14,8 +14,22 @@
         "pnpm content:validate passes: 128/20, 100/20, hashes match SOURCES.json",
         "Dynamic answers are flagged and carry an official lookup URL"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-002",
@@ -30,8 +44,22 @@
         "Unit tests for 2025-10-19 vs 2025-10-20, null date, timezone-safe date-only handling",
         "Setup screen explains the applicable path and allows correction"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-003",
@@ -46,8 +74,22 @@
         "Playwright: fresh visitor completes setup and lands on Today",
         "Profile persists across reload"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-004",
@@ -63,8 +105,22 @@
         "Playwright: first-time and returning Today states render correctly",
         "No countdown shown when no interview date entered"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-005",
@@ -80,8 +136,22 @@
         "Unit test: duplicate attempt id stored once",
         "Playwright: complete a card and see the attempt in history"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-006",
@@ -95,8 +165,22 @@
       "acceptance": [
         "Unit tests cover interval advancement, uncertain demotion, hinted no-advance, missed-day catch-up cap"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-007",
@@ -110,8 +194,22 @@
       "acceptance": [
         "Playwright: browse topics, bookmark, run MC mode; attempt records method=multiple-choice"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-008",
@@ -127,8 +225,22 @@
         "Unit tests for both paths, special, pass/fail/early-stop, resume",
         "Playwright: complete a mock and see results"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-009",
@@ -142,8 +254,22 @@
       "acceptance": [
         "Playwright: complete one task of each kind; results labeled self-reported"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-010",
@@ -161,8 +287,22 @@
         "Unit tests for each indicator and the empty state",
         "UI shows definitions and dates"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-011",
@@ -176,8 +316,22 @@
       "acceptance": [
         "Playwright: add, edit, reschedule milestones; biometrics reuse and retest branches"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-012",
@@ -192,8 +346,22 @@
         "Playwright: complete a task, set a reminder, download .ics",
         "Validator checks guide sources are official domains"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-013",
@@ -207,8 +375,22 @@
       "acceptance": [
         "Playwright: export produces JSON with attempts; reset clears; deletion clears local data"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-014",
@@ -220,8 +402,22 @@
       "acceptance": [
         "Playwright: reload preserves profile and attempts"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-015",
@@ -235,8 +431,22 @@
       "acceptance": [
         "Playwright: sign up, sign out, sign in; second user cannot read first user's data"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-016",
@@ -251,8 +461,22 @@
         "Unit test: replaying the same event twice stores one record",
         "Playwright: migrate guest progress, sign out, verify cache cleared"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-017",
@@ -266,8 +490,22 @@
       "acceptance": [
         "Playwright: audio control renders a disabled/explanatory state when synthesis is unavailable"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-018",
@@ -282,8 +520,22 @@
         "Playwright: download content, go offline, reload, practice still works",
         "sw.js excludes /api/auth and /api/sync"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-019",
@@ -297,8 +549,22 @@
       "acceptance": [
         "Playwright: dynamic question shows lookup link and confirm form; unconfirmed is unscored in mock"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-020",
@@ -313,8 +579,22 @@
         "axe reports no serious/critical violations on Today, Practice, Mock, Journey, Settings",
         "Playwright keyboard flow through a card"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-021",
@@ -330,8 +610,22 @@
         "Unit tests: sync rejects unauthenticated and foreign-user events",
         "Headers include CSP and no-store for private responses"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-022",
@@ -344,8 +638,22 @@
         "pnpm verify writes .harness/evidence/latest.json",
         "docker compose config validates"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-023",
@@ -357,8 +665,22 @@
       "acceptance": [
         "No language selector in UI; messages loaded from catalogue"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "F-024",
@@ -373,8 +695,22 @@
         "Attempt records include packVersion",
         "Correction report saved and included in export"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+          "recordedAt": "2026-10-05T06:19:08.442Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e"
+          ],
+          "note": null
+        }
+      ]
     },
     {
       "id": "C-001",

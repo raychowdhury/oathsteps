@@ -1,24 +1,27 @@
 # Progress
 
-state: in-progress
-next action: read the browser-suite rerun (scratch e2e-run4.log), fix any remaining failure at the root, then run `pnpm verify`, stamp the ledger with `node scripts/ledger.mjs verify …`, commit and push
+state: complete
+next action: owner gates only (see "Open findings"); on any code change rerun `pnpm verify`, then `node scripts/ledger.mjs verify <ids> --checks content,typecheck,lint,unit,build,e2e`
 
 ## Current slice
-Design handoff port. Every screen now follows the Claude Design prototype (`oathsteps-handoff.zip`, live canvas with dark mode): `.o-*` system, Inter, five-step setup, Today plan, Practice library, recall/choice/varies cards with sheets, walkthrough + full mock, interview hub with voice/reading/writing/instructions/N-400, journey timeline with seven slots, four-stage guide, settings with appearance and typed delete, demo learner.
+Done. Every `track: core` feature (F-001 … F-024) is `verified` with evidence recorded for commit 2359d27 (`pnpm verify`, full mode, clean tree). The ledger stamp itself lands in the following commit, which changes only `.harness/*`.
 
-## Latest verified
-- `pnpm test`: 78 unit tests pass (routing boundary, stop rules incl. walkthrough, answer matching, word diff, filing/milestone validation, journey slots, scheduler, plan, readiness, sync server, integrations, i18n).
+## Latest verified (2026-10-05, commit 2359d27)
+- `pnpm content:validate`: 2025 pack 128 questions / 20 designated 65-20 / 8 dynamic; 2008 pack 100 / 20 / 10; source hashes match `SOURCES.json`; guide stages link only to listed official sources.
 - `pnpm typecheck`, `pnpm lint`: clean.
-- `pnpm build`: passes.
-- Dev-browser walkthrough at 375px in dark mode: Today, Practice, recall card, Journey render as designed.
-- Browser suite run 3 (before locator fixes): 26 failures, all three causes were test locators (duplicated start button id, route announcer `role=alert`, ambiguous account label). Rerun in progress.
+- `pnpm test`: 78 unit tests pass (routing boundary 2025-10-19 vs 2025-10-20, full and walkthrough stop rules, answer matching, writing word diff, filing/interview/milestone validation, journey slots and .ics, scheduler, plan, readiness, sync server, same-origin guard, integrations, i18n).
+- `pnpm build`: production build passes.
+- `pnpm test:e2e`: 29 browser tests pass against the production build (phone 375px and desktop 1280px projects): onboarding and routing, practice modes and sheets, dynamic answers, walkthrough and full mocks incl. pause/resume and 2008 path, interview reading/writing/instructions/N-400/voice fallbacks, readiness, journey milestones/guide/reminders/.ics, settings export/reset/delete, offline download, accounts with migration/sync/sign-out/delete, security headers and cross-origin rejection, axe sweep in light and dark with no serious or critical violations, keyboard-only card.
+- Manual walkthrough (dev server, 2026-10-05): 375px phone and 1280px desktop, light and dark; Today, Setup, Practice, recall card, mock, Interview hub, Journey, Guide, Settings render as in the design handoff.
 
-## Failures / open findings
-- Browser suite rerun pending.
-- Docker image build could not be verified locally: the Docker daemon is not running on this machine (`docker build` fails to connect). CI runs `docker build --target runner`; `docker compose config` validated locally.
-- Content is machine-checked only (owner gate).
+## Open findings (owner decisions, not code gaps)
+- Content is machine-checked only; a qualified reviewer has not signed off on wording, guide text or English tasks. The UI says so.
+- Docker image build was not verified on this machine (Docker daemon not running); `docker compose config` validated locally and CI builds the `runner` target.
+- Production mail provider, hosting and `BETTER_AUTH_SECRET` are owner-provisioned. Dev uses the mail sink directory.
+- Conditional integrations (speech provider, USCIS case status, payments, push) ship as disabled contracts with tests; the UI never presents them as working.
+- Voice practice uses the browser's Web Speech API and is labeled experimental; typed and self-check paths are the supported fallbacks.
 
 ## Resume procedure
 1. Read this file, `.harness/features.json` and `.harness/decisions.md`.
 2. `pnpm verify:quick` to confirm the tree still passes.
-3. Continue from "next action". Update this file at every checkpoint.
+3. Any change to code or content: `pnpm verify`, then re-stamp the touched features. Update this file at every checkpoint.
