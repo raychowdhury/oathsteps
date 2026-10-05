@@ -4,6 +4,8 @@ import type { AssessmentMethod, Bank, Instant, Outcome } from "./types";
 
 export interface MockConfig {
   id: string;
+  /** "full" uses the official stop rule for the path; "walkthrough" is the 5-question sample. */
+  kind: "full" | "walkthrough";
   bank: Bank;
   packVersion: string;
   special: boolean;
@@ -60,12 +62,16 @@ export function selectQuestions(pool: readonly Candidate[], special: boolean, co
   return sample(eligible.map((q) => q.id), count, seededRng(seed));
 }
 
-export function createMock(input: { id: string; bank: Bank; packVersion: string; special: boolean; pool: readonly Candidate[]; seed: number; now: Instant }): MockState {
-  const rules = input.special ? RULES[input.bank].special : RULES[input.bank].standard;
+/** Sample walkthrough: 5 questions, stops at 4 correct or 3 wrong (scaled from the 2025 rule). */
+export const WALKTHROUGH_RULES: MockRules = { asked: 5, pass: 4, stopIncorrect: 3 };
+
+export function createMock(input: { id: string; bank: Bank; packVersion: string; special: boolean; pool: readonly Candidate[]; seed: number; now: Instant; kind?: "full" | "walkthrough" }): MockState {
+  const kind = input.kind ?? "full";
+  const rules = kind === "walkthrough" ? WALKTHROUGH_RULES : input.special ? RULES[input.bank].special : RULES[input.bank].standard;
   const questionIds = selectQuestions(input.pool, input.special, rules.asked, input.seed);
   if (questionIds.length === 0) throw new Error("No scorable questions available for this mock.");
   return {
-    config: { id: input.id, bank: input.bank, packVersion: input.packVersion, special: input.special, rules, questionIds, seed: input.seed, createdAt: input.now },
+    config: { id: input.id, kind, bank: input.bank, packVersion: input.packVersion, special: input.special, rules, questionIds, seed: input.seed, createdAt: input.now },
     status: "configured",
     index: 0,
     answers: [],

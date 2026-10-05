@@ -1,13 +1,19 @@
-import { LinkButton } from "@/components/ui";
+import Link from "next/link";
 
 export default function OfflinePage() {
   return (
-    <div className="space-y-4 py-8 text-center">
-      <h1 className="text-2xl font-bold">You are offline</h1>
-      <p className="text-ink-2">This page was not saved for offline use. Practice cards still work if you downloaded the content in Settings.</p>
-      <LinkButton href="/practice" variant="secondary">
-        Go to Practice
-      </LinkButton>
+    <div className="o-shell">
+      <div className="o-main">
+        <div className="o-page o-narrow" style={{ justifyContent: "center" }}>
+          <div className="o-card o-card-amber">
+            <div className="o-strong">You’re offline</div>
+            <div>This page was not saved for offline use. Practice still works if you downloaded the content in Settings.</div>
+            <Link href="/practice" className="o-btn o-btn-s" style={{ alignSelf: "flex-start" }}>
+              Go to Practice
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

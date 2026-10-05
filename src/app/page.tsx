@@ -1,167 +1,206 @@
 "use client";
 import Link from "next/link";
-import { daysBetween, todayDateOnly } from "@/domain/dates";
-import { buildDailyPlan } from "@/domain/plan";
-import { MILESTONE_LABELS, dueReminders, nextPracticalTask } from "@/lib/journey";
-import { bankLabel, bankQuestions, pathFor } from "@/lib/path";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { fmtDate } from "@/domain/validation";
+import { FilingSheet } from "@/components/FilingSheet";
+import { MilestoneSheet } from "@/components/MilestoneSheet";
+import { Icon } from "@/components/icons";
+import { Screen } from "@/components/Screen";
+import { Welcome } from "@/components/Welcome";
+import { countdown, greeting, journeyNext, lastEnglish, loadSnapshot, planTasks, readinessTeaser, suggestWriting, uncertainIds } from "@/lib/today";
 import { useData } from "@/lib/store/useData";
-import { getProfile, listAttempts, listChecklist, listMilestones, listReviewStates } from "@/lib/store/repo";
-import { Card, LinkButton, Notice, Pill, Spinner } from "@/components/ui";
 
 export default function TodayPage() {
-  const { data, loading, error } = useData(async () => {
-    const [profile, reviewStates, milestones, checklist, attempts] = await Promise.all([getProfile(), listReviewStates(), listMilestones(), listChecklist(), listAttempts()]);
-    return { profile, reviewStates, milestones, checklist, attempts };
-  });
-
-  if (loading) return <Spinner />;
-  if (error || !data)
+  const router = useRouter();
+  const { data: s, loading, error } = useData(loadSnapshot);
+  const [sheet, setSheet] = useState<"filing" | "interview" | null>(null);
+  if (loading) return null;
+  if (error || !s)
     return (
-      <Notice tone="bad" title="Local storage is unavailable">
-        <p>OathSteps keeps your progress on this device, but the browser blocked storage. Try a normal (non-private) window. Details: {error}</p>
-      </Notice>
+      <div className="o-page">
+        <div className="o-card o-card-amber">
+          <div className="o-strong">Local storage is unavailable</div>
+          <div>OathSteps keeps your progress on this device, but the browser blocked storage. Try a normal (non-private) window. Details: {error}</div>
+        </div>
+      </div>
     );
+  if (!s.profile.onboarded) return <Welcome />;
 
-  const { profile, reviewStates, milestones, checklist, attempts } = data;
-  if (!profile.onboarded) return <Welcome />;
+  const tasks = planTasks(s);
+  const minutes = tasks.reduce((a, t) => a + (t.done ? 0 : t.mins), 0);
+  const studyDone = tasks.filter((t) => t.key !== "english").every((t) => t.done);
+  const planDone = tasks.every((t) => t.done);
+  const writing = suggestWriting(s);
+  const startLabel = planDone ? "Practice more" : studyDone ? (writing ? "Start writing practice" : "Start reading practice") : "Start today’s practice";
+  const startHref = !studyDone || planDone ? "/practice/session?kind=daily" : writing ? "/interview/writing" : "/interview/reading";
+  const cd = countdown(s);
+  const unc = uncertainIds(s);
+  const lastWr = lastEnglish(s, "writing");
+  const saved = s.bookmarks.filter((b) => s.questions.some((q) => q.id === b));
+  const jn = journeyNext(s);
+  const pathTagCls = s.route.key === "none" ? "o-tag-warn" : "o-tag-t";
 
-  const today = todayDateOnly();
-  const path = pathFor(profile);
-  const questions = bankQuestions(path);
-  const task = nextPracticalTask(milestones, checklist);
-  const plan = buildDailyPlan({ today, bankQuestionIds: questions.map((q) => q.id), reviewStates, newPerDay: profile.newPerDay, practicalTask: task ? { itemId: task.item.id, text: task.item.text, stageTitle: task.stage.title } : null });
-  const reminders = dueReminders({ profile, milestones, checklist, today, hasDueCards: plan.reviewIds.length > 0 });
-  const cards = plan.reviewIds.length + plan.newIds.length;
-  const lastAttempt = attempts.at(-1);
-  const interviewDays = profile.interviewDate ? daysBetween(today, profile.interviewDate) : null;
-  const deadlineDays = profile.studyDeadline ? daysBetween(today, profile.studyDeadline) : null;
-  const nextAppt = milestones.filter((m) => m.date && m.date >= today && ["interview", "oath", "retest", "biometrics-attended"].includes(m.kind)).sort((a, b) => a.date!.localeCompare(b.date!))[0];
+  const improve: { title: string; sub: string; icon: "flag" | "pencil" | "save"; amber?: boolean; href: string }[] = [];
+  if (unc.length) improve.push({ title: `Review ${unc.length} answer${unc.length === 1 ? "" : "s"} to try again`, sub: "Not sure or missed", icon: "flag", amber: true, href: "/practice/session?kind=weak" });
+  if (lastWr && lastWr.outcome !== "correct") improve.push({ title: "Writing: try one more sentence", sub: `Last try ${fmtDate(lastWr.at.slice(0, 10))}: ${lastWr.text}`, icon: "pencil", href: "/interview/writing" });
+  if (saved.length) improve.push({ title: `${saved.length} saved question${saved.length === 1 ? "" : "s"}`, sub: "Saved by you", icon: "save", href: "/practice/session?kind=saved" });
 
-  return (
-    <div className="space-y-4">
-      <section className="path-motif rounded-2xl bg-ink px-5 py-6 text-white">
-        <p className="text-sm uppercase tracking-wide text-white/70">Today</p>
-        <h1 className="mt-1 text-2xl font-bold">{plan.isFirstSession ? "Let’s start your first practice." : attempts.length ? "Welcome back." : "Ready when you are."}</h1>
-        <p className="mt-2 text-white/85">
-          <Link href="/setup" className="underline decoration-white/40 underline-offset-2">
-            {bankLabel(path)}
-          </Link>
-        </p>
-        {path.status === "unknown" && <p className="mt-2 rounded-xl bg-white/10 p-3 text-sm">Set your filing date or choose a test in Setup so practice uses the right questions.</p>}
-        <div className="mt-4 flex flex-wrap gap-2 text-sm">
-          {interviewDays !== null && <Pill tone="teal">{interviewDays >= 0 ? `${interviewDays} day${interviewDays === 1 ? "" : "s"} to your interview (${profile.interviewDate})` : `Interview date ${profile.interviewDate} has passed`}</Pill>}
-          {deadlineDays !== null && deadlineDays >= 0 && <Pill>{deadlineDays} days to your study goal</Pill>}
-          {!profile.interviewDate && nextAppt && <Pill tone="teal">{MILESTONE_LABELS[nextAppt.kind]} on {nextAppt.date}</Pill>}
-        </div>
-      </section>
-
-      <Card aria-labelledby="plan-h" className="space-y-3">
-        <div className="flex items-baseline justify-between">
-          <h2 id="plan-h" className="text-lg font-semibold">
-            Today’s plan
-          </h2>
-          <span className="text-sm text-ink-3">about {plan.estimatedMinutes} min</span>
-        </div>
-        <ul className="space-y-2">
-          <li className="flex items-center justify-between rounded-xl bg-paper-2 px-3 py-2">
-            <span>Review due answers</span>
-            <strong data-testid="due-count">{plan.reviewIds.length}</strong>
-          </li>
-          <li className="flex items-center justify-between rounded-xl bg-paper-2 px-3 py-2">
-            <span>New questions</span>
-            <strong data-testid="new-count">{plan.newIds.length}</strong>
-          </li>
-          <li className="flex items-center justify-between rounded-xl bg-paper-2 px-3 py-2">
-            <span>Practical task</span>
-            <strong>{task ? 1 : 0}</strong>
-          </li>
-        </ul>
-        <ul className="list-disc space-y-1 pl-5 text-sm text-ink-2">
-          {plan.reasons.map((r) => (
-            <li key={r}>{r}</li>
-          ))}
-        </ul>
-        {cards > 0 ? (
-          <LinkButton href="/practice/session?mode=today" size="lg" className="w-full" data-testid="start-today">
-            Start today’s practice
-          </LinkButton>
-        ) : (
-          <LinkButton href="/practice" size="lg" variant="secondary" className="w-full">
-            Open Practice
-          </LinkButton>
-        )}
-        {path.status !== "unknown" && plan.deferredReview > 0 && <p className="text-sm text-ink-3">{plan.deferredReview} more reviews are waiting after today’s set. Missed days are fine; they just spread out.</p>}
-      </Card>
-
-      {task && (
-        <Card aria-labelledby="task-h" className="space-y-2">
-          <h2 id="task-h" className="text-lg font-semibold">
-            One practical task
-          </h2>
-          <p className="text-sm text-ink-3">{task.stage.title}</p>
-          <p>{task.item.text}</p>
-          <p className="text-sm text-ink-2">{task.item.why}</p>
-          <LinkButton href={`/journey#${task.item.id}`} variant="secondary" size="sm">
-            Open in Journey
-          </LinkButton>
-        </Card>
-      )}
-
-      {reminders.length > 0 && (
-        <Card aria-labelledby="rem-h" className="space-y-2">
-          <h2 id="rem-h" className="text-lg font-semibold">
-            Reminders
-          </h2>
-          <ul className="space-y-1">
-            {reminders.map((r) => (
-              <li key={r.id} className="flex items-start justify-between gap-3">
-                <span>{r.title}</span>
-                <span className="shrink-0 text-sm text-ink-3">{r.date}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="text-sm text-ink-3">Reminders appear here when you open the app. Export them to your calendar from Journey.</p>
-        </Card>
-      )}
-
-      <Card className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="font-semibold">Progress so far</p>
-          <p className="text-sm text-ink-2">
-            {attempts.length} attempt{attempts.length === 1 ? "" : "s"} recorded{lastAttempt ? `, last on ${lastAttempt.at.slice(0, 10)}` : ""}.
-          </p>
-        </div>
-        <LinkButton href="/readiness" variant="secondary" size="sm">
-          See readiness
-        </LinkButton>
-      </Card>
-    </div>
+  const startButton = (
+    <Link href={startHref as never} className="o-btn o-btn-p o-btn-lg o-btn-block" data-testid="start-today">
+      {startLabel}
+    </Link>
   );
-}
 
-function Welcome() {
   return (
-    <div className="space-y-4">
-      <section className="path-motif rounded-2xl bg-ink px-5 py-8 text-white">
-        <h1 className="text-3xl font-bold">Practice. Prepare. Track your journey.</h1>
-        <p className="mt-3 text-white/85">OathSteps helps you prepare for the U.S. naturalization interview: say civics answers aloud before you see them, practice English tasks, and keep your own checklist and milestones.</p>
-        <div className="mt-5">
-          <LinkButton href="/setup" size="lg" variant="primary" className="w-full">
-            Get started
-          </LinkButton>
+    <Screen title="OathSteps" tab="today" demo={s.demo} actions={<div className="o-phone" style={{ display: "contents" }}>{startButton}</div>}>
+      <div className="o-page">
+        <div className="o-stack-s">
+          <h1 className="o-h1">{greeting()}</h1>
+          <div className="o-row-wrap">
+            <button className={`o-tag ${pathTagCls}`} type="button" onClick={() => setSheet("filing")} data-testid="path-tag">
+              {s.route.short}
+            </button>
+            <span className="o-meta">Saved on this device</span>
+          </div>
         </div>
-        <p className="mt-3 text-sm text-white/70">No account needed. Your progress stays on this device unless you choose to sync it.</p>
-      </section>
-      <Card className="space-y-2">
-        <h2 className="text-lg font-semibold">What you will find</h2>
-        <ul className="list-disc space-y-1 pl-5 text-ink-2">
-          <li>The correct civics question bank for your N-400 filing date (2008 or 2025 test).</li>
-          <li>Recall-first cards, review scheduling and realistic mock tests.</li>
-          <li>Reading, writing and interview-conversation practice.</li>
-          <li>A stage-by-stage guide with official links and a manual journey tracker.</li>
-        </ul>
-        <p className="text-sm text-ink-3">OathSteps is a private study tool. It does not decide eligibility, predict results or replace your USCIS notices.</p>
-      </Card>
-    </div>
+        {s.route.key === "none" && (
+          <div className="o-card o-card-amber" data-testid="no-version">
+            <div className="o-row o-strong" style={{ color: "var(--am)" }}>
+              <Icon name="flag" />
+              Your test version isn’t set
+            </div>
+            <div>Add your filing date to get the right test. Until then, practice uses the 2025 list.</div>
+            <button className="o-btn o-btn-s" type="button" onClick={() => setSheet("filing")} style={{ alignSelf: "flex-start" }}>
+              Add filing date
+            </button>
+          </div>
+        )}
+        <div className="o-cols">
+          <div className="o-stack">
+            {cd && (
+              <div className="o-card o-card-guide" style={{ flexDirection: "row", alignItems: "center", gap: ".875em" }} data-testid="countdown">
+                <span className="o-ic-tile" style={{ background: "var(--sf)" }}>
+                  <Icon name="calendar" />
+                </span>
+                <div className="o-grow">
+                  <div className="o-h2">{cd.text}</div>
+                  <div className="o-meta">{cd.sub}</div>
+                </div>
+                <button className="o-btn o-btn-g" type="button" onClick={() => setSheet("interview")} aria-label="Edit interview date">
+                  Edit
+                </button>
+              </div>
+            )}
+            <section className="o-card" aria-labelledby="plan-h">
+              <div className="o-sec-h">
+                <h2 id="plan-h" className="o-h2">
+                  Today’s practice
+                </h2>
+                <span className="o-meta">About {minutes} min</span>
+              </div>
+              <ol className="o-stack">
+                {tasks.map((t, i) => (
+                  <li key={t.key} className="o-row" style={{ alignItems: "flex-start", gap: ".75em" }} data-testid={`plan-${t.key}`}>
+                    {t.done ? (
+                      <span className="o-node o-node-done">
+                        <Icon name="check" />
+                        <span className="o-sr">Done:</span>
+                      </span>
+                    ) : (
+                      <span className="o-node" style={{ fontWeight: 700, color: "var(--ink)" }}>
+                        {i + 1}
+                      </span>
+                    )}
+                    <div className="o-grow">
+                      <div className="o-strong">{t.title}</div>
+                      <div className="o-help">{t.why}</div>
+                      <div className="o-meta">{t.time}</div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              {planDone && (
+                <div className="o-card o-card-ok" style={{ padding: ".75em 1em" }}>
+                  <div className="o-row o-strong" style={{ color: "var(--fo)" }}>
+                    <Icon name="check" />
+                    Today’s plan is done
+                  </div>
+                  <div>Come back tomorrow for new reviews.</div>
+                </div>
+              )}
+              <div className="o-desk" style={{ flexDirection: "column" }}>
+                {startButton}
+              </div>
+            </section>
+          </div>
+          <div className="o-stack">
+            <section className="o-card" aria-labelledby="imp-h">
+              <h2 id="imp-h" className="o-h2">
+                What to improve
+              </h2>
+              {improve.length === 0 && <p className="o-help">Nothing yet.</p>}
+              <div className="o-list">
+                {improve.map((it) => (
+                  <Link key={it.title} href={it.href as never} className="o-libtn">
+                    <span className={`o-ic-tile ${it.amber ? "o-ic-amber" : ""}`}>
+                      <Icon name={it.icon} />
+                    </span>
+                    <span className="o-grow">
+                      <span className="o-strong" style={{ display: "block" }}>
+                        {it.title}
+                      </span>
+                      <span className="o-meta">{it.sub}</span>
+                    </span>
+                    <Icon name="chevronRight" />
+                  </Link>
+                ))}
+              </div>
+              {s.demo && <p className="o-meta">Demo history, not real results.</p>}
+            </section>
+            <div className="o-card" style={{ gap: 0 }}>
+              <Link href="/readiness" className="o-libtn">
+                <span className="o-ic-tile">
+                  <Icon name="bars" />
+                </span>
+                <span className="o-grow">
+                  <span className="o-strong" style={{ display: "block" }}>
+                    Readiness details
+                  </span>
+                  <span className="o-meta">{readinessTeaser(s)}</span>
+                </span>
+                <Icon name="chevronRight" />
+              </Link>
+              <Link href={jn.href as never} className="o-libtn">
+                <span className="o-ic-tile">
+                  <Icon name="journey" />
+                </span>
+                <span className="o-grow">
+                  <span className="o-strong" style={{ display: "block" }}>
+                    {jn.title}
+                  </span>
+                  <span className="o-meta">{jn.sub}</span>
+                </span>
+                <Icon name="chevronRight" />
+              </Link>
+            </div>
+            {s.sessions > 0 && (
+              <div className="o-card o-card-plain">
+                <div className="o-sec-h">
+                  <div className="o-strong">Want guided mock interviews?</div>
+                  <span className="o-meta">Optional</span>
+                </div>
+                <div className="o-help">Proposed 90-day pass. Core practice stays free.</div>
+                <Link href="/interview/coach" className="o-btn o-btn-g" style={{ alignSelf: "flex-start" }}>
+                  See what’s included
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      {sheet === "filing" && <FilingSheet profile={s.profile} onClose={() => setSheet(null)} />}
+      {sheet === "interview" && <MilestoneSheet slotKey="interview" journey={s.journey} filing={s.profile.filingDate} today={s.today} initialStatus={s.journey.interview.status === "none" ? "scheduled" : s.journey.interview.status} onClose={() => setSheet(null)} onSaved={() => router.refresh()} />}
+    </Screen>
   );
 }

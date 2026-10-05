@@ -62,7 +62,7 @@ export function computeReadiness(input: ReadinessInput): Readiness {
     if (!lastEvidenceAt || latest.at > lastEvidenceAt) lastEvidenceAt = latest.at;
   }
 
-  const kinds: EnglishTaskRecord["kind"][] = ["reading", "writing", "instructions", "n400-vocabulary", "conversation"];
+  const kinds: EnglishTaskRecord["kind"][] = ["reading", "writing"];
   const byKind = Object.fromEntries(kinds.map((k) => [k, { attempted: 0, correct: 0 }])) as Readiness["english"]["byKind"];
   for (const t of input.englishTasks) {
     byKind[t.kind].attempted++;

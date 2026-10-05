@@ -1,0 +1,56 @@
+{
+  "recordedAt": "2026-10-05T06:07:26.430Z",
+  "commit": "cd34b893ff119c869cdfbe5da5def8a180f39bae",
+  "workingTreeDirty": true,
+  "node": "v24.11.0",
+  "mode": "quick",
+  "ok": true,
+  "results": [
+    {
+      "id": "content",
+      "status": "passed",
+      "required": true,
+      "exitCode": 0,
+      "durationMs": 289,
+      "command": "pnpm content:validate",
+      "outputTail": "\n> oathsteps@0.1.0 content:validate /Users/ray/Dev/OathSteps- US Citizenship Prep\n> tsx content/scripts/validate.ts\n\n{\n  \"ok\": true,\n  \"checkedAt\": \"2026-10-05T06:07:22.020Z\",\n  \"failures\": []\n}\n"
+    },
+    {
+      "id": "typecheck",
+      "status": "passed",
+      "required": true,
+      "exitCode": 0,
+      "durationMs": 1305,
+      "command": "pnpm typecheck",
+      "outputTail": "\n> oathsteps@0.1.0 typecheck /Users/ray/Dev/OathSteps- US Citizenship Prep\n> next typegen && tsc --noEmit\n\nGenerating route types...\n✓ Types generated successfully\n"
+    },
+    {
+      "id": "lint",
+      "status": "passed",
+      "required": true,
+      "exitCode": 0,
+      "durationMs": 2241,
+      "command": "pnpm lint",
+      "outputTail": "\n> oathsteps@0.1.0 lint /Users/ray/Dev/OathSteps- US Citizenship Prep\n> eslint .\n\n"
+    },
+    {
+      "id": "unit",
+      "status": "passed",
+      "required": true,
+      "exitCode": 0,
+      "durationMs": 831,
+      "command": "pnpm test -- --run",
+      "outputTail": "\n> oathsteps@0.1.0 test /Users/ray/Dev/OathSteps- US Citizenship Prep\n> vitest run -- --run\n\n\n RUN  v5.0.3 /Users/ray/Dev/OathSteps- US Citizenship Prep\n\n\n Test Files  15 passed (15)\n      Tests  78 passed (78)\n   Start at  02:07:25\n   Duration  490ms (setup 64%, transform 19%, import 9%, tests 6%, worker 1%)\n\n\u001b[33m(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\u001b[39m\n"
+    },
+    {
+      "id": "build",
+      "status": "skipped",
+      "reason": "--quick"
+    },
+    {
+      "id": "e2e",
+      "status": "skipped",
+      "reason": "--quick"
+    }
+  ]
+}

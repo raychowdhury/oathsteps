@@ -8,9 +8,9 @@ export type Instant = string;
 
 export type Outcome = "correct" | "incorrect" | "uncertain";
 /** How an outcome was obtained. Only `self-unprompted` counts as independent oral recall. */
-export type AssessmentMethod = "self-unprompted" | "self-hinted" | "multiple-choice" | "mock-self";
+export type AssessmentMethod = "self-unprompted" | "self-hinted" | "multiple-choice" | "mock-self" | "typed-match" | "voice-self";
 
-export type PracticeContext = "practice" | "review" | "mock" | "topic";
+export type PracticeContext = "practice" | "review" | "mock" | "topic" | "voice";
 
 export interface PracticeAttempt {
   /** Client-generated UUID. Duplicate submits reuse the same id and are stored once. */
@@ -41,44 +41,20 @@ export interface ReviewState {
   seenCount: number;
 }
 
-export type MilestoneKind =
-  | "filed"
-  | "receipt"
-  | "biometrics-attended"
-  | "biometrics-reused"
-  | "interview"
-  | "interview-continued"
-  | "retest"
-  | "evidence-requested"
-  | "decision-approved"
-  | "decision-denied"
-  | "oath";
-
-export interface Milestone {
-  id: string;
-  kind: MilestoneKind;
-  /** Date the event happened or is scheduled. User-entered. */
-  date: DateOnly | null;
-  /** For scheduled items that moved. */
-  rescheduledFrom?: DateOnly | null;
-  note?: string;
-  /** Always "user" in this release; a later approved integration would add "official". */
-  provenance: "user";
-  createdAt: Instant;
-  updatedAt: Instant;
-}
-
 export interface ChecklistEntry {
   itemId: string;
   completedAt: Instant | null;
-  reminderOn: DateOnly | null;
+  /** "Remind me" switch on a guide task; shown as a study reminder in the app. */
+  remind: boolean;
 }
 
 export interface EnglishTaskRecord {
   id: string;
-  kind: "reading" | "writing" | "instructions" | "n400-vocabulary" | "conversation";
+  kind: "reading" | "writing";
   taskId: string;
   outcome: Outcome;
+  /** Short learner-facing summary, e.g. "Read clearly (your own check)" or "1 word different". */
+  text: string;
   selfReported: true;
   at: Instant;
 }
@@ -87,19 +63,20 @@ export interface StudyProfile {
   id: "local";
   filingDate: DateOnly | null;
   filingDateUnknown: boolean;
-  /** Learner-chosen bank when the filing date is unknown. Labeled provisional in the UI. */
-  provisionalBank: Bank | null;
   /** Learner says the 65/20 special consideration may apply. Not a determination. */
   specialConsideration: boolean;
   state: string | null;
-  interviewDate: DateOnly | null;
-  studyDeadline: DateOnly | null;
   textSize: "normal" | "large" | "xlarge";
+  /** Appearance. "system" follows the device setting. */
+  theme: "system" | "light" | "dark";
+  /** Browser speech rate: 0.8 slower, 1 normal, 1.2 faster. */
   audioRate: number;
-  audioAutoplay: boolean;
   reduceMotion: boolean;
-  newPerDay: number;
-  reminders: { study: boolean; appointments: boolean; checklist: boolean };
+  /** Practice answer mode. Multiple choice never counts as recall. */
+  mode: "recall" | "choice";
+  /** Read questions aloud automatically when a card opens. */
+  autoplay: boolean;
+  reminders: { study: boolean; daily: boolean; review: boolean; appointments: boolean; quietFrom: number; quietTo: number };
   createdAt: Instant;
   updatedAt: Instant;
   onboarded: boolean;

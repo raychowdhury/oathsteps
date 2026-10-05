@@ -35,6 +35,22 @@ export function normalize(s: string): string {
     .trim();
 }
 
+/**
+ * Typed self-check with the prototype's tolerance: exact variant, variant contained in the text,
+ * or the text being a close prefix of a variant (missing up to 4 trailing characters).
+ * A hint for the learner, never a grade.
+ */
+export function answerMatches(typed: string, answers: readonly AnswerVariant[]): boolean {
+  const t = normalize(typed);
+  if (!t) return false;
+  for (const ans of answers) {
+    const a = normalize(ans.text.replace(/\(.*?\)/g, " "));
+    const full = normalize(ans.text);
+    if (t === a || t === full || (a && t.includes(a)) || (a.length > 3 && a.includes(t) && t.length >= a.length - 4)) return true;
+  }
+  return false;
+}
+
 /** Typed self-check: does the learner's text match any accepted variant? Used as a hint, never as a grade. */
 export function matchesAnyAnswer(input: string, answers: readonly AnswerVariant[]): boolean {
   const n = normalize(input);

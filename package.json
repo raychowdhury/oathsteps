@@ -59,15 +59,5 @@
   "description": "OathSteps: US Citizenship Prep. Practice. Prepare. Track your journey.",
   "engines": {
     "node": ">=20.9"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "better-sqlite3",
-      "@prisma/engines",
-      "prisma",
-      "esbuild",
-      "sharp",
-      "unrs-resolver"
-    ]
   }
 }

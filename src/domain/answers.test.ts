@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildMultipleChoice, expandVariants, matchesAnyAnswer, normalize } from "./answers";
+import { answerMatches, buildMultipleChoice, expandVariants, matchesAnyAnswer, normalize } from "./answers";
 import { seededRng } from "./rng";
 
 describe("answer variants", () => {
@@ -16,6 +16,21 @@ describe("answer variants", () => {
     expect(matchesAnyAnswer("declaration of independence", answers)).toBe(false);
     expect(matchesAnyAnswer("", answers)).toBe(false);
     expect(normalize("The Star-Spangled Banner")).toBe("star spangled banner");
+  });
+});
+
+describe("typed answer matching (prototype tolerance)", () => {
+  const answers = [{ text: "One hundred (100)" }, { text: "George Washington" }];
+  it("accepts exact, contained and near-complete answers", () => {
+    expect(answerMatches("one hundred", answers)).toBe(true);
+    expect(answerMatches("one hundred 100", [{ text: "One hundred (100)" }])).toBe(true);
+    expect(answerMatches("it was George Washington", answers)).toBe(true);
+    expect(answerMatches("George Washingt", answers)).toBe(true);
+  });
+  it("rejects empty, unrelated and far-too-short text", () => {
+    expect(answerMatches("", answers)).toBe(false);
+    expect(answerMatches("John Adams", answers)).toBe(false);
+    expect(answerMatches("Geo", answers)).toBe(false);
   });
 });
 

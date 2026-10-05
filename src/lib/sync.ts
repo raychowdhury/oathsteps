@@ -2,7 +2,8 @@
 import type { MockState } from "@/domain/mock";
 import { applyAttempt, newReviewState } from "@/domain/scheduler";
 import { todayDateOnly } from "@/domain/dates";
-import type { ChecklistEntry, ConfirmedDynamicAnswer, EnglishTaskRecord, Milestone, PracticeAttempt, StudyProfile } from "@/domain/types";
+import type { ChecklistEntry, ConfirmedDynamicAnswer, EnglishTaskRecord, PracticeAttempt, StudyProfile } from "@/domain/types";
+import type { Journey } from "@/domain/journey";
 import { getDb } from "./store/db";
 import { notifyStoreChanged } from "./store/events";
 import { getMeta, markOutbox, pendingOutbox, setMeta } from "./store/repo";
@@ -49,7 +50,7 @@ export async function pullAndMerge(): Promise<{ merged: number; error?: string }
     if (!res.ok) throw new Error(res.status === 401 ? "Not signed in" : `Pull failed (${res.status})`);
     const snap = (await res.json()) as { events: { eventId: string; type: string; payload: unknown; createdAt: string }[]; profile: StudyProfile | null };
     const db = await getDb();
-    const tx = db.transaction(["attempts", "reviewStates", "mocks", "milestones", "checklist", "englishTasks", "bookmarks", "dynamicAnswers", "reports", "outbox", "profile"], "readwrite");
+    const tx = db.transaction(["attempts", "reviewStates", "mocks", "journey", "checklist", "englishTasks", "bookmarks", "dynamicAnswers", "reports", "outbox", "profile"], "readwrite");
     let merged = 0;
     const attempts: PracticeAttempt[] = [];
     for (const ev of snap.events) {
@@ -72,13 +73,9 @@ export async function pullAndMerge(): Promise<{ merged: number; error?: string }
           }
           break;
         }
-        case "milestone": {
-          if (p.deleted) await tx.objectStore("milestones").delete(String(p.id));
-          else {
-            const m = p as unknown as Milestone;
-            const local = await tx.objectStore("milestones").get(m.id);
-            if (!local || local.updatedAt < m.updatedAt) await tx.objectStore("milestones").put(m);
-          }
+        case "journey": {
+          // Events are applied oldest first, so the last journey snapshot wins.
+          await tx.objectStore("journey").put({ ...(p as unknown as Journey), id: "local" });
           merged++;
           break;
         }

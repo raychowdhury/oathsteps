@@ -66,11 +66,17 @@ const guidePath = join(ROOT, "guide", "stages.json");
 if (!existsSync(guidePath)) fail("guide/stages.json missing");
 else {
   const guide = JSON.parse(readFileSync(guidePath, "utf8"));
+  const official = /^https:\/\/(www\.)?(uscis\.gov|usa\.gov|ecfr\.gov|federalregister\.gov|travel\.state\.gov|ssa\.gov|house\.gov|senate\.gov|vote\.gov)/;
+  for (const [k, s] of Object.entries(guide.sources as Record<string, { label: string; url: string }>)) if (!official.test(s.url)) fail(`guide source ${k}: non-official url ${s.url}`);
+  const ids = new Set<string>();
   for (const stage of guide.stages) {
     if (!stage.id || !stage.title) fail(`guide stage missing id/title`);
     for (const item of stage.items) {
-      if (!item.id || !item.text) fail(`guide ${stage.id}: item missing id/text`);
-      for (const s of item.sources ?? []) if (!/^https:\/\/(www\.)?(uscis\.gov|usa\.gov|ecfr\.gov|federalregister\.gov|travel\.state\.gov|ssa\.gov|house\.gov|senate\.gov|vote\.gov)/.test(s.url)) fail(`guide ${item.id}: non-official source ${s.url}`);
+      if (!item.id || !item.text || !item.why) fail(`guide ${stage.id}: item missing id/text/why`);
+      if (ids.has(item.id)) fail(`guide: duplicate item id ${item.id}`);
+      ids.add(item.id);
+      for (const l of item.links ?? []) if (!guide.sources[l]) fail(`guide ${item.id}: unknown source key ${l}`);
+      if (item.action && !["filing", "settings", "journey"].includes(item.action)) fail(`guide ${item.id}: unknown action ${item.action}`);
     }
   }
   if (guide.review?.humanReviewed === true) fail("guide: humanReviewed true without reviewer record");

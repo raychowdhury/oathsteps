@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { abandonMock, answerMock, createMock, currentQuestionId, describeRules, pauseMock, resumeMock, selectQuestions, startMock, type Candidate, type MockState } from "./mock";
+import { WALKTHROUGH_RULES, abandonMock, answerMock, createMock, currentQuestionId, describeRules, pauseMock, resumeMock, selectQuestions, startMock, type Candidate, type MockState } from "./mock";
 
 const pool = (n: number, specialEvery = 5): Candidate[] => Array.from({ length: n }, (_, i) => ({ id: `q-${i + 1}`, special: (i + 1) % specialEvery === 0 }));
 const T = "2026-01-10T10:00:00Z";
@@ -108,5 +108,24 @@ describe("2008 and 65/20 mocks (10 asked, 6 to pass, stop at 5 incorrect)", () =
 
   it("refuses to start with nothing scorable", () => {
     expect(() => createMock({ id: "m5", bank: "2008", packVersion: "x", special: false, pool: [{ id: "a", special: false, unscorable: true }], seed: 1, now: T })).toThrow();
+  });
+});
+
+describe("sample walkthrough (5 asked, 4 to pass, stop at 3 wrong)", () => {
+  const make = () => createMock({ id: "w1", kind: "walkthrough", bank: "2025", packVersion: "2025.test", special: false, pool: pool(128), seed: 2, now: T });
+  it("uses the scaled rule and five questions", () => {
+    expect(WALKTHROUGH_RULES).toEqual({ asked: 5, pass: 4, stopIncorrect: 3 });
+    expect(make().config.questionIds).toHaveLength(5);
+    expect(make().config.kind).toBe("walkthrough");
+  });
+  it("stops at 4 correct", () => {
+    expect(run(make(), Array(4).fill("correct")).result).toMatchObject({ passed: true, attempted: 4, reason: "reached-pass" });
+  });
+  it("stops at 3 wrong, counting unsure as wrong", () => {
+    expect(run(make(), ["correct", "incorrect", "uncertain", "incorrect"]).result).toMatchObject({ passed: false, attempted: 4, reason: "reached-fail", uncertain: 1 });
+  });
+  it("asks all five when undecided", () => {
+    expect(run(make(), ["correct", "incorrect", "correct", "incorrect", "correct"]).result).toMatchObject({ attempted: 5, passed: false, reason: "exhausted", correct: 3 });
+    expect(run(make(), ["correct", "incorrect", "correct", "uncertain", "correct"]).result).toMatchObject({ attempted: 5, passed: false, reason: "exhausted", uncertain: 1 });
   });
 });

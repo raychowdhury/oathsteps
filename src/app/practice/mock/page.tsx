@@ -1,181 +1,349 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
-import { abandonMock, answerMock, createMock, currentQuestionId, describeRules, pauseMock, resumeMock, startMock, type MockState } from "@/domain/mock";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
+import { abandonMock, answerMock, createMock, currentQuestionId, pauseMock, resumeMock, startMock, WALKTHROUGH_RULES, type MockState } from "@/domain/mock";
 import { randomSeed } from "@/domain/rng";
 import type { Outcome, PracticeAttempt } from "@/domain/types";
+import { fmtDate } from "@/domain/validation";
 import { getPack, getQuestion } from "@/lib/content";
-import { bankLabel, bankQuestions, pathFor } from "@/lib/path";
-import { getOpenMock, getProfile, listBookmarks, listDynamicAnswers, listMocks, recordAttempt, saveMock } from "@/lib/store/repo";
+import { practiceBank } from "@/lib/path";
+import { getOpenMock, listDynamicAnswers, listMocks, recordAttempt, saveMock, setChecklist } from "@/lib/store/repo";
 import { newId, nowIso } from "@/lib/store/events";
 import { useData } from "@/lib/store/useData";
-import { QuestionCard, type CardResult } from "@/components/QuestionCard";
-import { Button, Card, LinkButton, Notice, PageTitle, Pill, Spinner } from "@/components/ui";
+import { loadSnapshot } from "@/lib/today";
+import { Icon } from "@/components/icons";
+import { ListenButton } from "@/components/ListenButton";
+import { Sheet, useToast } from "@/components/Overlay";
+import { Screen, Steps } from "@/components/Screen";
 
-export default function MockPage() {
-  const { data, loading } = useData(async () => {
-    const [profile, open, mocks, bookmarks, confirmed] = await Promise.all([getProfile(), getOpenMock(), listMocks(), listBookmarks(), listDynamicAnswers()]);
-    return { profile, open, mocks, bookmarks, confirmed };
-  });
+type Kind = "walkthrough" | "full";
+
+function MockInner() {
+  const params = useSearchParams();
+  const router = useRouter();
+  const { toast } = useToast();
+  const kind = (params.get("kind") === "full" ? "full" : "walkthrough") as Kind;
+  const { data: s } = useData(loadSnapshot);
+  const { data: open } = useData(getOpenMock);
+  const { data: mocks } = useData(listMocks);
+  const { data: confirmed } = useData(listDynamicAnswers);
+  const [attempt, setAttempt] = useState("");
+  const [revealed, setRevealed] = useState(false);
   const [attemptId, setAttemptId] = useState(() => newId());
   const [busy, setBusy] = useState(false);
-  const [justFinished, setJustFinished] = useState<MockState | null>(null);
+  const [sheet, setSheet] = useState<"exit" | null>(null);
+  const [finished, setFinished] = useState<MockState | null>(null);
+  if (!s || open === undefined || !mocks || !confirmed) return null;
 
-  if (loading || !data) return <Spinner />;
-  const { profile, open, mocks, bookmarks, confirmed } = data;
-  const path = pathFor(profile);
-  if (!path.bank)
-    return (
-      <Notice tone="warn" title="Choose your test first">
-        <p>
-          A mock needs your test version. <Link href="/setup" className="font-semibold underline">Open Setup</Link>.
-        </p>
-      </Notice>
-    );
-  const bank = path.bank;
+  const bank = practiceBank(s.route);
   const pack = getPack(bank);
   const confirmedIds = new Set(confirmed.map((c) => c.questionId));
-  const pool = bankQuestions(path).map((q) => ({ id: q.id, special: q.special, unscorable: Boolean(q.dynamic) && !confirmedIds.has(q.id) }));
-  const unscorable = pool.filter((p) => p.unscorable).length;
+  const pool = s.questions.map((q) => ({ id: q.id, special: q.special, unscorable: Boolean(q.dynamic) && !confirmedIds.has(q.id) }));
+  const label = kind === "walkthrough" ? "Sample walkthrough" : "Full-format mock";
 
   const begin = async () => {
-    const state = startMock(createMock({ id: newId(), bank, packVersion: pack.version, special: path.special, pool, seed: randomSeed(), now: nowIso() }), nowIso());
+    if (kind === "full" && s.route.key === "none") return;
+    const state = startMock(createMock({ id: newId(), kind, bank, packVersion: pack.version, special: kind === "full" && s.route.special, pool, seed: randomSeed(), now: nowIso() }), nowIso());
     await saveMock(state);
     setAttemptId(newId());
   };
 
-  const onResult = async (state: MockState, r: CardResult) => {
+  const mark = async (state: MockState, outcome: Outcome) => {
     if (busy) return;
     setBusy(true);
     const qid = currentQuestionId(state)!;
     const at = nowIso();
-    const attempt: PracticeAttempt = { id: attemptId, questionId: qid, bank, packVersion: pack.version, outcome: r.outcome, method: "mock-self", prompted: r.prompted, context: "mock", mockId: state.config.id, at };
-    await recordAttempt(attempt);
-    const next = answerMock(state, { outcome: r.outcome, method: "mock-self", prompted: r.prompted, at });
+    const a: PracticeAttempt = { id: attemptId, questionId: qid, bank, packVersion: pack.version, outcome, method: "mock-self", prompted: false, context: "mock", mockId: state.config.id, at };
+    await recordAttempt(a);
+    const next = answerMock(state, { outcome, method: "mock-self", prompted: false, at });
     await saveMock(next);
-    if (next.status === "finished") setJustFinished(next);
+    if (next.status === "finished") {
+      await setChecklist({ itemId: "mock", completedAt: nowIso(), remind: false });
+      setFinished(next);
+    }
+    setAttempt("");
+    setRevealed(false);
     setAttemptId(newId());
     setBusy(false);
   };
 
-  const finished = justFinished ?? null;
-  if (finished?.result) return <Results state={finished} onClose={() => setJustFinished(null)} />;
-
-  if (open) {
-    const qid = currentQuestionId(open);
-    const q = qid ? getQuestion(qid) : null;
-    if (open.status === "paused") {
-      return (
-        <Card className="space-y-3">
-          <h1 className="text-xl font-bold">Mock paused</h1>
-          <p className="text-ink-2">
-            {open.answers.length} of up to {open.config.rules.asked} answered.
-          </p>
-          <div className="flex gap-2">
-            <Button onClick={() => saveMock(resumeMock(open))}>Resume</Button>
-            <Button variant="danger" onClick={() => saveMock(abandonMock(open, nowIso()))}>
-              End and keep results
-            </Button>
-          </div>
-        </Card>
-      );
-    }
-    if (!q) return <Spinner />;
-    const correct = open.answers.filter((a) => a.outcome === "correct").length;
-    const notCorrect = open.answers.length - correct;
+  // ---- result ----
+  const result = finished ?? null;
+  if (result?.result) {
+    const r = result.result;
+    const rows = result.answers.map((a) => ({ q: getQuestion(a.questionId)?.prompt ?? "", r: a.outcome }));
+    const work = result.answers.filter((a) => a.outcome !== "correct").map((a) => a.questionId);
+    const stopNote = r.reason === "exhausted" ? `All ${r.asked} questions asked.` : r.reason === "abandoned" ? "Ended early by you." : `Stopped early after ${r.reason === "reached-pass" ? `${r.pass} correct` : `${result.config.rules.stopIncorrect} incorrect`}, like the real stop rule.`;
     return (
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h1 className="text-lg font-bold">Mock test</h1>
-          <Button variant="ghost" size="sm" onClick={() => saveMock(pauseMock(open))}>
-            Pause
-          </Button>
+      <Screen
+        title="Practice"
+        tab="practice"
+        back="/practice"
+        showSettings={false}
+        actions={
+          <>
+            {work.length > 0 && (
+              <Link href={{ pathname: "/practice/session", query: { kind: "weak" } }} className="o-btn o-btn-p o-btn-lg o-btn-block">
+                Review the {work.length} to work on
+              </Link>
+            )}
+            <Link href="/practice" className="o-btn o-btn-s o-btn-block">
+              Back to Practice
+            </Link>
+          </>
+        }
+      >
+        <div className="o-page o-narrow" data-testid="mock-results">
+          <div className="o-stack-xs">
+            <h1 className="o-h1">{kind === "walkthrough" ? "Walkthrough results" : "Mock results"}</h1>
+            <span className="o-meta">
+              {fmtDate(result.finishedAt?.slice(0, 10))} · {label.toLowerCase()}
+              {result.config.special ? " · 65/20 format" : ""}
+            </span>
+          </div>
+          <div className="o-card">
+            <div className="o-count">
+              <div className="o-count-n" data-testid="mock-score">
+                {r.correct} <span>of {r.attempted} correct</span>
+              </div>
+              <div className="o-help">{stopNote}</div>
+            </div>
+            <div className="o-grid3">
+              <div>
+                <div className="o-strong">{r.attempted}</div>
+                <div className="o-meta">Attempted</div>
+              </div>
+              <div>
+                <div className="o-strong">{r.incorrect}</div>
+                <div className="o-meta">Incorrect</div>
+              </div>
+              <div>
+                <div className="o-strong">{r.uncertain}</div>
+                <div className="o-meta">Not sure</div>
+              </div>
+            </div>
+          </div>
+          <div className="o-card o-card-amber" style={{ gap: ".25em" }}>
+            <div className="o-strong">Practice result only</div>
+            {kind === "full" && <div className="o-meta">{r.passed ? `Reached the passing mark (${r.pass} correct).` : `Passing needs ${r.pass} correct.`} Self-assessed, not a prediction.</div>}
+          </div>
+          <section className="o-card" style={{ gap: 0 }}>
+            <h2 className="o-h2" style={{ marginBottom: ".5em" }}>
+              Question by question
+            </h2>
+            {rows.map((row, idx) => (
+              <div key={idx} className="o-li">
+                <div className="o-grow">{row.q}</div>
+                <span className={`o-tag ${row.r === "correct" ? "o-tag-ok" : row.r === "incorrect" ? "o-tag-n" : "o-tag-warn"}`}>{row.r === "correct" ? "Correct" : row.r === "incorrect" ? "Incorrect" : "Not sure"}</span>
+              </div>
+            ))}
+          </section>
         </div>
-        <div className="flex flex-wrap gap-2 text-sm">
-          <Pill tone="good">{correct} correct</Pill>
-          <Pill tone="bad">{notCorrect} not correct</Pill>
-          <Pill>
-            question {open.index + 1} of up to {open.config.rules.asked}
-          </Pill>
-        </div>
-        <QuestionCard key={attemptId} question={q} packVersion={pack.version} bookmarked={bookmarks.includes(q.id)} confirmed={confirmed.find((c) => c.questionId === q.id) ?? null} multipleChoice={null} audioRate={profile.audioRate} onResult={(r) => onResult(open, r)} busy={busy} />
-      </div>
+      </Screen>
     );
   }
 
-  const past = mocks.filter((m) => m.status === "finished" && m.result).sort((a, b) => (b.finishedAt ?? "").localeCompare(a.finishedAt ?? ""));
-  return (
-    <div className="space-y-4">
-      <PageTitle title="Mock test" lead={bankLabel(path)} />
-      <Card className="space-y-3">
-        <p>{describeRules(bank, path.special)}</p>
-        <p className="text-sm text-ink-2">You answer out loud and judge yourself, as in recall practice. The result shows exactly what you attempted. It is a practice result, not a prediction.</p>
-        {unscorable > 0 && (
-          <Notice tone="warn">
-            <p>
-              {unscorable} question{unscorable === 1 ? "" : "s"} with changing answers {unscorable === 1 ? "is" : "are"} left out until you confirm {unscorable === 1 ? "it" : "them"} from an official source. Find them under Practice → Browse by topic.
-            </p>
-          </Notice>
-        )}
-        <Button size="lg" className="w-full" onClick={begin} data-testid="start-mock">
-          Start mock
-        </Button>
-      </Card>
-      {past.length > 0 && (
-        <Card className="space-y-2">
-          <h2 className="text-lg font-semibold">Past mocks</h2>
-          <ul className="divide-y divide-line">
-            {past.slice(0, 10).map((m) => (
-              <li key={m.config.id} className="flex items-center justify-between py-2">
-                <span>
-                  {m.finishedAt?.slice(0, 10)} · {m.result!.correct}/{m.result!.attempted} correct
-                  {m.config.special && " · 65/20"}
-                </span>
-                <Pill tone={m.result!.passed ? "good" : m.result!.reason === "abandoned" ? "neutral" : "bad"}>{m.result!.passed ? "passed" : m.result!.reason === "abandoned" ? "ended early" : "not passed"}</Pill>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
-    </div>
-  );
-}
-
-function Results({ state, onClose }: { state: MockState; onClose: () => void }) {
-  const r = state.result!;
-  const missed = r.missedQuestionIds.map((id) => getQuestion(id)).filter(Boolean);
-  return (
-    <div className="space-y-4" data-testid="mock-results">
-      <Card className="space-y-3">
-        <h1 className="text-2xl font-bold">{r.passed ? "You reached the passing mark" : r.reason === "abandoned" ? "Mock ended early" : "Not this time"}</h1>
-        <p className="text-ink-2">
-          {r.attempted} question{r.attempted === 1 ? "" : "s"} attempted of up to {r.asked}. {r.correct} correct, {r.incorrect} incorrect{r.uncertain ? `, ${r.uncertain} unsure (counted as not correct)` : ""}. Passing needs {r.pass} correct.
-          {r.stoppedEarly && r.reason !== "abandoned" && " The practice stopped as soon as the outcome was decided, like the real interview."}
-        </p>
-        <p className="text-sm text-ink-3">Self-assessed on {state.finishedAt?.slice(0, 10)}. This is a practice result in the official format, not a prediction of your interview.</p>
-        <div className="flex flex-wrap gap-2">
-          <Button onClick={onClose}>Done</Button>
-          <LinkButton href="/readiness" variant="secondary">
-            See readiness
-          </LinkButton>
+  // ---- in progress ----
+  const active = open && open.config.kind === kind ? open : null;
+  if (active) {
+    if (active.status === "paused") {
+      return (
+        <Screen title="Practice" tab="practice" back="/practice" showSettings={false}>
+          <div className="o-page o-narrow">
+            <div className="o-card o-card-guide">
+              <div className="o-strong">{label} paused</div>
+              <div className="o-meta">
+                Question {active.index + 1} of up to {active.config.rules.asked} · {active.answers.length} answered
+              </div>
+              <div className="o-actions-2">
+                <button className="o-btn o-btn-n" type="button" onClick={() => saveMock(abandonMock(active, nowIso())).then(() => setFinished(abandonMock(active, nowIso())))}>
+                  End and see results
+                </button>
+                <button className="o-btn o-btn-p" type="button" onClick={() => saveMock(resumeMock(active))} data-testid="resume-mock">
+                  Resume
+                </button>
+              </div>
+            </div>
+          </div>
+        </Screen>
+      );
+    }
+    const qid = currentQuestionId(active);
+    const q = qid ? getQuestion(qid) : null;
+    if (!q) return null;
+    const c = active.answers.filter((a) => a.outcome === "correct").length;
+    const w = active.answers.filter((a) => a.outcome === "incorrect").length;
+    const u = active.answers.filter((a) => a.outcome === "uncertain").length;
+    const total = active.config.rules.asked;
+    const head = q.requiredCount > 1 ? `Accepted answers · give ${q.requiredCount}` : q.answers.length > 1 ? "Accepted answers · any one is enough" : "Accepted answer";
+    const actions = !revealed ? (
+      <button className="o-btn o-btn-p o-btn-lg o-btn-block" type="button" onClick={() => setRevealed(true)} data-testid="mock-reveal">
+        Show answer
+      </button>
+    ) : (
+      <div className="o-actions-row">
+        <button className="o-btn o-btn-p o-btn-col" type="button" onClick={() => mark(active, "correct")} disabled={busy} data-testid="mock-correct">
+          <Icon name="check" />
+          Correct
+        </button>
+        <button className="o-btn o-btn-n o-btn-col" type="button" onClick={() => mark(active, "incorrect")} disabled={busy} data-testid="mock-incorrect">
+          <Icon name="again" />
+          Incorrect
+        </button>
+        <button className="o-btn o-btn-n o-btn-col" type="button" onClick={() => mark(active, "uncertain")} disabled={busy} data-testid="mock-unsure">
+          <Icon name="flag" />
+          Not sure
+        </button>
+      </div>
+    );
+    return (
+      <Screen title="Practice" tab="practice" back={() => setSheet("exit")} backLabel="Exit walkthrough" showTabs={false} showSettings={false} actions={actions}>
+        <div className="o-page o-narrow">
+          <div className="o-stack-s">
+            <div className="o-row-between">
+              <span className="o-meta" data-testid="mock-position">
+                {label} · question {active.index + 1} of up to {total}
+              </span>
+              <span className="o-meta" style={{ textAlign: "right" }}>
+                Correct {c} · Incorrect {w} · Not sure {u}
+              </span>
+            </div>
+            <Steps count={total} current={active.index} full />
+          </div>
+          <section className="o-card">
+            <p className="o-q">{q.prompt}</p>
+            <ListenButton text={q.prompt} rate={s.profile.audioRate} style={{ alignSelf: "flex-start" }} />
+            {!revealed && (
+              <div>
+                <label className="o-label" htmlFor="mk-attempt">
+                  Your answer <span className="o-meta">(optional)</span>
+                </label>
+                <textarea id="mk-attempt" className="o-input" value={attempt} onChange={(e) => setAttempt(e.target.value)} placeholder="Say it out loud, or type it here" />
+              </div>
+            )}
+          </section>
+          {revealed && (
+            <section className="o-card o-reveal" aria-live="polite">
+              <div className="o-meta">{head}</div>
+              <ul className="o-row-wrap">
+                {q.answers.map((a) => (
+                  <li key={a.text} className="o-chip">
+                    {a.text}
+                  </li>
+                ))}
+              </ul>
+              {q.dynamic && <div className="o-help">Depends on where you live.</div>}
+              {attempt && (
+                <div>
+                  <span className="o-meta">You wrote:</span> {attempt}
+                </div>
+              )}
+            </section>
+          )}
         </div>
-      </Card>
-      {missed.length > 0 && (
-        <Card className="space-y-2">
-          <h2 className="text-lg font-semibold">Review what you missed</h2>
-          <ul className="space-y-2">
-            {missed.map((q) => (
-              <li key={q!.id} className="rounded-xl bg-paper-2 p-3">
-                <p className="font-medium">{q!.prompt}</p>
-                <p className="text-sm text-ink-2">{q!.answers.map((a) => a.text).join(" · ")}</p>
-              </li>
+        {sheet === "exit" && (
+          <Sheet title={`Exit the ${kind === "walkthrough" ? "walkthrough" : "mock"}?`} onClose={() => setSheet(null)}>
+            <p>Your answers are kept.</p>
+            <div className="o-actions-2">
+              <button className="o-btn o-btn-n" type="button" onClick={() => setSheet(null)}>
+                Keep going
+              </button>
+              <button
+                className="o-btn o-btn-p"
+                type="button"
+                onClick={async () => {
+                  await saveMock(pauseMock(active));
+                  setSheet(null);
+                  toast(`${label} saved. Resume it from Practice.`);
+                  router.push("/practice");
+                }}
+                data-testid="pause-mock"
+              >
+                Save and exit
+              </button>
+            </div>
+          </Sheet>
+        )}
+      </Screen>
+    );
+  }
+
+  // ---- intro ----
+  const rules = kind === "walkthrough" ? WALKTHROUGH_RULES : null;
+  const past = mocks.filter((m) => m.status === "finished" && m.result && m.config.kind === kind).sort((a, b) => (b.finishedAt ?? "").localeCompare(a.finishedAt ?? "")).slice(0, 5);
+  const canStart = kind === "walkthrough" || s.route.key !== "none";
+  return (
+    <Screen
+      title="Practice"
+      tab="practice"
+      back="/practice"
+      showSettings={false}
+      actions={
+        <button className="o-btn o-btn-p o-btn-lg o-btn-block" type="button" onClick={begin} disabled={!canStart} data-testid="start-mock">
+          {kind === "walkthrough" ? "Start the walkthrough" : "Start the mock"}
+        </button>
+      }
+    >
+      <div className="o-page o-narrow">
+        <div className="o-stack-s">
+          <h1 className="o-h1">{label}</h1>
+          {kind === "walkthrough" ? (
+            <span className="o-tag o-tag-warn" style={{ alignSelf: "flex-start" }}>
+              Practice format · not a full mock
+            </span>
+          ) : (
+            <span className="o-tag o-tag-t" style={{ alignSelf: "flex-start" }}>
+              Real stop rule for your path
+            </span>
+          )}
+        </div>
+        <p>{kind === "walkthrough" ? "5 questions. Answer, then mark yourself." : `Up to ${s.route.asked ?? 20} questions. Answer out loud, then mark yourself.`}</p>
+        <div className="o-card o-card-guide">
+          <div className="o-meta">The real test for your path</div>
+          <div className="o-strong">{s.route.name}</div>
+          <div>{s.route.mock}</div>
+        </div>
+        <ul className="o-stack-s">
+          <li className="o-row" style={{ alignItems: "flex-start" }}>
+            <Icon name="check" />
+            <span>Stop and resume any time.</span>
+          </li>
+          <li className="o-row" style={{ alignItems: "flex-start" }}>
+            <Icon name="check" />
+            <span>{rules ? `Ends early at ${rules.pass} correct or ${rules.stopIncorrect} wrong.` : "Ends early when the result is decided, like the real interview. Unsure counts as not correct."}</span>
+          </li>
+        </ul>
+        {pool.some((p) => p.unscorable) && <p className="o-meta">{pool.filter((p) => p.unscorable).length} questions with changing answers are left out until you confirm them from an official source.</p>}
+        {past.length > 0 && (
+          <section className="o-card" style={{ gap: 0 }}>
+            <h2 className="o-h2" style={{ marginBottom: ".5em" }}>
+              Past {kind === "walkthrough" ? "walkthroughs" : "mocks"}
+            </h2>
+            {past.map((m) => (
+              <div key={m.config.id} className="o-li">
+                <div className="o-grow">
+                  <div className="o-strong">
+                    {m.result!.correct} of {m.result!.attempted} correct
+                  </div>
+                  <div className="o-meta">{fmtDate(m.finishedAt?.slice(0, 10))}</div>
+                </div>
+                <span className="o-meta">
+                  {m.result!.incorrect} incorrect · {m.result!.uncertain} not sure
+                </span>
+              </div>
             ))}
-          </ul>
-          <p className="text-sm text-ink-3">These answers are now due sooner in your review schedule.</p>
-        </Card>
-      )}
-    </div>
+          </section>
+        )}
+      </div>
+    </Screen>
   );
 }
 
-export type { Outcome };
+export default function MockPage() {
+  return (
+    <Suspense fallback={null}>
+      <MockInner />
+    </Suspense>
+  );
+}

@@ -1,49 +1,89 @@
 import { expect, test } from "@playwright/test";
 import { answerCard, setupProfile } from "./helpers";
 
-test.describe("interview English and readiness", () => {
-  test("each English task kind records a self-reported result; readiness explains itself", async ({ page }) => {
+test.describe("interview practice and readiness", () => {
+  test("reading, writing with word diff, instructions, N-400, voice fallbacks; readiness explains itself", async ({ page }) => {
     await setupProfile(page, { filingDate: "2026-01-15" });
     await page.goto("/interview");
-    await expect(page.getByRole("heading", { name: "Interview English" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Interview practice" })).toBeVisible();
+    await expect(page.getByText("Use your own true answers. We never suggest them.")).toBeVisible();
 
-    // Reading
-    await page.getByRole("button", { name: "Yes", exact: true }).click();
-    await expect(page.getByText("Saved as self-reported")).toBeVisible();
-    // Writing (dictation)
-    await page.getByRole("button", { name: "Writing" }).click();
-    await page.getByLabel("Write what you heard").fill("Washington was the first President.");
-    await page.getByRole("button", { name: "Check my sentence" }).click();
-    await expect(page.getByText("matches word for word")).toBeVisible();
-    await page.getByRole("button", { name: "Yes", exact: true }).click();
-    // Instructions
-    await page.getByRole("button", { name: "Instructions" }).click();
-    await page.getByRole("button", { name: "Show what it means" }).click();
-    await page.getByRole("button", { name: "Partly" }).click();
-    // N-400 words
-    await page.getByRole("button", { name: "N-400 words" }).click();
-    await page.getByRole("button", { name: "Show meaning" }).click();
-    await page.getByRole("button", { name: "Yes", exact: true }).click();
-    // Conversation: tip only, never an invented answer.
-    await page.getByRole("button", { name: "Conversation" }).click();
-    await expect(page.getByText("never writes answers for you")).toBeVisible();
-    await page.getByRole("button", { name: "Show a tip" }).click();
-    await page.getByRole("button", { name: "Not yet" }).click();
+    // Reading: three tries, then out.
+    await page.getByRole("link", { name: /^Reading/ }).click();
+    await expect(page.getByText("Attempt 1 of 3 · sentence 1")).toBeVisible();
+    await page.getByTestId("read-trouble").click();
+    await page.getByTestId("read-trouble").click();
+    await expect(page.getByText("Attempt 3 of 3")).toBeVisible();
+    await page.getByTestId("read-trouble").click();
+    await expect(page.getByText("That’s three tries")).toBeVisible();
+    await page.getByRole("button", { name: "Another sentence" }).click();
+    await page.getByTestId("read-clear").click();
+    await expect(page.getByText("You read it clearly")).toBeVisible();
+    await expect(page.getByText("Try 1: clear")).toBeVisible();
 
-    // Readiness: empty state until 10 attempts, then definitions with numerators/denominators.
+    // Writing: a one-word difference is underlined; retry; then match.
+    await page.goto("/interview/writing");
+    await page.getByTestId("write-check").click();
+    await expect(page.getByText("Write the sentence first, then check.")).toBeVisible();
+    await page.getByLabel("Write the sentence").fill("Washington was the frist president");
+    await page.getByTestId("write-check").click();
+    await expect(page.getByTestId("write-result")).toContainText("1 word different");
+    await expect(page.locator(".o-word-diff")).toHaveText("first");
+    await page.getByTestId("write-retry").click();
+    await expect(page.getByText("Attempt 2 of 3")).toBeVisible();
+    await page.getByLabel("Write the sentence").fill("Washington was the first President.");
+    await page.getByTestId("write-check").click();
+    await expect(page.getByTestId("write-result")).toContainText("Matches the sentence");
+    await expect(page.getByRole("link", { name: "Done" })).toBeVisible();
+
+    // Instructions and N-400 conversation.
+    await page.goto("/interview/instructions");
+    await expect(page.getByText("“Please raise your right hand.”")).toBeVisible();
+    await page.goto("/interview/n400");
+    await expect(page.getByText("Use your own true information")).toBeVisible();
+    await expect(page.getByTestId("convo-prompt")).toContainText("Tell me about your current job.");
+    await page.getByTestId("convo-next").click();
+    await expect(page.getByTestId("convo-prompt")).toContainText("How long have you lived at your current address?");
+
+    // Voice: typed and self-check paths work without a microphone.
+    await page.goto("/interview/voice");
+    await expect(page.getByText("Experimental")).toBeVisible();
+    await page.getByTestId("voice-type").click();
+    await page.getByLabel("Type your answer").fill("nonsense answer");
+    await page.getByTestId("voice-check-typed").click();
+    await expect(page.getByText("Doesn’t match exactly. Compare below.")).toBeVisible();
+    await page.getByTestId("voice-got").click();
+    await expect(page.getByText("Saved as “I got it”. Next question.")).toBeVisible();
+    await expect(page.getByText("Question 2 of 5")).toBeVisible();
+    await page.getByTestId("voice-self").click();
+    await page.getByTestId("voice-self-reveal").click();
+    await expect(page.getByText(/^Accepted answer/)).toBeVisible();
+
+    // Readiness: counts with denominators, no percentages.
     await page.goto("/readiness");
-    await expect(page.getByText("Not enough history yet")).toBeVisible();
-    await page.goto("/practice/session?mode=topic&topic=Principles%20of%20American%20Government");
-    for (let i = 0; i < 10; i++) await answerCard(page, "Got it");
-    await page.goto("/readiness");
-    await expect(page.getByRole("heading", { name: "Coverage" })).toBeVisible();
-    await expect(page.getByText("Questions practiced at least once")).toBeVisible();
-    await expect(page.getByText("Method: self-assessed, unprompted. Delay: at least 24 hours.")).toBeVisible();
-    await expect(page.getByText("No mock tests yet.")).toBeVisible();
-    await expect(page.locator("li", { hasText: "reading" })).toContainText("1 yes of 1");
-    await expect(page.locator("li", { hasText: "conversation" })).toContainText("0 yes of 1");
-    // No percentage or probability anywhere on the page.
+    await expect(page.getByText("What you’ve practiced. Not a prediction.")).toBeVisible();
+    await expect(page.getByTestId("rd-seen")).toContainText("1 of 128");
+    await expect(page.getByTestId("rd-reading")).toContainText("Read clearly (your own check)");
+    await expect(page.getByTestId("rd-writing")).toContainText("Matched the sentence");
+    await expect(page.getByText("No mocks yet.")).toBeVisible();
     await expect(page.getByText(/\d+%/)).toHaveCount(0);
-    await expect(page.getByText(/probab/i)).toHaveCount(1); // only the disclaimer mentions it
+
+    // Today's english task is done; the plan reflects it.
+    await page.goto("/");
+    await expect(page.getByTestId("plan-english")).toContainText("Done:");
+  });
+
+  test("recall cards feed the 'try again' list", async ({ page }) => {
+    await setupProfile(page, { filingDate: "2026-01-15" });
+    await page.goto("/practice/session?kind=topic&topic=Principles%20of%20American%20Government");
+    for (let i = 0; i < 3; i++) await answerCard(page, "got");
+    await answerCard(page, "unsure");
+    await page.getByRole("button", { name: "End session" }).click();
+    await page.getByTestId("end-session").click();
+    await page.goto("/readiness");
+    await expect(page.getByTestId("rd-seen")).toContainText("4 of 128");
+    await expect(page.getByTestId("rd-unsure")).toHaveText("1");
+    await page.getByRole("link", { name: "Review these now" }).click();
+    await expect(page.getByTestId("q-position")).toHaveText("Question 1 of 1");
   });
 });

@@ -33,7 +33,7 @@ describe("readiness", () => {
   it("lists uncertain questions and the last three mocks", () => {
     const states = [{ ...newReviewState("q5", "2025", "2026-01-01"), seenCount: 1, lastOutcome: "uncertain" as const }];
     const mock = (id: string, finishedAt: string) => ({ id, finishedAt, bank: "2025", special: false, result: { passed: false, correct: 3, incorrect: 2, uncertain: 0, attempted: 5, asked: 20, pass: 12, stoppedEarly: true, reason: "abandoned" as const, method: "self-assessed" as const, missedQuestionIds: [] } });
-    const r = computeReadiness({ bankQuestionIds: bank, attempts: bank.map((q) => att(q, "2026-01-01T10:00:00Z")), reviewStates: states, mocks: [mock("a", "2026-01-01T00:00:00Z"), mock("b", "2026-01-04T00:00:00Z"), mock("c", "2026-01-02T00:00:00Z"), mock("d", "2026-01-03T00:00:00Z")], englishTasks: [{ id: "e1", kind: "reading", taskId: "r1", outcome: "correct", selfReported: true, at: "2026-01-01T00:00:00Z" }], unconfirmedDynamicIds: [] });
+    const r = computeReadiness({ bankQuestionIds: bank, attempts: bank.map((q) => att(q, "2026-01-01T10:00:00Z")), reviewStates: states, mocks: [mock("a", "2026-01-01T00:00:00Z"), mock("b", "2026-01-04T00:00:00Z"), mock("c", "2026-01-02T00:00:00Z"), mock("d", "2026-01-03T00:00:00Z")], englishTasks: [{ id: "e1", kind: "reading", taskId: "r1", outcome: "correct", text: "Read clearly", selfReported: true, at: "2026-01-01T00:00:00Z" }], unconfirmedDynamicIds: [] });
     expect(r.uncertain.questionIds).toEqual(["q5"]);
     expect(r.recentMocks.items.map((m) => m.id)).toEqual(["b", "d", "c"]);
     expect(r.english.byKind.reading).toEqual({ attempted: 1, correct: 1 });

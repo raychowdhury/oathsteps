@@ -1,204 +1,64 @@
 {
-  "version": "2026-10-05.1",
+  "version": "2026-10-05.2",
   "review": {
     "machineChecked": true,
     "humanReviewed": false,
     "reviewedAt": "2026-10-05",
-    "note": "Original OathSteps explanations written against the research report (checked 5 October 2026) and linked official pages. Educational guidance only; an applicant's own USCIS notices and current official instructions govern their case. Not legal advice and no qualified legal or content review has been recorded yet."
+    "note": "Original OathSteps explanations from the design handoff, checked against the research report (5 October 2026) and linked official pages. Draft, not expert-reviewed. An applicant's own USCIS notices and current official instructions govern their case. Not legal advice."
+  },
+  "sources": {
+    "notice2025": { "label": "Federal Register: 2025 civics test notice", "url": "https://www.federalregister.gov/documents/2025/09/18/2025-18050/notice-of-implementation-of-2025-naturalization-civics-test" },
+    "cfr312": { "label": "8 CFR Part 312: educational requirements", "url": "https://www.ecfr.gov/current/title-8/chapter-I/subchapter-C/part-312" },
+    "components": { "label": "USCIS: Test components (PDF)", "url": "https://www.uscis.gov/sites/default/files/document/guides/test_components.pdf" },
+    "scoring": { "label": "USCIS: Test scoring guidelines (PDF)", "url": "https://www.uscis.gov/sites/default/files/document/guides/Test_Scoring_Guidelines.pdf" },
+    "m1122": { "label": "USCIS: Preparing for the naturalization test, M-1122 (PDF)", "url": "https://www.uscis.gov/sites/default/files/document/guides/M-1122.pdf" },
+    "q128": { "label": "USCIS: 2025 civics test, 128 questions (PDF)", "url": "https://www.uscis.gov/sites/default/files/document/questions-and-answers/2025-Civics-Test-128-Questions-and-Answers.pdf" },
+    "q100": { "label": "USCIS: 2008 civics test, 100 questions (PDF)", "url": "https://www.uscis.gov/sites/default/files/document/questions-and-answers/100q.pdf" },
+    "n648": { "label": "USCIS: Form N-648 fact sheet (PDF)", "url": "https://www.uscis.gov/sites/default/files/document/fact-sheets/FactSheet_N-648_MedCertForDisabilityExceptions.pdf" },
+    "states": { "label": "USA.gov: State and territory governments", "url": "https://www.usa.gov/states-and-territories" },
+    "testupdates": { "label": "USCIS: Civics test updates", "url": "https://www.uscis.gov/citizenship/testupdates" }
   },
   "stages": [
     {
-      "id": "prepare",
-      "title": "Explore and prepare",
-      "milestone": null,
-      "summary": "Understand the process and the test that applies to you before you file or while you wait.",
+      "id": "setup",
+      "title": "Set up the right practice",
       "items": [
-        {
-          "id": "prepare-eligibility",
-          "text": "Read the official eligibility information for naturalization and note any question you want to ask a qualified helper.",
-          "why": "OathSteps does not decide eligibility. Official pages and qualified legal help do.",
-          "sources": [{ "label": "USCIS: Citizenship through naturalization", "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/citizenship-and-naturalization/i-am-a-lawful-permanent-resident-of-5-years" }]
-        },
-        {
-          "id": "prepare-test-path",
-          "text": "Locate your N-400 filing date (or note that you have not filed yet) and confirm the civics test version that applies.",
-          "why": "The filing date, not the interview date, selects the 2008 or 2025 test. Filed before 20 October 2025 means the 2008 test; on or after means the 2025 test.",
-          "sources": [{ "label": "USCIS: Civics test updates", "url": "https://www.uscis.gov/citizenship/testupdates" }, { "label": "Federal Register notice 2025-18050", "url": "https://www.federalregister.gov/documents/2025/09/18/2025-18050/notice-of-implementation-of-2025-naturalization-civics-test" }]
-        },
-        {
-          "id": "prepare-exceptions",
-          "text": "Review the official information about English exceptions (50/20, 55/15), the 65/20 special consideration and medical disability exceptions (Form N-648) to see if any may apply at filing.",
-          "why": "These routes change what you must study. The app explains them and links to the source; it cannot certify that one applies to you.",
-          "sources": [{ "label": "USCIS: Exceptions and accommodations", "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test/exceptions-and-accommodations" }, { "label": "8 CFR Part 312", "url": "https://www.ecfr.gov/current/title-8/chapter-I/subchapter-C/part-312" }]
-        },
-        {
-          "id": "prepare-routine",
-          "text": "Choose a realistic study routine (even 10 minutes a day) and an optional study deadline.",
-          "why": "Short, regular recall practice beats cramming. A deadline you set is a study goal, not an appointment.",
-          "sources": []
-        }
+        { "id": "path", "text": "Confirm your test version", "why": "The filing date decides the civics test: before October 20, 2025 is the 2008 test; on or after is the 2025 test. Your interview date does not change this.", "links": ["notice2025"], "action": "filing", "actionLabel": "Check my filing date" },
+        { "id": "exceptions", "text": "Check exceptions", "why": "Age and residence rules (50/20, 55/15, 65/20) and disability exceptions have conditions. OathSteps can’t decide if they apply to you.", "links": ["cfr312", "n648"] },
+        { "id": "dynamic", "text": "Check state-specific answers", "why": "Some answers change after elections or depend on where you live. Check official websites close to your interview.", "links": ["states", "testupdates"] },
+        { "id": "routine", "text": "Set a study routine", "why": "Ten minutes most days is easier to keep than long sessions. Set study reminders and quiet hours that fit your day.", "links": [], "action": "settings", "actionLabel": "Open reminder settings" }
       ]
     },
     {
-      "id": "filing",
-      "title": "Prepare and file Form N-400",
-      "milestone": "filed",
-      "summary": "Find the official filing instructions and keep your filing date.",
+      "id": "practice",
+      "title": "Practice the interview skills",
       "items": [
-        {
-          "id": "filing-instructions",
-          "text": "Read the current Form N-400 instructions on uscis.gov and follow them for your situation.",
-          "why": "Forms, fees and filing locations change. The official instructions are the authority.",
-          "sources": [{ "label": "USCIS: Form N-400", "url": "https://www.uscis.gov/n-400" }]
-        },
-        {
-          "id": "filing-record-date",
-          "text": "After filing, record your filing date in OathSteps so the correct civics test is selected.",
-          "why": "This date is used only to pick the question bank and to count down to your own study goals.",
-          "sources": [{ "label": "USCIS: Civics test updates", "url": "https://www.uscis.gov/citizenship/testupdates" }]
-        },
-        {
-          "id": "filing-vocabulary",
-          "text": "Start learning the vocabulary used in your own application so you can answer truthfully about it in the interview.",
-          "why": "The officer asks about your N-400. The app helps you practice words and phrases, never invents answers for you.",
-          "sources": [{ "label": "USCIS: Study for the test", "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test" }]
-        }
+        { "id": "recall", "text": "Answer aloud, from memory", "why": "Remembering on your own is closer to the interview than choosing from options.", "links": [] },
+        { "id": "weak", "text": "Review weak questions", "why": "Coming back after a gap checks that an answer has stayed with you.", "links": [] },
+        { "id": "mock", "text": "Try a mock", "why": "Mocks help you get used to the format. Use the results to choose what to review.", "links": ["components"] },
+        { "id": "english", "text": "Practice English tasks", "why": "Reading and writing are separate tests: one correct sentence out of up to three tries for each.", "links": ["components", "scoring"] },
+        { "id": "vocab", "text": "Review your application words", "why": "Read your copy of your application and make sure you understand each question. Answer with your own true information.", "links": [] },
+        { "id": "help", "text": "Get legal help if unsure", "why": "A qualified immigration attorney or a DOJ-accredited representative can advise on your case.", "links": [] }
       ]
     },
     {
-      "id": "receipt-biometrics",
-      "title": "Receipt and biometrics",
-      "milestone": "receipt",
-      "summary": "Understand your receipt notice and any biometrics appointment or reuse notice.",
+      "id": "appointment",
+      "title": "Prepare for your appointment",
       "items": [
-        {
-          "id": "receipt-read",
-          "text": "Read your receipt notice (Form I-797C) and note the receipt date and any instructions.",
-          "why": "Your notices are the record of your case. OathSteps stores only what you type in.",
-          "sources": [{ "label": "USCIS: After you file", "url": "https://www.uscis.gov/forms/filing-guidance/after-you-file" }]
-        },
-        {
-          "id": "biometrics-appointment",
-          "text": "If you receive a biometrics appointment notice, record the date and follow its instructions. If USCIS reuses earlier biometrics, record that instead.",
-          "why": "Both outcomes are normal. The journey tracker supports an attended appointment or a reuse notice.",
-          "sources": [{ "label": "USCIS: Preparing for your biometric services appointment", "url": "https://www.uscis.gov/forms/filing-guidance/preparing-for-your-biometric-services-appointment" }]
-        }
-      ]
-    },
-    {
-      "id": "interview-prep",
-      "title": "Interview preparation",
-      "milestone": "interview",
-      "summary": "Daily recall practice, English tasks and your interview notice.",
-      "items": [
-        {
-          "id": "interview-recall",
-          "text": "Recall civics answers aloud before looking at the answer, and revisit weak questions after a delay.",
-          "why": "The civics test is oral. Recognizing an answer in a list is not the same as saying it.",
-          "sources": [{ "label": "USCIS: The naturalization interview and test", "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test" }]
-        },
-        {
-          "id": "interview-mock",
-          "text": "Practice the mock test in your applicable format and inspect every missed answer.",
-          "why": "2008 test: up to 10 questions, 6 correct to pass. 2025 test: up to 20 questions, 12 correct to pass, stopping at 12 correct or 9 incorrect. 65/20: 10 of the 20 marked questions, 6 correct to pass.",
-          "sources": [{ "label": "USCIS: Civics test updates", "url": "https://www.uscis.gov/citizenship/testupdates" }]
-        },
-        {
-          "id": "interview-english",
-          "text": "Practice reading one sentence aloud, writing one dictated sentence, and understanding interview instructions, unless an English exception applies to you.",
-          "why": "Reading and writing each require one correct sentence out of up to three tries. Speaking is assessed throughout the interview.",
-          "sources": [{ "label": "USCIS: Study for the test (English)", "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test" }]
-        },
-        {
-          "id": "interview-dynamic",
-          "text": "Confirm the answers that depend on current officeholders or your state and district, and record them with the date you checked.",
-          "why": "USCIS expects the official serving at the time of your interview. The app never guesses these; you confirm them from an official source.",
-          "sources": [{ "label": "USCIS: Civics test updates", "url": "https://www.uscis.gov/citizenship/testupdates" }, { "label": "Find your representative", "url": "https://www.house.gov/representatives/find-your-representative" }, { "label": "Senators by state", "url": "https://www.senate.gov/senators/senators-contact.htm" }, { "label": "Find your governor", "url": "https://www.usa.gov/state-governor" }]
-        },
-        {
-          "id": "interview-notice",
-          "text": "When your interview notice arrives, read it carefully and confirm the time, location and the documents it asks you to bring.",
-          "why": "The notice is the only authoritative document list for your case. OathSteps does not invent one.",
-          "sources": [{ "label": "USCIS: The naturalization interview and test", "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test" }]
-        },
-        {
-          "id": "interview-logistics",
-          "text": "Plan transportation, arrival time, and any accessibility or interpreter arrangements your notice allows.",
-          "why": "Practical preparation reduces interview-day stress.",
-          "sources": [{ "label": "USCIS: Exceptions and accommodations", "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test/exceptions-and-accommodations" }]
-        }
-      ]
-    },
-    {
-      "id": "outcome",
-      "title": "Interview outcome",
-      "milestone": "decision",
-      "summary": "Record what happened and follow the next notice.",
-      "items": [
-        {
-          "id": "outcome-record",
-          "text": "Record the interview outcome you were given: passed, continued, retest scheduled, evidence requested, or another result.",
-          "why": "Different outcomes lead to different next steps. The app keeps approval and oath completion separate.",
-          "sources": [{ "label": "USCIS: After the interview", "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test" }]
-        },
-        {
-          "id": "outcome-retest",
-          "text": "If you did not pass a portion of the test, you are generally given a second opportunity for that portion 60 to 90 days later. Follow the notice's dates and keep practicing the failed portion.",
-          "why": "A retest is a normal part of the process, not the end of it.",
-          "sources": [{ "label": "8 CFR 312.5 (retesting)", "url": "https://www.ecfr.gov/current/title-8/chapter-I/subchapter-C/part-312" }]
-        },
-        {
-          "id": "outcome-evidence",
-          "text": "If USCIS requests more evidence, follow the request's instructions and deadline exactly.",
-          "why": "Deadlines in a request are set by USCIS, not by the app.",
-          "sources": [{ "label": "USCIS: Responding to a request for evidence", "url": "https://www.uscis.gov/forms/filing-guidance/after-you-file" }]
-        }
-      ]
-    },
-    {
-      "id": "oath",
-      "title": "Decision and oath",
-      "milestone": "oath",
-      "summary": "Review the oath notice and complete the ceremony.",
-      "items": [
-        {
-          "id": "oath-notice",
-          "text": "Read your Form N-445 oath ceremony notice, answer its questions truthfully, and bring what it lists.",
-          "why": "You become a citizen when you take the oath, not when the application is approved.",
-          "sources": [{ "label": "USCIS: Naturalization ceremonies", "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test/naturalization-ceremonies" }]
-        },
-        {
-          "id": "oath-reschedule",
-          "text": "If you cannot attend, follow the notice's instructions for rescheduling and record the new date when it arrives.",
-          "why": "Rescheduling is supported in the journey tracker; the new date comes from USCIS.",
-          "sources": [{ "label": "USCIS: Naturalization ceremonies", "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test/naturalization-ceremonies" }]
-        }
+        { "id": "notice", "text": "Read your appointment notice", "why": "Your notice is the authority for your appointment. Follow what it says.", "links": [] },
+        { "id": "docs", "text": "Prepare listed documents", "why": "Use your notice and official guidance. Document needs differ from person to person.", "links": [] },
+        { "id": "travel", "text": "Plan travel and access needs", "why": "Check the location ahead of time and any instructions about accommodations.", "links": [] },
+        { "id": "attend", "text": "Attend the interview", "why": "Arrive on time with your notice and documents. It’s okay to ask the officer to repeat a question.", "links": [] }
       ]
     },
     {
       "id": "after",
-      "title": "After naturalization",
-      "milestone": null,
-      "summary": "Next steps and your data.",
+      "title": "After the interview",
       "items": [
-        {
-          "id": "after-passport",
-          "text": "Apply for a U.S. passport and update your records (for example Social Security) using official guidance.",
-          "why": "These are common next steps after the oath.",
-          "sources": [{ "label": "travel.state.gov: Apply for a passport", "url": "https://travel.state.gov/content/travel/en/passports.html" }, { "label": "SSA: Update your citizenship status", "url": "https://www.ssa.gov/" }]
-        },
-        {
-          "id": "after-vote",
-          "text": "Register to vote if you wish.",
-          "why": "Voting is one of the responsibilities reserved for citizens.",
-          "sources": [{ "label": "vote.gov", "url": "https://vote.gov/" }]
-        },
-        {
-          "id": "after-data",
-          "text": "Review your OathSteps data in Settings: export it, or delete it if you no longer need it.",
-          "why": "Your study history belongs to you.",
-          "sources": []
-        }
+        { "id": "record", "text": "Record the result", "why": "Add the result to your journey so your plan matches what comes next.", "links": [], "action": "journey", "actionLabel": "Update my journey" },
+        { "id": "retest", "text": "Follow any retest notice", "why": "A failed portion is usually retested 60 to 90 days after the first interview. Your notice gives the exact instructions.", "links": ["m1122"] },
+        { "id": "oath", "text": "Follow your oath ceremony notice", "why": "Approval and taking the oath are separate steps. You become a citizen at the oath ceremony.", "links": [] },
+        { "id": "afterOath", "text": "Wrap up your data", "why": "When you’re done, you can export or delete your OathSteps data in Settings.", "links": [], "action": "settings", "actionLabel": "Open data settings" }
       ]
     }
   ]

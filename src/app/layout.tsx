@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import { AppShell } from "@/components/AppShell";
+import { AppRoot } from "@/components/AppRoot";
+
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
   title: { default: "OathSteps", template: "%s · OathSteps" },
@@ -8,11 +11,11 @@ export const metadata: Metadata = {
   applicationName: "OathSteps",
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "OathSteps", statusBarStyle: "default" },
-  icons: { icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }], apple: "/icons/icon-192.png" },
+  icons: { icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }], apple: "/icons/apple-touch-icon.png" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#17324B",
+  themeColor: "#FFFFFF",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -20,9 +23,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <body>
-        <AppShell>{children}</AppShell>
+        <AppRoot>{children}</AppRoot>
       </body>
     </html>
   );

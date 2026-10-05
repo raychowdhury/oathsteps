@@ -19,3 +19,14 @@ Each entry: date, decision, why, consequence. Newest first.
 ## Blockers
 
 - None that stop core work. Human/legal content review, production mail provider, hosting destination, and conditional-integration credentials are release gates owned by the project owner.
+
+## 2026-10-05 (design handoff)
+
+- **Design handoff adopted as the UI spec.** `oathsteps-handoff.zip` (Claude Design export) defines screens, states, copy and styles. Ported class-for-class (`.o-*` system, Inter, container-query desktop layout, sheets, toasts, five-step setup, seven milestone slots, four-stage guide, interview hub with voice/reading/writing/instructions/N-400). The prototype's 14 sample questions are replaced by the full official banks, and its in-memory state by the IndexedDB store and domain modules already built.
+- **"No backend" in the handoff's suggested prompt is the prototype's scope, not the product's.** The build prompt requires optional accounts with consented migration and sync, which exist and are tested. Guest study remains complete with no server; the Account card in Settings is the only addition not in the design.
+- **"Demo" labels show only when the fictional demo learner is loaded** ("Explore with a demo learner's history" on Welcome, "Demo data" in Settings). Real guest data is never labeled demo. Copy that said "Prototype: …" becomes a true statement where the feature is real (exports create a file, reports are saved, reminders show in the app) and is dropped where it was only a prototype limitation.
+- **Voice** uses the browser's own speech recognition (Web Speech API) where available, with a consent sheet that says audio may be processed by the browser vendor's service and that OathSteps records nothing. Results are labeled "experimental" and the transcript is matched deterministically against the accepted answers; the learner always grades. Where the API is unavailable or the mic is denied, the typed and self-check paths remain. This replaces the prototype's "Simulated" tag.
+- **Coach pass** shows the proposal exactly as designed ("Pricing experiment · not a live offer") but with no checkout, because no payment provider is configured. The simulated-checkout screen is not built.
+- **Study language step** keeps the design's list but only English is selectable; other languages read "Not yet available" until a reviewed translation exists.
+- **Sample walkthrough (5 questions, stop at 4 correct / 3 wrong)** is added next to the full-format mock; both use the same mock state machine with different rules.
+- **Journey model changed** from a free list of milestone events to the design's seven fixed slots with status and date; the previous model was never shipped.

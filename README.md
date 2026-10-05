@@ -35,12 +35,17 @@ Other commands:
 | `pnpm content:ingest` / `pnpm content:validate` | Regenerate and check the question packs from the official PDFs |
 | `pnpm db:migrate` / `pnpm db:deploy` | Prisma migrations (dev / production) |
 
+## Design
+
+The interface follows the OathSteps Claude Design handoff screen for screen: Inter, a compact `.o-*` design system (teal primary, amber for uncertainty, forest for confirmed, no error red), bottom tabs on phones and top tabs on wide screens via container queries, bottom sheets, toasts with undo, and a dark theme (Settings › Appearance). "Demo" labels appear only when the fictional demo learner is loaded.
+
 ## Layout
 
 ```
 content/      official sources + hashes, ingest/validate scripts, generated packs, guide, English tasks
 src/domain/   pure tested logic: dates, test path, mock machine, scheduler, plan, readiness, answers
-src/lib/      IndexedDB store, content loader, audio, journey helpers, sync client, offline
+src/lib/      IndexedDB store, content/guide loaders, route wording, Today plan, speech, sync client, offline, demo learner
+src/components/ design-system shell (Screen, Overlay, icons, sheets)
 src/server/   Prisma, Better Auth, sync/account handlers, integration contracts
 src/app/      Next.js App Router screens and API routes
 public/sw.js  service worker (never caches /api)

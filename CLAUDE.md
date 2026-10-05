@@ -16,18 +16,21 @@ Mobile-first installable web app (PWA) that helps adults prepare for the U.S. na
 
 ## Architecture
 
-- `content/` official sources (PDF + extracted text + hashes in `SOURCES.json`), ingestion/validation scripts, generated packs, guide stages. Official wording is kept verbatim; everything else is labeled as an OathSteps addition.
-- `src/domain/` pure, tested logic: date-only handling with injectable clock, test-path routing (`CUTOVER_DATE = 2025-10-20`), mock state machine, review scheduler (documented interval ladder), daily plan, readiness indicators, answer variants. No UI, storage or provider imports.
-- `src/lib/` client-side storage (IndexedDB via `idb`), content loading, audio, sync outbox, settings.
-- `src/server/` Prisma client, Better Auth, sync/export/delete handlers. SQLite via `@prisma/adapter-better-sqlite3`.
-- `src/app/` Next.js App Router: Today (`/`), Practice, Interview, Journey, Settings, auth pages, API routes.
-- `public/sw.js` hand-written service worker: app shell + content packs after explicit download; never caches `/api/auth` or `/api/sync`.
-- `.harness/` feature ledger, progress, decisions, evidence. `scripts/verify.mjs` is the runner. `.claude/` holds project hooks (post-edit lint/content check, bounded Stop ledger check).
+- `content/` official sources (PDF + extracted text + hashes in `SOURCES.json`), ingestion/validation scripts, generated packs, guide stages (four stages, source keys), English tasks. Official wording is kept verbatim; everything else is labeled as an OathSteps addition.
+- `src/domain/` pure, tested logic: date-only handling with injectable clock, test-path routing (`CUTOVER_DATE = 2025-10-20`), mock state machine (full rules + 5-question walkthrough), review scheduler, daily plan, readiness, answer matching, writing word diff, filing/interview/milestone validation, journey slots.
+- `src/lib/` IndexedDB store (`store/`), content loader, guide loader, route wording (`path.ts`), Today snapshot/plan helpers (`today.ts`), speech synthesis + recognition (`speech.ts`), sync client, offline download, demo learner.
+- `src/server/` Prisma client, Better Auth, sync/account handlers, request guards, integration contracts.
+- `src/components/` design-system shell: `Screen` (top bar, tabs, offline banner, sticky actions), `Overlay` (toasts, sheets, error line), `icons`, `ListenButton`, `FilingSheet`, `MilestoneSheet`, `Welcome`, `AppRoot` (tokens, theme, text size).
+- `src/app/` screens: `/` (welcome or Today), `/setup`, `/readiness`, `/practice`, `/practice/session`, `/practice/mock`, `/interview` + `voice|reading|writing|instructions|n400|coach`, `/journey`, `/journey/guide`, `/settings`, `/account`, API routes.
+- Styles: `src/app/globals.css` holds the design handoff's `.o-*` system verbatim (tokens on `.o-app`, container-query desktop layout, `.o-dark` theme). Use those classes; do not reintroduce Tailwind utility styling in screens.
+- `public/sw.js` hand-written service worker: app shell + content after explicit download; never caches `/api`.
+- `.harness/` feature ledger, progress, decisions, evidence. `scripts/verify.mjs` is the runner; `scripts/ledger.mjs` stamps features with evidence. `.claude/` holds project hooks.
+- Design source: `oathsteps-handoff.zip` / the Claude Design canvas (see `.harness/decisions.md`, "design handoff").
 
 ## Scope and constraints
 
 - Four destinations: Today, Practice, Interview, Journey (+ Settings). Guest study without an account; optional accounts with consented migration and idempotent sync.
-- Filing date selects the bank: before 2025-10-20 → 2008 test (100 Q, up to 10 asked, 6 to pass); on/after → 2025 test (128 Q, up to 20 asked, 12 to pass, stop at 12 correct or 9 incorrect). 65/20 → designated 20, 10 asked, 6 to pass. Unknown stays unknown; a learner-chosen bank is labeled provisional.
+- Filing date selects the bank: before 2025-10-20 → 2008 test (100 Q, up to 10 asked, 6 to pass); on/after → 2025 test (128 Q, up to 20 asked, 12 to pass, stop at 12 correct or 9 incorrect). 65/20 → designated 20, 10 asked, 6 to pass. Unknown stays unknown: Today and Practice say the version is not set and that practice uses the 2025 list until a filing date is added; the full-format mock needs a set version.
 - Never: fabricate officeholder answers, show pass probabilities or readiness percentages, decide eligibility, collect SSN/A-number/USCIS password/identity documents/full N-400, promise background notifications, present unconfigured integrations as working.
 - Hinted or multiple-choice recognition never counts as independent oral recall. Attempts record `method` and `prompted`.
 - English is the only shipped language; no language selector until a reviewed translation exists.

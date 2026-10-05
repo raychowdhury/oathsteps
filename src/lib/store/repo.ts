@@ -1,7 +1,8 @@
+import { emptyJourney, type Journey, type JourneyKey, type Slot } from "@/domain/journey";
 import type { MockState } from "@/domain/mock";
 import { applyAttempt, newReviewState } from "@/domain/scheduler";
 import { todayDateOnly } from "@/domain/dates";
-import type { ChecklistEntry, ConfirmedDynamicAnswer, EnglishTaskRecord, Milestone, PracticeAttempt, ReviewState, StudyProfile } from "@/domain/types";
+import type { ChecklistEntry, ConfirmedDynamicAnswer, EnglishTaskRecord, PracticeAttempt, ReviewState, StudyProfile } from "@/domain/types";
 import { getDb, type CorrectionReport, type OutboxEvent } from "./db";
 import { newId, notifyStoreChanged, nowIso } from "./events";
 
@@ -11,17 +12,15 @@ export function defaultProfile(): StudyProfile {
     id: "local",
     filingDate: null,
     filingDateUnknown: false,
-    provisionalBank: null,
     specialConsideration: false,
     state: null,
-    interviewDate: null,
-    studyDeadline: null,
     textSize: "normal",
-    audioRate: 0.9,
-    audioAutoplay: false,
+    theme: "system",
+    audioRate: 1,
     reduceMotion: false,
-    newPerDay: 5,
-    reminders: { study: true, appointments: true, checklist: true },
+    mode: "recall",
+    autoplay: false,
+    reminders: { study: true, daily: true, review: true, appointments: true, quietFrom: 21, quietTo: 8 },
     createdAt: t,
     updatedAt: t,
     onboarded: false,
@@ -38,7 +37,7 @@ async function enqueue(type: OutboxEvent["type"], payload: unknown, eventId = ne
 // Profile -----------------------------------------------------------------------------------------
 export async function getProfile(): Promise<StudyProfile> {
   const db = await getDb();
-  return (await db.get("profile", "local")) ?? defaultProfile();
+  return { ...defaultProfile(), ...((await db.get("profile", "local")) ?? {}) };
 }
 
 export async function saveProfile(patch: Partial<StudyProfile>): Promise<StudyProfile> {
@@ -94,26 +93,29 @@ export async function getOpenMock(): Promise<MockState | null> {
   return all.find((m) => m.status === "active" || m.status === "paused") ?? null;
 }
 
-// Milestones --------------------------------------------------------------------------------------
-export async function listMilestones(): Promise<Milestone[]> {
-  const all = await (await getDb()).getAll("milestones");
-  return all.sort((a, b) => (a.date ?? "9999").localeCompare(b.date ?? "9999") || a.createdAt.localeCompare(b.createdAt));
+// Journey (seven slots) ---------------------------------------------------------------------------
+export async function getJourney(): Promise<Journey> {
+  const db = await getDb();
+  const stored = await db.get("journey", "local");
+  if (!stored) return emptyJourney();
+  const { id, ...rest } = stored;
+  void id;
+  return { ...emptyJourney(), ...rest };
 }
 
-export async function upsertMilestone(m: Omit<Milestone, "createdAt" | "updatedAt" | "provenance"> & Partial<Milestone>): Promise<Milestone> {
+export async function setJourneySlot(key: JourneyKey, slot: Slot): Promise<Journey> {
   const db = await getDb();
-  const prev = await db.get("milestones", m.id);
-  const next: Milestone = { ...m, provenance: "user", createdAt: prev?.createdAt ?? nowIso(), updatedAt: nowIso() };
-  await db.put("milestones", next);
-  await enqueue("milestone", next);
+  const next = { ...(await getJourney()), [key]: slot };
+  await db.put("journey", { ...next, id: "local" });
+  await enqueue("journey", next);
   notifyStoreChanged();
   return next;
 }
 
-export async function deleteMilestone(id: string): Promise<void> {
+export async function saveJourney(j: Journey): Promise<void> {
   const db = await getDb();
-  await db.delete("milestones", id);
-  await enqueue("milestone", { id, deleted: true });
+  await db.put("journey", { ...j, id: "local" });
+  await enqueue("journey", j);
   notifyStoreChanged();
 }
 
@@ -169,13 +171,6 @@ export async function saveDynamicAnswer(a: ConfirmedDynamicAnswer): Promise<void
   notifyStoreChanged();
 }
 
-export async function clearDynamicAnswer(questionId: string): Promise<void> {
-  const db = await getDb();
-  await db.delete("dynamicAnswers", questionId);
-  await enqueue("dynamic-answer", { questionId, cleared: true });
-  notifyStoreChanged();
-}
-
 // Reports -----------------------------------------------------------------------------------------
 export async function saveReport(r: CorrectionReport): Promise<void> {
   const db = await getDb();
@@ -196,6 +191,27 @@ export async function getMeta<T>(key: string): Promise<T | undefined> {
 export async function setMeta(key: string, value: unknown): Promise<void> {
   await (await getDb()).put("meta", { key, value });
   notifyStoreChanged();
+}
+
+/** Per-day "done" flags for the Today plan. */
+export interface DayProgress {
+  date: string;
+  review: boolean;
+  fresh: boolean;
+  english: boolean;
+}
+export async function getDayProgress(today: string): Promise<DayProgress> {
+  const d = await getMeta<DayProgress>("dayProgress");
+  return d && d.date === today ? d : { date: today, review: false, fresh: false, english: false };
+}
+export async function markDay(today: string, patch: Partial<Omit<DayProgress, "date">>): Promise<void> {
+  await setMeta("dayProgress", { ...(await getDayProgress(today)), ...patch, date: today });
+}
+export async function getSessions(): Promise<number> {
+  return (await getMeta<number>("sessions")) ?? 0;
+}
+export async function bumpSessions(): Promise<void> {
+  await setMeta("sessions", (await getSessions()) + 1);
 }
 
 // Outbox ------------------------------------------------------------------------------------------
@@ -230,12 +246,13 @@ export async function exportAll() {
   return {
     exportedAt: nowIso(),
     app: "OathSteps",
-    format: 1,
+    format: 2,
+    demoData: Boolean(await getMeta<boolean>("illustrative")),
     profile: await getProfile(),
     attempts: await db.getAll("attempts"),
     reviewStates: await db.getAll("reviewStates"),
     mocks: await db.getAll("mocks"),
-    milestones: await db.getAll("milestones"),
+    journey: await getJourney(),
     checklist: await db.getAll("checklist"),
     englishTasks: await db.getAll("englishTasks"),
     bookmarks: await db.getAll("bookmarks"),
@@ -244,12 +261,13 @@ export async function exportAll() {
   };
 }
 
-/** Clear learning data but keep preferences (reset). */
-export async function resetLearningData(): Promise<void> {
+/** Reset practice progress: attempts, reviews, mocks, bookmarks, English checks. Journey and settings stay. */
+export async function resetPractice(): Promise<void> {
   const db = await getDb();
-  const stores = ["attempts", "reviewStates", "mocks", "milestones", "checklist", "englishTasks", "bookmarks", "dynamicAnswers", "reports", "outbox"] as const;
-  const tx = db.transaction([...stores], "readwrite");
+  const stores = ["attempts", "reviewStates", "mocks", "bookmarks", "englishTasks"] as const;
+  const tx = db.transaction([...stores, "meta"], "readwrite");
   await Promise.all(stores.map((s) => tx.objectStore(s).clear()));
+  for (const k of ["dayProgress", "sessions", "illustrative"]) await tx.objectStore("meta").delete(k);
   await tx.done;
   notifyStoreChanged();
 }

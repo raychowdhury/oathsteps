@@ -1,25 +1,51 @@
 import { expect, type Page } from "@playwright/test";
 
-/** Complete Setup as a guest with a given filing date (or "unknown" + provisional bank). */
-export async function setupProfile(page: Page, opts: { filingDate?: string; unknownBank?: "2025" | "2008"; special?: boolean; interviewDate?: string } = {}) {
+/** Complete the five-step Setup as a guest. */
+export async function setupProfile(page: Page, opts: { filingDate?: string; unsure?: boolean; special?: boolean; interviewDate?: string; state?: string } = {}) {
   await page.goto("/setup");
-  if (opts.unknownBank) {
-    await page.getByLabel(/I’m not sure/).check();
-    await page.getByLabel("Which test do you want to study for now?").selectOption(opts.unknownBank);
-  } else {
-    await page.getByLabel("Filing date").fill(opts.filingDate ?? "2026-01-15");
-  }
-  if (opts.special) await page.getByLabel(/I was 65 or older/).check();
-  if (opts.interviewDate) await page.getByLabel("Interview date").fill(opts.interviewDate);
-  await page.getByRole("button", { name: "Start studying" }).click();
+  await expect(page.getByRole("heading", { name: "Which language helps you study?" })).toBeVisible();
+  await page.getByTestId("setup-next").click();
+  await expect(page.getByRole("heading", { name: "When did you file Form N-400?" })).toBeVisible();
+  if (opts.unsure) await page.getByLabel("I’m not sure").check();
+  else await page.getByLabel("Filing date").fill(opts.filingDate ?? "2026-01-15");
+  await page.getByTestId("setup-next").click();
+  await expect(page.getByRole("heading", { name: "Where you live and your interview" })).toBeVisible();
+  if (opts.state) await page.getByLabel("State or territory (optional)").selectOption(opts.state);
+  if (opts.interviewDate) await page.getByLabel("Interview date (optional)").fill(opts.interviewDate);
+  await page.getByTestId("setup-next").click();
+  await expect(page.getByRole("heading", { name: "Exceptions and special consideration" })).toBeVisible();
+  if (opts.special) await page.getByLabel("Use the 65/20 format (my choice)").check();
+  await page.getByTestId("setup-next").click();
+  await expect(page.getByRole("heading", { name: "Check your study path" })).toBeVisible();
+  await page.getByTestId("setup-next").click();
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByTestId("start-today")).toBeVisible();
+  await expect(startToday(page)).toBeVisible();
 }
 
-/** Answer the current recall card with a given self-assessment. */
-export async function answerCard(page: Page, outcome: "Got it" | "Unsure" | "Missed") {
-  await page.getByRole("button", { name: "Show answer" }).click();
-  await page.getByRole("button", { name: outcome }).click();
+/** The design renders the start button twice (desktop column, phone sticky bar); only one is visible. */
+export function startToday(page: Page) {
+  return page.getByTestId("start-today").filter({ visible: true });
+}
+
+/** Inline validation line from the design (never Next's route announcer). */
+export function errorLine(page: Page) {
+  return page.locator(".o-err");
+}
+
+/** Answer the current recall card: reveal, then grade. Waits until the card advances so the write has landed. */
+export async function answerCard(page: Page, grade: "got" | "again" | "unsure") {
+  await page.getByTestId("reveal").click();
+  const button = page.getByTestId(`grade-${grade}`);
+  await button.click();
+  await expect(button).toBeHidden();
+}
+
+/** Mark the current mock question. */
+export async function markMock(page: Page, outcome: "correct" | "incorrect" | "unsure") {
+  await page.getByTestId("mock-reveal").click();
+  const button = page.getByTestId(`mock-${outcome}`);
+  await button.click();
+  await expect(button).toBeHidden();
 }
 
 export function uniqueEmail(prefix = "learner") {
@@ -28,18 +54,18 @@ export function uniqueEmail(prefix = "learner") {
 
 export async function signUp(page: Page, email: string, password = "correct-horse-battery-10") {
   await page.goto("/account");
-  await page.getByRole("tab", { name: "Create account" }).click();
+  await page.getByRole("radio", { name: "Create account" }).check();
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(password);
-  await page.getByRole("button", { name: "Create account" }).click();
-  await expect(page.getByText(`Signed in as`)).toBeVisible();
+  await page.getByTestId("account-submit").click();
+  await expect(page.getByText("Signed in as")).toBeVisible();
 }
 
 export async function signIn(page: Page, email: string, password = "correct-horse-battery-10") {
   await page.goto("/account");
-  await page.getByRole("tab", { name: "Sign in" }).click();
+  await page.getByRole("radio", { name: "Sign in" }).check();
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(password);
-  await page.getByRole("button", { name: "Sign in", exact: true }).click();
-  await expect(page.getByText(`Signed in as`)).toBeVisible();
+  await page.getByTestId("account-submit").click();
+  await expect(page.getByText("Signed in as")).toBeVisible();
 }

@@ -1,56 +1,83 @@
 import { expect, test } from "@playwright/test";
-import { answerCard, setupProfile } from "./helpers";
+import { answerCard, errorLine, setupProfile } from "./helpers";
 
-test.describe("practice modes", () => {
-  test("topics, bookmarks, multiple choice and the dynamic-answer flow", async ({ page }) => {
-    await setupProfile(page, { filingDate: "2026-01-15" });
-    await page.goto("/practice/topics");
-    await expect(page.getByRole("heading", { name: "Browse by topic" })).toBeVisible();
+test.describe("practice library, modes and changing answers", () => {
+  test("topics, saving, multiple choice and the source/report sheets", async ({ page }) => {
+    await setupProfile(page, { filingDate: "2026-01-15", state: "NY" });
+    await page.goto("/practice");
+    await expect(page.getByRole("heading", { name: "Practice" })).toBeVisible();
+    await expect(page.getByTestId("due-count")).toHaveText("0 due");
+    await expect(page.getByText("Official questions:")).toBeVisible();
+
+    // Topic session; save the first question.
     await page.getByRole("link", { name: /System of Government/ }).click();
-    await expect(page.getByRole("heading", { name: "System of Government" })).toBeVisible();
+    await expect(page.getByTestId("q-position")).toContainText("Question 1 of");
+    await page.getByTestId("save-question").click();
+    await expect(page.getByTestId("save-question")).toHaveText(/Saved/);
+    // Sheets on a revealed card.
+    await page.getByTestId("reveal").click();
+    await page.getByRole("button", { name: "Source and details" }).click();
+    await expect(page.getByRole("dialog")).toContainText("Official wording · machine-checked");
+    await expect(page.getByRole("dialog").getByRole("link", { name: /USCIS: 2025 civics test/ })).toBeVisible();
+    await page.getByRole("button", { name: "Close" }).click();
+    await page.getByRole("button", { name: "Report an issue" }).click();
+    await page.getByTestId("send-report").click();
+    await expect(errorLine(page)).toContainText("Choose one problem so we know what to check.");
+    await page.getByLabel("The answer looks wrong").check();
+    await page.getByTestId("send-report").click();
+    await expect(page.getByText("Report saved")).toBeVisible();
+    await page.getByRole("button", { name: "Back to the question" }).click();
+    await page.getByTestId("grade-got").click();
 
-    // Bookmark the first card, then it shows up in the bookmarks session.
-    await page.getByRole("button", { name: "Bookmark this question" }).click();
-    await expect(page.getByRole("button", { name: "Remove bookmark" })).toBeVisible();
-    await page.goto("/practice/session?mode=bookmarks");
-    await expect(page.getByRole("heading", { name: "Bookmarked questions" })).toBeVisible();
-    await expect(page.getByText("1 of 1")).toBeVisible();
+    // End session via the back control.
+    await page.getByRole("button", { name: "End session" }).click();
+    await page.getByTestId("end-session").click();
+    await expect(page.getByText("Session ended. Marked answers are saved.")).toBeVisible();
+    await expect(page.getByText("1 questions")).toBeVisible(); // Needs work and saved
+    await expect(page.getByText("Saved", { exact: true })).toBeVisible();
 
-    // Multiple choice records recognition, not recall.
-    await page.goto("/practice/session?mode=mc");
-    await expect(page.getByRole("heading", { name: "Multiple-choice check" })).toBeVisible();
-    await expect(page.getByText("counts as recognition, not recall")).toBeVisible();
-    const option = page.getByRole("group").getByRole("button").first();
-    await option.click();
-    await page.getByRole("button", { name: "Next" }).click();
-    await page.getByRole("button", { name: "Finish early" }).click();
-    await expect(page.getByText("recognized")).toBeVisible();
-
-    // Dynamic question: lookup link, confirm form, unscored until confirmed.
-    await page.goto("/practice/session?mode=topic&topic=System%20of%20Government");
-    // Walk until a "This answer changes" card appears (Q23 senators is in this subsection).
-    for (let i = 0; i < 20; i++) {
-      if (await page.getByText("This answer changes").isVisible()) break;
-      await answerCard(page, "Got it");
-    }
-    await expect(page.getByText("This answer changes")).toBeVisible();
-    await expect(page.getByRole("link", { name: /senate\.gov|house\.gov|usa\.gov|USCIS test updates/ })).toBeVisible();
-    await page.getByRole("button", { name: "Record my answer" }).click();
-    await page.getByLabel("Answer you confirmed").fill("Example Senator");
-    await page.getByLabel(/Your state/).fill("Example State");
-    await page.getByRole("button", { name: "Save", exact: true }).click();
-    await expect(page.getByText("Your confirmed answer")).toBeVisible();
-    await expect(page.getByText("Example Senator")).toBeVisible();
+    // Multiple-choice mode is labeled and does not count as recall.
+    await page.getByLabel("Multiple choice").check();
+    await expect(page.getByText("Easier. Doesn’t count toward progress.")).toBeVisible();
+    await page.getByRole("link", { name: /Principles of American Government/ }).click();
+    await expect(page.getByText("Multiple choice · not counted as recall")).toBeVisible();
+    await page.getByRole("radio").first().check();
+    await expect(page.getByText("Correct answer")).toBeVisible();
+    await page.getByTestId("choice-next").click();
+    await expect(page.getByTestId("q-position")).toContainText("Question 2 of");
   });
 
-  test("hinted recall is recorded as hinted and reported separately", async ({ page }) => {
+  test("an answer that depends on where you live shows the lookup and a confirm form, and stays out of mocks", async ({ page }) => {
+    await setupProfile(page, { filingDate: "2026-01-15", state: "NY" });
+    // Q23 (senators) is in System of Government; walk until the varies card appears.
+    await page.goto("/practice/session?kind=topic&topic=System%20of%20Government");
+    for (let i = 0; i < 25; i++) {
+      await page.getByTestId("reveal").click();
+      if (await page.getByText("Answer depends on where you live").isVisible()) break;
+      const b = page.getByTestId("grade-got");
+      await b.click();
+      await expect(b).toBeHidden();
+    }
+    await expect(page.getByText("Answer depends on where you live")).toBeVisible();
+    await expect(page.getByRole("link", { name: /senate\.gov/ })).toBeVisible();
+    await page.getByTestId("confirm-dynamic").click();
+    await page.getByLabel("Answer you confirmed").fill("Example Senator");
+    await page.getByLabel("Your state or territory").fill("New York");
+    await page.getByTestId("save-dynamic").click();
+    await expect(page.getByText("You confirmed: Example Senator (New York")).toBeVisible();
+    await page.getByTestId("grade-got").click();
+    await page.goto("/practice/mock?kind=full");
+    await expect(page.getByText(/questions with changing answers are left out/)).toContainText("7 questions");
+  });
+
+  test("hinted recognition is reported separately from recall", async ({ page }) => {
     await setupProfile(page, { filingDate: "2026-01-15" });
-    await page.goto("/practice/session?mode=today");
-    await page.getByRole("button", { name: "Need a hint" }).click();
-    await expect(page.getByText(/^Hint:/)).toBeVisible();
-    await answerCard(page, "Got it");
-    await page.getByRole("button", { name: "Finish early" }).click();
-    await expect(page.locator("li", { hasText: "got with a hint" })).toContainText("1");
-    await expect(page.locator("li", { hasText: "recalled without help" })).toContainText("0");
+    await page.goto("/practice/session?kind=daily");
+    await answerCard(page, "got");
+    await page.getByRole("button", { name: "End session" }).click();
+    await page.getByTestId("end-session").click();
+    await page.goto("/readiness");
+    await expect(page.getByTestId("rd-seen")).toContainText("1");
+    await expect(page.getByTestId("rd-delayed")).toContainText("0");
   });
 });
