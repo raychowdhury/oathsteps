@@ -93,16 +93,19 @@ export default function AccountPage() {
         )}
         {!session ? (
           <section className="o-card">
-            <div className="o-seg" role="tablist" aria-label="Sign in or create account">
-              <label className={mode === "sign-up" ? "o-on" : ""}>
-                <input type="radio" name="acct-mode" checked={mode === "sign-up"} onChange={() => setMode("sign-up")} />
-                <span>Create account</span>
-              </label>
-              <label className={mode === "sign-in" ? "o-on" : ""}>
-                <input type="radio" name="acct-mode" checked={mode === "sign-in"} onChange={() => setMode("sign-in")} />
-                <span>Sign in</span>
-              </label>
-            </div>
+            <fieldset style={{ border: 0, margin: 0, padding: 0 }}>
+              <legend className="o-sr">Sign in or create account</legend>
+              <div className="o-seg">
+                <label className={mode === "sign-up" ? "o-on" : ""}>
+                  <input type="radio" name="acct-mode" checked={mode === "sign-up"} onChange={() => setMode("sign-up")} />
+                  <span>Create account</span>
+                </label>
+                <label className={mode === "sign-in" ? "o-on" : ""}>
+                  <input type="radio" name="acct-mode" checked={mode === "sign-in"} onChange={() => setMode("sign-in")} />
+                  <span>Sign in</span>
+                </label>
+              </div>
+            </fieldset>
             <form onSubmit={submit} className="o-stack">
               {mode === "sign-up" && (
                 <div>

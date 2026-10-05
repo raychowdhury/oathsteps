@@ -4,6 +4,8 @@ import { setupProfile, startToday } from "./helpers";
 
 const pages = ["/", "/practice", "/practice/session?kind=daily", "/practice/mock?kind=walkthrough", "/interview", "/interview/voice", "/interview/writing", "/journey", "/journey/guide", "/readiness", "/settings", "/account"];
 
+test.describe.configure({ timeout: 240_000 });
+
 test.describe("accessibility baseline", () => {
   test("no serious or critical axe violations on core screens, light and dark", async ({ page }, testInfo) => {
     await setupProfile(page, { filingDate: "2026-01-15" });

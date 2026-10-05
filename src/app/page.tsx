@@ -53,7 +53,7 @@ export default function TodayPage() {
   );
 
   return (
-    <Screen title="OathSteps" tab="today" demo={s.demo} actions={<div className="o-phone" style={{ display: "contents" }}>{startButton}</div>}>
+    <Screen title="OathSteps" tab="today" demo={s.demo} actions={<div className="o-phone">{startButton}</div>}>
       <div className="o-page">
         <div className="o-stack-s">
           <h1 className="o-h1">{greeting()}</h1>

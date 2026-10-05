@@ -15,6 +15,7 @@ Design handoff port. Every screen now follows the Claude Design prototype (`oath
 
 ## Failures / open findings
 - Browser suite rerun pending.
+- Docker image build could not be verified locally: the Docker daemon is not running on this machine (`docker build` fails to connect). CI runs `docker build --target runner`; `docker compose config` validated locally.
 - Content is machine-checked only (owner gate).
 
 ## Resume procedure

@@ -2,34 +2,450 @@
   "$comment": "Feature ledger. status: planned | in-progress | verified | blocked. A feature is verified only when `evidence` cites a check result recorded against the current code (see .harness/evidence/). Changing the code that a feature depends on resets it to in-progress until re-verified.",
   "updatedAt": "2026-10-05",
   "features": [
-    { "id": "F-001", "title": "Content ingestion and validation from official USCIS banks", "track": "core", "priority": 1, "dependsOn": [], "requirement": "Reproducible ingestion of the 2008 (100) and 2025 (128) banks with hashes, stable IDs, answer variants, required counts, special-bank membership, dynamic-answer rules and provenance; validator exits nonzero on any failure.", "acceptance": ["pnpm content:ingest regenerates packs deterministically", "pnpm content:validate passes: 128/20, 100/20, hashes match SOURCES.json", "Dynamic answers are flagged and carry an official lookup URL"], "status": "planned", "evidence": [] },
-    { "id": "F-002", "title": "Test-path routing (filing date, unknown, special consideration)", "track": "core", "priority": 1, "dependsOn": ["F-001"], "requirement": "Pure logic selects 2008 vs 2025 by filing date with the 2025-10-20 boundary; unknown stays unknown; 65/20 selects the designated 20; user can correct the path.", "acceptance": ["Unit tests for 2025-10-19 vs 2025-10-20, null date, timezone-safe date-only handling", "Setup screen explains the applicable path and allows correction"], "status": "planned", "evidence": [] },
-    { "id": "F-003", "title": "Guest onboarding and Setup", "track": "core", "priority": 1, "dependsOn": ["F-002"], "requirement": "Guest entry without an account; ask filing date or 'I'm not sure', optional state, optional interview date, 65/20 question; link exception guidance without deciding eligibility.", "acceptance": ["Playwright: fresh visitor completes setup and lands on Today", "Profile persists across reload"], "status": "planned", "evidence": [] },
-    { "id": "F-004", "title": "Today screen with daily plan", "track": "core", "priority": 1, "dependsOn": ["F-003", "F-006"], "requirement": "Shows selected bank, due review count, a few new questions, one practical task, one prominent start button, countdowns derived only from entered dates; first-time and returning states.", "acceptance": ["Playwright: first-time and returning Today states render correctly", "No countdown shown when no interview date entered"], "status": "planned", "evidence": [] },
-    { "id": "F-005", "title": "Recall-first practice cards with self-assessment", "track": "core", "priority": 1, "dependsOn": ["F-001", "F-003"], "requirement": "Question shown before answer; reveal; correct/incorrect/uncertain; records method, hinted flag, question revision; duplicate submits do not double count.", "acceptance": ["Unit test: duplicate attempt id stored once", "Playwright: complete a card and see the attempt in history"], "status": "planned", "evidence": [] },
-    { "id": "F-006", "title": "Deterministic review scheduler and daily workload", "track": "core", "priority": 1, "dependsOn": ["F-005"], "requirement": "Documented interval ladder, injectable clock, due items, catch-up after missed days without punishment, hinted recall does not advance mastery.", "acceptance": ["Unit tests cover interval advancement, uncertain demotion, hinted no-advance, missed-day catch-up cap"], "status": "planned", "evidence": [] },
-    { "id": "F-007", "title": "Topic browsing, bookmarks, weak-question review, multiple-choice mode", "track": "core", "priority": 2, "dependsOn": ["F-005"], "requirement": "Browse by section, bookmark, review weak/uncertain questions, optional multiple-choice mode recorded as recognition not recall; dynamic questions excluded from MC.", "acceptance": ["Playwright: browse topics, bookmark, run MC mode; attempt records method=multiple-choice"], "status": "planned", "evidence": [] },
-    { "id": "F-008", "title": "Mock test state machine", "track": "core", "priority": 1, "dependsOn": ["F-002", "F-005"], "requirement": "Configured path, seeded selection, active, pause/resume, stop rules (2025: 12 correct or 9 incorrect; 2008 and 65/20: 6 correct or 5 incorrect), results, follow-up review; reports attempted count and method.", "acceptance": ["Unit tests for both paths, special, pass/fail/early-stop, resume", "Playwright: complete a mock and see results"], "status": "planned", "evidence": [] },
-    { "id": "F-009", "title": "Interview English exercises", "track": "core", "priority": 2, "dependsOn": ["F-003"], "requirement": "Reading, writing (dictation), instruction comprehension and N-400 vocabulary/conversation prompts; self-assessed; never invents personal answers.", "acceptance": ["Playwright: complete one task of each kind; results labeled self-reported"], "status": "planned", "evidence": [] },
-    { "id": "F-010", "title": "Readiness indicators from stored events", "track": "core", "priority": 2, "dependsOn": ["F-005", "F-006", "F-008", "F-009"], "requirement": "Coverage, delayed unprompted recall (numerator/denominator/delay/method), recent mocks with dates, English tasks (self-reported), uncertain answers; explicit empty state; no pass probability.", "acceptance": ["Unit tests for each indicator and the empty state", "UI shows definitions and dates"], "status": "planned", "evidence": [] },
-    { "id": "F-011", "title": "Journey milestones", "track": "core", "priority": 2, "dependsOn": ["F-003"], "requirement": "Editable manual milestones: filed, receipt, biometrics attended/reused, interview, continuation/retest, decision, oath; alternative outcomes; rescheduling; approval separate from oath; user-entered label.", "acceptance": ["Playwright: add, edit, reschedule milestones; biometrics reuse and retest branches"], "status": "planned", "evidence": [] },
-    { "id": "F-012", "title": "Stage guide and checklists with reminders and .ics export", "track": "core", "priority": 2, "dependsOn": ["F-011"], "requirement": "Stage-based original guidance with official links and review metadata; tasks expand/complete/get a reminder; in-app due reminders; .ics export; no background-notification promise.", "acceptance": ["Playwright: complete a task, set a reminder, download .ics", "Validator checks guide sources are official domains"], "status": "planned", "evidence": [] },
-    { "id": "F-013", "title": "Settings: preferences, path correction, export, reset, deletion", "track": "core", "priority": 2, "dependsOn": ["F-003"], "requirement": "Text size and audio preferences, reminder categories, test-path correction, optional dates, download status, JSON export, reset, deletion.", "acceptance": ["Playwright: export produces JSON with attempts; reset clears; deletion clears local data"], "status": "planned", "evidence": [] },
-    { "id": "F-014", "title": "Guest persistence in IndexedDB", "track": "core", "priority": 1, "dependsOn": [], "requirement": "Profile, attempts, review state, mocks, milestones, checklist, reminders survive reload; stable event IDs.", "acceptance": ["Playwright: reload preserves profile and attempts"], "status": "planned", "evidence": [] },
-    { "id": "F-015", "title": "Optional accounts (Better Auth, email/password)", "track": "core", "priority": 3, "dependsOn": ["F-014"], "requirement": "Register, login, logout, session handling, per-user isolation; dev mail sink for verification/reset; production mail documented.", "acceptance": ["Playwright: sign up, sign out, sign in; second user cannot read first user's data"], "status": "planned", "evidence": [] },
-    { "id": "F-016", "title": "Consented migration and idempotent sync", "track": "core", "priority": 3, "dependsOn": ["F-015"], "requirement": "Joining an account asks consent to migrate guest progress; outbox with stable event IDs; failure/retry state visible; sign-out clears private cache; deletion covers local, synced and derived data.", "acceptance": ["Unit test: replaying the same event twice stores one record", "Playwright: migrate guest progress, sign out, verify cache cleared"], "status": "planned", "evidence": [] },
-    { "id": "F-017", "title": "Audio via browser speech synthesis with fallback", "track": "core", "priority": 2, "dependsOn": ["F-005"], "requirement": "Play question/answer with availability and error handling; readable text always available; speed control; no offline-audio promise.", "acceptance": ["Playwright: audio control renders a disabled/explanatory state when synthesis is unavailable"], "status": "planned", "evidence": [] },
-    { "id": "F-018", "title": "PWA manifest, service worker, offline content", "track": "core", "priority": 2, "dependsOn": ["F-014"], "requirement": "Manifest and icons; service worker caches app shell and content packs after explicit download; cold offline reload works; auth and sync endpoints never cached; queued progress syncs on reconnect.", "acceptance": ["Playwright: download content, go offline, reload, practice still works", "sw.js excludes /api/auth and /api/sync"], "status": "planned", "evidence": [] },
-    { "id": "F-019", "title": "Dynamic (changing) answers handled without guessing", "track": "core", "priority": 2, "dependsOn": ["F-001"], "requirement": "Officeholder/state/district questions show an official lookup, let the learner record a confirmed answer with region and date, remain unscored until confirmed, and are excluded from multiple choice.", "acceptance": ["Playwright: dynamic question shows lookup link and confirm form; unconfirmed is unscored in mock"], "status": "planned", "evidence": [] },
-    { "id": "F-020", "title": "Accessibility baseline", "track": "core", "priority": 2, "dependsOn": ["F-004"], "requirement": "WCAG 2.2 AA target: axe checks on core pages, keyboard navigation, visible focus, labels, 390 px layout, reduced motion, text resizing.", "acceptance": ["axe reports no serious/critical violations on Today, Practice, Mock, Journey, Settings", "Playwright keyboard flow through a card"], "status": "planned", "evidence": [] },
-    { "id": "F-021", "title": "Security and privacy controls", "track": "core", "priority": 2, "dependsOn": ["F-015", "F-016"], "requirement": "Input validation (zod), authorization on every private route, secure cookies, origin checks, request limits, no SSN/A-number/N-400 collection, redacted logs, no secrets in bundles.", "acceptance": ["Unit tests: sync rejects unauthenticated and foreign-user events", "Headers include CSP and no-store for private responses"], "status": "planned", "evidence": [] },
-    { "id": "F-022", "title": "Verification runner, CI, Docker deployment", "track": "core", "priority": 3, "dependsOn": [], "requirement": "pnpm verify runs validate, typecheck, lint, unit, build, e2e with nonzero exit on required failure and records evidence; GitHub Actions CI; Dockerfile and compose with persistent volume; backup/restore guide.", "acceptance": ["pnpm verify writes .harness/evidence/latest.json", "docker compose config validates"], "status": "planned", "evidence": [] },
-    { "id": "F-023", "title": "Internationalization structure (English only shipped)", "track": "core", "priority": 3, "dependsOn": [], "requirement": "Message catalogue structure with English; no language selector offered until a reviewed translation exists.", "acceptance": ["No language selector in UI; messages loaded from catalogue"], "status": "planned", "evidence": [] },
-    { "id": "F-024", "title": "Content pack versioning, integrity and correction reports", "track": "core", "priority": 3, "dependsOn": ["F-001"], "requirement": "Attempts retain pack version; integrity check command; update/rollback documented; in-app 'report a problem with this answer' stored locally and exportable.", "acceptance": ["Attempt records include packVersion", "Correction report saved and included in export"], "status": "planned", "evidence": [] },
-    { "id": "C-001", "title": "Speech transcription and feedback provider", "track": "conditional", "priority": 9, "dependsOn": ["F-005"], "requirement": "Feature-flagged, consent, server-side keys, inconclusive outcomes, retention controls; no fake results without credentials.", "acceptance": ["Adapter contract and tests; UI shows self-assessment when provider disabled"], "status": "planned", "evidence": [] },
-    { "id": "C-002", "title": "USCIS case status synchronization", "track": "conditional", "priority": 9, "dependsOn": ["F-011"], "requirement": "Adapter contract and tests only until organization approval and credentials exist; manual journey remains complete.", "acceptance": ["Contract tests pass; no live calls without configuration"], "status": "planned", "evidence": [] },
-    { "id": "C-003", "title": "Payments (test-mode coaching access)", "track": "conditional", "priority": 9, "dependsOn": ["F-015"], "requirement": "Only with provider configuration: server-verified entitlement, idempotent webhooks; otherwise checkout omitted and documented.", "acceptance": ["Checkout absent when unconfigured; documentation lists required configuration"], "status": "planned", "evidence": [] },
-    { "id": "C-004", "title": "Push reminders", "track": "conditional", "priority": 9, "dependsOn": ["F-012"], "requirement": "Optional delivery with consent, subscription management and a real scheduler; in-app/ICS reminders remain usable without it.", "acceptance": ["Not built unless VAPID keys and a scheduler are configured"], "status": "planned", "evidence": [] },
-    { "id": "L-001", "title": "Additional reviewed translations, helper/class tools, native apps", "track": "later", "priority": 20, "dependsOn": [], "requirement": "Out of scope for this build.", "acceptance": [], "status": "planned", "evidence": [] }
+    {
+      "id": "F-001",
+      "title": "Content ingestion and validation from official USCIS banks",
+      "track": "core",
+      "priority": 1,
+      "dependsOn": [],
+      "requirement": "Reproducible ingestion of the 2008 (100) and 2025 (128) banks with hashes, stable IDs, answer variants, required counts, special-bank membership, dynamic-answer rules and provenance; validator exits nonzero on any failure.",
+      "acceptance": [
+        "pnpm content:ingest regenerates packs deterministically",
+        "pnpm content:validate passes: 128/20, 100/20, hashes match SOURCES.json",
+        "Dynamic answers are flagged and carry an official lookup URL"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-002",
+      "title": "Test-path routing (filing date, unknown, special consideration)",
+      "track": "core",
+      "priority": 1,
+      "dependsOn": [
+        "F-001"
+      ],
+      "requirement": "Pure logic selects 2008 vs 2025 by filing date with the 2025-10-20 boundary; unknown stays unknown; 65/20 selects the designated 20; user can correct the path.",
+      "acceptance": [
+        "Unit tests for 2025-10-19 vs 2025-10-20, null date, timezone-safe date-only handling",
+        "Setup screen explains the applicable path and allows correction"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-003",
+      "title": "Guest onboarding and Setup",
+      "track": "core",
+      "priority": 1,
+      "dependsOn": [
+        "F-002"
+      ],
+      "requirement": "Guest entry without an account; ask filing date or 'I'm not sure', optional state, optional interview date, 65/20 question; link exception guidance without deciding eligibility.",
+      "acceptance": [
+        "Playwright: fresh visitor completes setup and lands on Today",
+        "Profile persists across reload"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-004",
+      "title": "Today screen with daily plan",
+      "track": "core",
+      "priority": 1,
+      "dependsOn": [
+        "F-003",
+        "F-006"
+      ],
+      "requirement": "Shows selected bank, due review count, a few new questions, one practical task, one prominent start button, countdowns derived only from entered dates; first-time and returning states.",
+      "acceptance": [
+        "Playwright: first-time and returning Today states render correctly",
+        "No countdown shown when no interview date entered"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-005",
+      "title": "Recall-first practice cards with self-assessment",
+      "track": "core",
+      "priority": 1,
+      "dependsOn": [
+        "F-001",
+        "F-003"
+      ],
+      "requirement": "Question shown before answer; reveal; correct/incorrect/uncertain; records method, hinted flag, question revision; duplicate submits do not double count.",
+      "acceptance": [
+        "Unit test: duplicate attempt id stored once",
+        "Playwright: complete a card and see the attempt in history"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-006",
+      "title": "Deterministic review scheduler and daily workload",
+      "track": "core",
+      "priority": 1,
+      "dependsOn": [
+        "F-005"
+      ],
+      "requirement": "Documented interval ladder, injectable clock, due items, catch-up after missed days without punishment, hinted recall does not advance mastery.",
+      "acceptance": [
+        "Unit tests cover interval advancement, uncertain demotion, hinted no-advance, missed-day catch-up cap"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-007",
+      "title": "Topic browsing, bookmarks, weak-question review, multiple-choice mode",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-005"
+      ],
+      "requirement": "Browse by section, bookmark, review weak/uncertain questions, optional multiple-choice mode recorded as recognition not recall; dynamic questions excluded from MC.",
+      "acceptance": [
+        "Playwright: browse topics, bookmark, run MC mode; attempt records method=multiple-choice"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-008",
+      "title": "Mock test state machine",
+      "track": "core",
+      "priority": 1,
+      "dependsOn": [
+        "F-002",
+        "F-005"
+      ],
+      "requirement": "Configured path, seeded selection, active, pause/resume, stop rules (2025: 12 correct or 9 incorrect; 2008 and 65/20: 6 correct or 5 incorrect), results, follow-up review; reports attempted count and method.",
+      "acceptance": [
+        "Unit tests for both paths, special, pass/fail/early-stop, resume",
+        "Playwright: complete a mock and see results"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-009",
+      "title": "Interview English exercises",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-003"
+      ],
+      "requirement": "Reading, writing (dictation), instruction comprehension and N-400 vocabulary/conversation prompts; self-assessed; never invents personal answers.",
+      "acceptance": [
+        "Playwright: complete one task of each kind; results labeled self-reported"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-010",
+      "title": "Readiness indicators from stored events",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-005",
+        "F-006",
+        "F-008",
+        "F-009"
+      ],
+      "requirement": "Coverage, delayed unprompted recall (numerator/denominator/delay/method), recent mocks with dates, English tasks (self-reported), uncertain answers; explicit empty state; no pass probability.",
+      "acceptance": [
+        "Unit tests for each indicator and the empty state",
+        "UI shows definitions and dates"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-011",
+      "title": "Journey milestones",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-003"
+      ],
+      "requirement": "Editable manual milestones: filed, receipt, biometrics attended/reused, interview, continuation/retest, decision, oath; alternative outcomes; rescheduling; approval separate from oath; user-entered label.",
+      "acceptance": [
+        "Playwright: add, edit, reschedule milestones; biometrics reuse and retest branches"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-012",
+      "title": "Stage guide and checklists with reminders and .ics export",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-011"
+      ],
+      "requirement": "Stage-based original guidance with official links and review metadata; tasks expand/complete/get a reminder; in-app due reminders; .ics export; no background-notification promise.",
+      "acceptance": [
+        "Playwright: complete a task, set a reminder, download .ics",
+        "Validator checks guide sources are official domains"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-013",
+      "title": "Settings: preferences, path correction, export, reset, deletion",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-003"
+      ],
+      "requirement": "Text size and audio preferences, reminder categories, test-path correction, optional dates, download status, JSON export, reset, deletion.",
+      "acceptance": [
+        "Playwright: export produces JSON with attempts; reset clears; deletion clears local data"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-014",
+      "title": "Guest persistence in IndexedDB",
+      "track": "core",
+      "priority": 1,
+      "dependsOn": [],
+      "requirement": "Profile, attempts, review state, mocks, milestones, checklist, reminders survive reload; stable event IDs.",
+      "acceptance": [
+        "Playwright: reload preserves profile and attempts"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-015",
+      "title": "Optional accounts (Better Auth, email/password)",
+      "track": "core",
+      "priority": 3,
+      "dependsOn": [
+        "F-014"
+      ],
+      "requirement": "Register, login, logout, session handling, per-user isolation; dev mail sink for verification/reset; production mail documented.",
+      "acceptance": [
+        "Playwright: sign up, sign out, sign in; second user cannot read first user's data"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-016",
+      "title": "Consented migration and idempotent sync",
+      "track": "core",
+      "priority": 3,
+      "dependsOn": [
+        "F-015"
+      ],
+      "requirement": "Joining an account asks consent to migrate guest progress; outbox with stable event IDs; failure/retry state visible; sign-out clears private cache; deletion covers local, synced and derived data.",
+      "acceptance": [
+        "Unit test: replaying the same event twice stores one record",
+        "Playwright: migrate guest progress, sign out, verify cache cleared"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-017",
+      "title": "Audio via browser speech synthesis with fallback",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-005"
+      ],
+      "requirement": "Play question/answer with availability and error handling; readable text always available; speed control; no offline-audio promise.",
+      "acceptance": [
+        "Playwright: audio control renders a disabled/explanatory state when synthesis is unavailable"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-018",
+      "title": "PWA manifest, service worker, offline content",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-014"
+      ],
+      "requirement": "Manifest and icons; service worker caches app shell and content packs after explicit download; cold offline reload works; auth and sync endpoints never cached; queued progress syncs on reconnect.",
+      "acceptance": [
+        "Playwright: download content, go offline, reload, practice still works",
+        "sw.js excludes /api/auth and /api/sync"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-019",
+      "title": "Dynamic (changing) answers handled without guessing",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-001"
+      ],
+      "requirement": "Officeholder/state/district questions show an official lookup, let the learner record a confirmed answer with region and date, remain unscored until confirmed, and are excluded from multiple choice.",
+      "acceptance": [
+        "Playwright: dynamic question shows lookup link and confirm form; unconfirmed is unscored in mock"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-020",
+      "title": "Accessibility baseline",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-004"
+      ],
+      "requirement": "WCAG 2.2 AA target: axe checks on core pages, keyboard navigation, visible focus, labels, 390 px layout, reduced motion, text resizing.",
+      "acceptance": [
+        "axe reports no serious/critical violations on Today, Practice, Mock, Journey, Settings",
+        "Playwright keyboard flow through a card"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-021",
+      "title": "Security and privacy controls",
+      "track": "core",
+      "priority": 2,
+      "dependsOn": [
+        "F-015",
+        "F-016"
+      ],
+      "requirement": "Input validation (zod), authorization on every private route, secure cookies, origin checks, request limits, no SSN/A-number/N-400 collection, redacted logs, no secrets in bundles.",
+      "acceptance": [
+        "Unit tests: sync rejects unauthenticated and foreign-user events",
+        "Headers include CSP and no-store for private responses"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-022",
+      "title": "Verification runner, CI, Docker deployment",
+      "track": "core",
+      "priority": 3,
+      "dependsOn": [],
+      "requirement": "pnpm verify runs validate, typecheck, lint, unit, build, e2e with nonzero exit on required failure and records evidence; GitHub Actions CI; Dockerfile and compose with persistent volume; backup/restore guide.",
+      "acceptance": [
+        "pnpm verify writes .harness/evidence/latest.json",
+        "docker compose config validates"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-023",
+      "title": "Internationalization structure (English only shipped)",
+      "track": "core",
+      "priority": 3,
+      "dependsOn": [],
+      "requirement": "Message catalogue structure with English; no language selector offered until a reviewed translation exists.",
+      "acceptance": [
+        "No language selector in UI; messages loaded from catalogue"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "F-024",
+      "title": "Content pack versioning, integrity and correction reports",
+      "track": "core",
+      "priority": 3,
+      "dependsOn": [
+        "F-001"
+      ],
+      "requirement": "Attempts retain pack version; integrity check command; update/rollback documented; in-app 'report a problem with this answer' stored locally and exportable.",
+      "acceptance": [
+        "Attempt records include packVersion",
+        "Correction report saved and included in export"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
+      "id": "C-001",
+      "title": "Speech transcription and feedback provider",
+      "track": "conditional",
+      "priority": 9,
+      "dependsOn": [
+        "F-005"
+      ],
+      "requirement": "Feature-flagged, consent, server-side keys, inconclusive outcomes, retention controls; no fake results without credentials.",
+      "acceptance": [
+        "Adapter contract and tests; UI shows self-assessment when provider disabled"
+      ],
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "id": "C-002",
+      "title": "USCIS case status synchronization",
+      "track": "conditional",
+      "priority": 9,
+      "dependsOn": [
+        "F-011"
+      ],
+      "requirement": "Adapter contract and tests only until organization approval and credentials exist; manual journey remains complete.",
+      "acceptance": [
+        "Contract tests pass; no live calls without configuration"
+      ],
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "id": "C-003",
+      "title": "Payments (test-mode coaching access)",
+      "track": "conditional",
+      "priority": 9,
+      "dependsOn": [
+        "F-015"
+      ],
+      "requirement": "Only with provider configuration: server-verified entitlement, idempotent webhooks; otherwise checkout omitted and documented.",
+      "acceptance": [
+        "Checkout absent when unconfigured; documentation lists required configuration"
+      ],
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "id": "C-004",
+      "title": "Push reminders",
+      "track": "conditional",
+      "priority": 9,
+      "dependsOn": [
+        "F-012"
+      ],
+      "requirement": "Optional delivery with consent, subscription management and a real scheduler; in-app/ICS reminders remain usable without it.",
+      "acceptance": [
+        "Not built unless VAPID keys and a scheduler are configured"
+      ],
+      "status": "planned",
+      "evidence": []
+    },
+    {
+      "id": "L-001",
+      "title": "Additional reviewed translations, helper/class tools, native apps",
+      "track": "later",
+      "priority": 20,
+      "dependsOn": [],
+      "requirement": "Out of scope for this build.",
+      "acceptance": [],
+      "status": "planned",
+      "evidence": []
+    }
   ]
 }

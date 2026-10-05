@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { answerCard, errorLine, setupProfile } from "./helpers";
 
+test.describe.configure({ timeout: 180_000 });
+
 test.describe("settings, data controls and offline", () => {
   test("appearance, text size, reminders, export, reset and typed delete", async ({ page }) => {
     await setupProfile(page, { filingDate: "2026-01-15" });

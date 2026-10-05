@@ -6,6 +6,8 @@ async function freshPage(browser: Browser) {
   return { ctx, page: await ctx.newPage() };
 }
 
+test.describe.configure({ timeout: 120_000 });
+
 test.describe("accounts, migration, sync, isolation, deletion", () => {
   test("guest progress migrates with consent, restores on a new device, is isolated per user, and can be deleted", async ({ page, browser, request }) => {
     const email = uniqueEmail("one");

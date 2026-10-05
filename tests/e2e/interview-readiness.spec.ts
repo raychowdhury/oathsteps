@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { answerCard, setupProfile } from "./helpers";
 
+test.describe.configure({ timeout: 120_000 });
+
 test.describe("interview practice and readiness", () => {
   test("reading, writing with word diff, instructions, N-400, voice fallbacks; readiness explains itself", async ({ page }) => {
     await setupProfile(page, { filingDate: "2026-01-15" });

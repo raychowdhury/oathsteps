@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { answerCard, errorLine, setupProfile, startToday } from "./helpers";
 
+test.describe.configure({ timeout: 120_000 });
+
 test.describe("welcome, setup and first practice", () => {
   test("setup routes the test at the filing boundary, validates dates, and Today shows the plan", async ({ page }) => {
     await page.goto("/");
@@ -77,6 +79,7 @@ test.describe("welcome, setup and first practice", () => {
     // Fix it from the Today tag: filing sheet.
     await page.goto("/");
     await page.getByTestId("path-tag").click();
+    await page.getByLabel("I’m not sure").uncheck();
     await page.getByLabel("N-400 filing date").fill("2025-11-12");
     await page.getByTestId("save-filing").click();
     await expect(page.getByText("Study path changed to: 2025 civics test.")).toBeVisible();

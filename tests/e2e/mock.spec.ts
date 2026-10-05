@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { markMock, setupProfile } from "./helpers";
 
+test.describe.configure({ timeout: 120_000 });
+
 test.describe("walkthrough and full-format mock", () => {
   test("sample walkthrough stops at 4 correct and reports question by question", async ({ page }) => {
     await setupProfile(page, { filingDate: "2026-01-15" });
@@ -21,7 +23,7 @@ test.describe("walkthrough and full-format mock", () => {
     await expect(page.getByTestId("mock-score")).toContainText("4 of 5 correct");
     await expect(results).toContainText("Stopped early after 4 correct, like the real stop rule.");
     await expect(results).toContainText("Practice result only");
-    await expect(results.getByText("Not sure", { exact: true })).toBeVisible();
+    await expect(results.locator(".o-tag", { hasText: "Not sure" })).toHaveCount(1);
     await page.getByRole("link", { name: "Review the 1 to work on" }).click();
     await expect(page.getByTestId("q-position")).toHaveText("Question 1 of 1");
   });

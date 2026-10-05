@@ -93,11 +93,12 @@ textarea.o-input{min-height:4.5em;resize:vertical}
 .o-seg{display:flex;flex-wrap:wrap;gap:.375em}
 .o-seg label{flex:1 1 auto;display:flex;align-items:center;justify-content:center;gap:.375em;min-height:2.75em;padding:.375em .75em;border:1.5px solid var(--ctl);border-radius:12px;background:#fff;font-weight:600;cursor:pointer;text-align:center;position:relative}
 .o-seg input{position:absolute;opacity:0;width:1px;height:1px}
+.o-seg label>span{pointer-events:none}
 .o-seg label.o-on{border-color:var(--tls);background:var(--tlx);color:var(--tls)}
 .o-seg input:focus-visible + span{outline:3px solid var(--tls);outline-offset:3px;border-radius:4px}
 .o-switch{display:flex;align-items:center;gap:.75em;min-height:2.75em;cursor:pointer;position:relative}
 .o-switch input{position:absolute;opacity:0;width:1px;height:1px}
-.o-switch-ui{width:2.75em;height:1.625em;border-radius:999px;background:#fff;border:1.5px solid var(--ctl);position:relative;flex:none;transition:background-color .15s ease}
+.o-switch-ui{width:2.75em;height:1.625em;border-radius:999px;background:#fff;border:1.5px solid var(--ctl);position:relative;flex:none;transition:background-color .15s ease;pointer-events:none}
 .o-switch-ui::after{content:"";position:absolute;top:.1875em;left:.1875em;width:1em;height:1em;border-radius:50%;background:var(--mut);transition:transform .15s ease}
 .o-switch input:checked + .o-switch-ui{background:var(--tl);border-color:var(--tl)}
 .o-switch input:checked + .o-switch-ui::after{transform:translateX(1.125em);background:#fff}

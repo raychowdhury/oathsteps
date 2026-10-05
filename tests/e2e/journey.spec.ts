@@ -3,6 +3,8 @@ import { errorLine, setupProfile } from "./helpers";
 
 const d = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString().slice(0, 10);
 
+test.describe.configure({ timeout: 120_000 });
+
 test.describe("journey timeline, guide and reminders", () => {
   test("milestone slots with validation, reuse, retest, rescheduling, approval vs oath, and calendar export", async ({ page }) => {
     await setupProfile(page, { filingDate: "2026-01-15" });

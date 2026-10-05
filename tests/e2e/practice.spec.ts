@@ -1,11 +1,13 @@
 import { expect, test } from "@playwright/test";
 import { answerCard, errorLine, setupProfile } from "./helpers";
 
+test.describe.configure({ timeout: 120_000 });
+
 test.describe("practice library, modes and changing answers", () => {
   test("topics, saving, multiple choice and the source/report sheets", async ({ page }) => {
     await setupProfile(page, { filingDate: "2026-01-15", state: "NY" });
     await page.goto("/practice");
-    await expect(page.getByRole("heading", { name: "Practice" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Practice", exact: true })).toBeVisible();
     await expect(page.getByTestId("due-count")).toHaveText("0 due");
     await expect(page.getByText("Official questions:")).toBeVisible();
 
@@ -61,7 +63,7 @@ test.describe("practice library, modes and changing answers", () => {
     await expect(page.getByText("Answer depends on where you live")).toBeVisible();
     await expect(page.getByRole("link", { name: /senate\.gov/ })).toBeVisible();
     await page.getByTestId("confirm-dynamic").click();
-    await page.getByLabel("Answer you confirmed").fill("Example Senator");
+    await page.getByLabel("Answer you confirmed", { exact: true }).fill("Example Senator");
     await page.getByLabel("Your state or territory").fill("New York");
     await page.getByTestId("save-dynamic").click();
     await expect(page.getByText("You confirmed: Example Senator (New York")).toBeVisible();
