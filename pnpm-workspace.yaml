@@ -8,3 +8,8 @@ onlyBuiltDependencies:
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+# Security overrides for transitive dependencies with published advisories (pnpm audit --prod).
+# mysql2 is better-auth's optional MySQL adapter (unused here); deepmerge-ts is Prisma's config loader.
+overrides:
+  mysql2: ">=3.23.1"
+  deepmerge-ts: ">=8.0.0"

@@ -713,6 +713,30 @@
       ]
     },
     {
+      "id": "F-025",
+      "title": "Release readiness: production mail, password reset, startup config guard, container deployment, legal pages, expert-review gate",
+      "track": "core",
+      "priority": 3,
+      "dependsOn": [
+        "F-015",
+        "F-021",
+        "F-022",
+        "F-024"
+      ],
+      "requirement": "The four owner gates (content review, mail provider, hosting with HTTPS, privacy policy and terms) are implemented as far as software can: a real mail transport, a working forgot-password flow, a startup guard for unsafe production configuration, a tested container deployment with automatic HTTPS, drafted legal pages that stay marked Draft until a lawyer signs off, a review-record gate bound to content hashes, and one command that lists the gates still open.",
+      "acceptance": [
+        "Resend transport and sink unit-tested; mail failure never blocks sign-up and never logs an address",
+        "Browser test: emailed reset link sets a new password, old password and used link stop working",
+        "Unit tests: production config refuses weak secret, non-https public URL and half-configured mail",
+        "Docker smoke test in CI: stack becomes healthy and a sign-up writes to the database as the unprivileged user",
+        "Privacy notice and Terms reachable from Welcome, sign-up and Settings, show Draft until LEGAL_REVIEWED_ON, pass the accessibility sweep",
+        "Review records bound to content hash; validator rejects unreviewed claims and stale records",
+        "pnpm release:check lists open gates and exits nonzero while any is open"
+      ],
+      "status": "planned",
+      "evidence": []
+    },
+    {
       "id": "C-001",
       "title": "Speech transcription and feedback provider",
       "track": "conditional",

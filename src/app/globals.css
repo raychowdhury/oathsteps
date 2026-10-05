@@ -6,6 +6,9 @@ position:relative;overflow:hidden;background:var(--bg);color:var(--ink);font-fam
 .o-app *,.o-app *::before,.o-app *::after{box-sizing:border-box}
 .o-app h1,.o-app h2,.o-app h3,.o-app p,.o-app ul,.o-app ol{margin:0}
 .o-app ul,.o-app ol{padding:0;list-style:none}
+.o-app ul.o-bullets{list-style:disc;padding-left:1.25em;display:flex;flex-direction:column;gap:.375em}
+.o-legal{line-height:1.55}
+.o-legal h2{margin-top:.25em}
 .o-app a{color:var(--tls);text-underline-offset:2px;text-decoration:underline}
 .o-app a:hover{color:var(--ink)}
 .o-app a.o-btn,.o-app a.o-tab,.o-app a.o-iconbtn,.o-app a.o-libtn,.o-app a.o-card,.o-app a.o-tag{text-decoration:none}

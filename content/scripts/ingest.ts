@@ -9,13 +9,15 @@
  * answer lookups and required-answer counts are added here and marked as such.
  * Run: pnpm content:ingest
  */
-import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { DYNAMIC_ANSWERS, REQUIRED_COUNT_OVERRIDES } from "./ingest-rules";
+import { loadRecords, packReview, sha256 } from "./review";
 
 const ROOT = join(import.meta.dirname, "..");
 const sources = JSON.parse(readFileSync(join(ROOT, "sources", "SOURCES.json"), "utf8"));
+const { records, problems: recordProblems } = loadRecords(join(ROOT, "review", "records"));
+if (recordProblems.length) throw new Error(`Review records are invalid:\n- ${recordProblems.join("\n- ")}`);
 
 export type Answer = { text: string; note?: string };
 export type Question = {
@@ -170,22 +172,19 @@ for (const bank of BANKS) {
   if (questions.length !== bank.expectedCount) {
     throw new Error(`${bank.bank}: parsed ${questions.length}, expected ${bank.expectedCount}`);
   }
-  const body = {
+  // The hash covers the content only, so a review record can name it without depending on its own outcome.
+  const content = {
     packId: `civics-${bank.bank}`,
     bank: bank.bank,
     title: bank.bank === "2025" ? "2025 civics test (128 questions)" : "2008 civics test (100 questions)",
     appliesWhen: bank.appliesWhen,
     rules: bank.rules,
     source: { id: doc.id, title: doc.title, url: doc.url, sha256: doc.sha256, retrievedAt: sources.retrievedAt },
-    review: {
-      machineChecked: true,
-      humanReviewed: false,
-      note: "Wording and answers were machine-extracted from the official PDF and validated for counts and structure. No qualified human or legal review has been performed yet.",
-    },
     questions,
   };
-  const contentHash = createHash("sha256").update(JSON.stringify(body)).digest("hex");
-  const pack = { ...body, version: `${bank.bank}.${contentHash.slice(0, 8)}`, contentHash, generatedAt: new Date().toISOString() };
+  const contentHash = sha256(JSON.stringify(content));
+  const { questions: qs, ...head } = content;
+  const pack = { ...head, review: packReview(records, content.packId as "civics-2025" | "civics-2008", contentHash), questions: qs, version: `${bank.bank}.${contentHash.slice(0, 8)}`, contentHash, generatedAt: new Date().toISOString() };
   writeFileSync(join(ROOT, "packs", `civics-${bank.bank}.json`), JSON.stringify(pack, null, 2) + "\n");
   console.log(`${pack.packId}: ${questions.length} questions, ${questions.filter((q) => q.special).length} special, ${questions.filter((q) => q.dynamic).length} dynamic, version ${pack.version}`);
 }

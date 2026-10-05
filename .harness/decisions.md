@@ -30,3 +30,14 @@ Each entry: date, decision, why, consequence. Newest first.
 - **Study language step** keeps the design's list but only English is selectable; other languages read "Not yet available" until a reviewed translation exists.
 - **Sample walkthrough (5 questions, stop at 4 correct / 3 wrong)** is added next to the full-format mock; both use the same mock state machine with different rules.
 - **Journey model changed** from a free list of milestone events to the design's seven fixed slots with status and date; the previous model was never shipped.
+
+## 2026-10-05 (release readiness)
+
+- **Mail:** Resend over plain `fetch` (no dependency) plus the existing development sink. Chosen because it is one HTTPS call and any other provider is a small branch in `deliverMail`. Not exercised against a live account; unit-tested against a mocked call. Sign-up and reset emails are fire-and-forget so a provider outage cannot break sign-up or leak whether an address exists.
+- **Password reset:** the server already had `sendResetPassword`; no screen could trigger it, so a learner who forgot a password lost their synced data. Added the request form on `/account` and `/account/reset`. Sessions are revoked on reset.
+- **Startup guard:** `assertConfig` runs from `instrumentation.ts` in production only and refuses weak secrets, non-https public addresses and half-configured mail. Local addresses are exempt so CI and local Docker are unaffected.
+- **Hosting:** one VPS with Docker and Caddy (automatic HTTPS), because SQLite needs one writer on a persistent disk. The base compose now publishes on loopback only; the overlay in `deploy/` adds Caddy and resource limits.
+- **Defect found only by running the image:** `migrate` ran as root and created a database the unprivileged app user could not write (`SQLITE_READONLY`). CI had only built the image. Fixed by chowning `/data` to uid 1001 after migration and by adding `scripts/docker-smoke.sh` (sign-up must write) to CI.
+- **Legal pages:** drafted from what the code stores, in plain language, and shown with a "Draft, not reviewed by a lawyer" notice until `LEGAL_REVIEWED_ON` is set. Operator details are read from the environment at request time. They are not legal advice and not a substitute for review.
+- **Content review:** a review is a record bound to the content hash. The pack hash now excludes the `review` block (so a record can name it); pack `version` strings changed once as a result. Reviewer names stay in records; the app shows only credential and date. Without a qualified reviewer none of this flips on its own.
+- **Dependencies:** pnpm overrides raise `mysql2` (better-auth's unused optional MySQL adapter) and `deepmerge-ts` (Prisma config loader) past published advisories; `pnpm audit --prod` is now clean and runs in CI at `high`.

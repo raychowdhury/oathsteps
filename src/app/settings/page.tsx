@@ -316,11 +316,14 @@ export default function SettingsPage() {
               <h2 className="o-h2">Content and review</h2>
               {allPacks().map((pk) => (
                 <p key={pk.packId} className="o-meta">
-                  {pk.title}: pack {pk.version}, retrieved {pk.source.retrievedAt.slice(0, 10)}. {pk.review.humanReviewed ? "Human reviewed." : "Machine-checked, not yet expert-reviewed."}
+                  {pk.title}: pack {pk.version}, retrieved {pk.source.retrievedAt.slice(0, 10)}. {pk.review.humanReviewed ? `Reviewed${pk.review.reviewedAt ? ` ${fmtDate(pk.review.reviewedAt)}` : ""}${pk.review.reviewerCredential ? ` by ${pk.review.reviewerCredential}` : ""}.` : "Machine-checked, not yet expert-reviewed."}
                 </p>
               ))}
-              <p className="o-meta">Guide {guide.version}: {guide.review.humanReviewed ? "human reviewed" : "draft, not expert-reviewed"}.</p>
+              <p className="o-meta">Guide {guide.version}: {guide.review.humanReviewed ? `reviewed${guide.review.humanReviewedAt ? ` ${fmtDate(guide.review.humanReviewedAt)}` : ""}${guide.review.reviewerCredential ? ` by ${guide.review.reviewerCredential}` : ""}` : "draft, not expert-reviewed"}.</p>
               <p className="o-meta">OathSteps is a private study tool. Not affiliated with USCIS. Not legal advice.</p>
+              <p className="o-meta">
+                <Link href="/privacy">Privacy notice</Link> · <Link href="/terms">Terms of use</Link>
+              </p>
             </section>
           </div>
         </div>

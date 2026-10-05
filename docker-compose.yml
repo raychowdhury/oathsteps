@@ -1,9 +1,28 @@
+# Settings shared by the app and the migrate/check image, read from .env next to this file.
+x-config: &config
+  # Required. Generate with: openssl rand -base64 32
+  BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET in .env}
+  # Public URL users reach the app on (https in production).
+  BETTER_AUTH_URL: ${APP_URL:-http://localhost:3000}
+  NEXT_PUBLIC_APP_URL: ${APP_URL:-http://localhost:3000}
+  # Production mail (Resend). Leave empty to keep the development sink. See docs/DEPLOY.md.
+  MAIL_PROVIDER: ${MAIL_PROVIDER:-}
+  RESEND_API_KEY: ${RESEND_API_KEY:-}
+  MAIL_FROM: ${MAIL_FROM:-}
+  # Shown on the Privacy notice and Terms pages.
+  LEGAL_ENTITY: ${LEGAL_ENTITY:-}
+  LEGAL_CONTACT_EMAIL: ${LEGAL_CONTACT_EMAIL:-}
+  LEGAL_JURISDICTION: ${LEGAL_JURISDICTION:-}
+  LEGAL_REVIEWED_ON: ${LEGAL_REVIEWED_ON:-}
+
 services:
+  # Applies database migrations, then exits. Also the place to run `pnpm release:check` (docs/DEPLOY.md).
   migrate:
     build:
       context: .
       target: migrate
     environment:
+      <<: *config
       DATABASE_URL: file:/data/oathsteps.db
     volumes:
       - oathsteps-data:/data
@@ -17,15 +36,12 @@ services:
       migrate:
         condition: service_completed_successfully
     environment:
+      <<: *config
       DATABASE_URL: file:/data/oathsteps.db
       MAIL_SINK_DIR: /data/mail
-      # Required. Generate with: openssl rand -base64 32
-      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET in .env}
-      # Public URL users reach the app on (https in production).
-      BETTER_AUTH_URL: ${APP_URL:-http://localhost:3000}
-      NEXT_PUBLIC_APP_URL: ${APP_URL:-http://localhost:3000}
+    # Loopback only: in production Caddy (deploy/docker-compose.prod.yml) is the public entry point.
     ports:
-      - "${HOST_PORT:-3000}:3000"
+      - "127.0.0.1:${HOST_PORT:-3000}:3000"
     volumes:
       - oathsteps-data:/data
     restart: unless-stopped

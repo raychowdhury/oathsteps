@@ -5,11 +5,14 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { approvedFor, handwrittenHash, loadRecords, sha256 } from "./review";
 
 const ROOT = join(import.meta.dirname, "..");
 const sources = JSON.parse(readFileSync(join(ROOT, "sources", "SOURCES.json"), "utf8"));
 const failures: string[] = [];
 const fail = (m: string) => failures.push(m);
+const { records, problems: recordProblems } = loadRecords(join(ROOT, "review", "records"));
+for (const p of recordProblems) fail(`review record ${p}`);
 
 const expectations = {
   "civics-2025": { count: 128, special: 20, dynamic: 8, asked: 20, pass: 12, stopIncorrect: 9 },
@@ -36,10 +39,12 @@ for (const [packId, exp] of Object.entries(expectations)) {
     continue;
   }
   const pack = JSON.parse(readFileSync(path, "utf8"));
-  const { contentHash, version, generatedAt, ...body } = pack;
+  // The hash covers the content only; the review block is derived from review records (content/review/records).
+  const { contentHash, version, generatedAt, review, ...body } = pack;
   void version;
   void generatedAt;
-  if (createHash("sha256").update(JSON.stringify(body)).digest("hex") !== contentHash) fail(`${packId}: contentHash mismatch (pack edited after generation)`);
+  void review;
+  if (sha256(JSON.stringify(body)) !== contentHash) fail(`${packId}: contentHash mismatch (pack edited after generation)`);
   const qs = pack.questions as Array<{ id: string; number: number; prompt: string; answers: { text: string }[]; requiredCount: number; special: boolean; dynamic?: unknown; section: string; subsection: string }>;
   if (qs.length !== exp.count) fail(`${packId}: ${qs.length} questions, expected ${exp.count}`);
   if (qs.filter((q) => q.special).length !== exp.special) fail(`${packId}: special-consideration count != ${exp.special}`);
@@ -59,7 +64,9 @@ for (const [packId, exp] of Object.entries(expectations)) {
   });
   const doc = sources.documents.find((d: { id: string }) => d.id === pack.source.id);
   if (!doc || doc.sha256 !== pack.source.sha256) fail(`${packId}: pack source hash does not match SOURCES.json`);
-  if (pack.review?.humanReviewed === true) fail(`${packId}: humanReviewed is true but no reviewer record exists in this repo`);
+  const approval = approvedFor(records, packId as "civics-2025" | "civics-2008", contentHash);
+  if (pack.review?.humanReviewed === true && !approval) fail(`${packId}: humanReviewed is true but no approved review record matches this content`);
+  if (approval && pack.review?.humanReviewed !== true) fail(`${packId}: an approved review record exists for this content; run pnpm content:ingest to apply it`);
 }
 
 const guidePath = join(ROOT, "guide", "stages.json");
@@ -79,7 +86,14 @@ else {
       if (item.action && !["filing", "settings", "journey"].includes(item.action)) fail(`guide ${item.id}: unknown action ${item.action}`);
     }
   }
-  if (guide.review?.humanReviewed === true) fail("guide: humanReviewed true without reviewer record");
+  if (guide.review?.humanReviewed === true && !approvedFor(records, "guide", handwrittenHash(guide))) fail("guide: humanReviewed is true but no approved review record matches the current guide text (edited since review?)");
+}
+
+const englishPath = join(ROOT, "english", "tasks.json");
+if (!existsSync(englishPath)) fail("english/tasks.json missing");
+else {
+  const english = JSON.parse(readFileSync(englishPath, "utf8"));
+  if (english.review?.humanReviewed === true && !approvedFor(records, "english", handwrittenHash(english))) fail("english: humanReviewed is true but no approved review record matches the current text (edited since review?)");
 }
 
 const result = { ok: failures.length === 0, checkedAt: new Date().toISOString(), failures };

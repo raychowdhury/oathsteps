@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import type { ChecklistEntry } from "@/domain/types";
+import { fmtDate } from "@/domain/validation";
 import { guide, sourceFor, type GuideItem } from "@/lib/guide";
 import { getProfile, listChecklist, setChecklist } from "@/lib/store/repo";
 import { nowIso } from "@/lib/store/events";
@@ -130,7 +131,9 @@ function GuideInner() {
           <div className="o-stack">
             <div className="o-card o-card-amber">
               <div className="o-strong">About this guide</div>
-              <div>Draft, not expert-reviewed. Sources checked {guide.review.reviewedAt === "2026-10-05" ? "Oct 5, 2026" : guide.review.reviewedAt}.</div>
+              <div>
+                {guide.review.humanReviewed ? `Reviewed${guide.review.humanReviewedAt ? ` ${fmtDate(guide.review.humanReviewedAt)}` : ""}${guide.review.reviewerCredential ? ` by ${guide.review.reviewerCredential}` : ""}.` : "Draft, not expert-reviewed."} Sources checked {fmtDate(guide.review.reviewedAt)}.
+              </div>
             </div>
             <div className="o-card o-card-guide">
               <div className="o-strong">Questions about your own case?</div>

@@ -54,3 +54,6 @@ next-env.d.ts
 /src/generated/
 
 /src/generated/prisma
+
+# generated reviewer packet
+/content/review/out/

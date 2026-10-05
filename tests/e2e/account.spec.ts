@@ -1,3 +1,5 @@
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { expect, test, type Browser } from "@playwright/test";
 import { answerCard, setupProfile, signIn, signUp, uniqueEmail } from "./helpers";
 
@@ -59,5 +61,49 @@ test.describe("accounts, migration, sync, isolation, deletion", () => {
     await page.getByLabel("Password").fill("correct-horse-battery-10");
     await page.getByTestId("account-submit").click();
     await expect(page.getByTestId("account-msg")).toContainText(/invalid|not found|incorrect/i);
+  });
+
+  test("forgot password: the emailed link sets a new password, the old one stops working, and a bad link is refused", async ({ page, browser }) => {
+    const email = uniqueEmail("reset");
+    await signUp(page, email);
+
+    const { ctx, page: p2 } = await freshPage(browser);
+    await p2.goto("/account");
+    await p2.getByRole("radio", { name: "Sign in" }).check();
+    await p2.getByTestId("forgot-link").click();
+    await p2.getByLabel("Email").fill(email);
+    await p2.getByTestId("forgot-submit").click();
+    await expect(p2.getByTestId("account-msg")).toContainText("If an account exists for that email, a reset link is on its way.");
+
+    // The development mail sink holds the message; the link is the only thing taken from it.
+    const sink = join(process.cwd(), "data", "e2e-mail");
+    const readLink = () => {
+      for (const f of readdirSync(sink)) {
+        const body = readFileSync(join(sink, f), "utf8");
+        if (body.includes(`To: ${email}`) && body.includes("Reset your OathSteps password")) return body.match(/https?:\/\/\S+/)?.[0] ?? null;
+      }
+      return null;
+    };
+    await expect.poll(readLink, { timeout: 15_000 }).not.toBeNull();
+    await p2.goto(readLink()!);
+    await expect(p2).toHaveURL(/\/account\/reset\?token=/);
+    await p2.getByLabel("New password").fill("another-long-password-11");
+    await p2.getByTestId("reset-submit").click();
+    await expect(p2.getByTestId("reset-done")).toContainText("Password changed.");
+
+    await p2.goto("/account");
+    await p2.getByRole("radio", { name: "Sign in" }).check();
+    await p2.getByLabel("Email").fill(email);
+    await p2.getByLabel("Password").fill("correct-horse-battery-10");
+    await p2.getByTestId("account-submit").click();
+    await expect(p2.getByTestId("account-msg")).toContainText(/invalid|incorrect/i);
+    await signIn(p2, email, "another-long-password-11");
+
+    // The same link cannot be used twice, and a page with no token says so.
+    await p2.goto(readLink()!);
+    await expect(p2.getByTestId("reset-bad")).toBeVisible();
+    await p2.goto("/account/reset");
+    await expect(p2.getByTestId("reset-bad")).toContainText("This link doesn’t work.");
+    await ctx.close();
   });
 });

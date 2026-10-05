@@ -402,8 +402,8 @@ function SessionRunner({ s, kind, initialIds, confirmed }: { s: Snapshot; kind: 
       {sheet === "source" && (
         <Sheet title="Source and details" onClose={() => setSheet(null)}>
           <p>{q.prompt}</p>
-          <div className="o-card o-card-amber" style={{ gap: ".25em" }}>
-            <div className="o-strong">Official wording · machine-checked, not yet expert-reviewed</div>
+          <div className={`o-card ${getPack(q.bank).review.humanReviewed ? "o-card-guide" : "o-card-amber"}`} style={{ gap: ".25em" }}>
+            <div className="o-strong">{getPack(q.bank).review.humanReviewed ? "Official wording · machine-checked and expert-reviewed" : "Official wording · machine-checked, not yet expert-reviewed"}</div>
             <div className="o-meta">
               Question {q.number} of the {q.bank} list · pack {getPack(q.bank).version}
             </div>

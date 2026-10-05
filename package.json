@@ -14,6 +14,7 @@
     "test:e2e:ui": "playwright test --ui",
     "content:ingest": "tsx content/scripts/ingest.ts",
     "content:validate": "tsx content/scripts/validate.ts",
+    "content:review-packet": "tsx content/scripts/review-packet.ts",
     "content:extract": "uv run --with pypdf python3 content/scripts/extract-pdf-text.py",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
@@ -21,6 +22,7 @@
     "db:studio": "prisma studio",
     "verify": "node scripts/verify.mjs",
     "verify:quick": "node scripts/verify.mjs --quick",
+    "release:check": "tsx scripts/release-check.ts",
     "bootstrap": "bash scripts/bootstrap.sh"
   },
   "dependencies": {

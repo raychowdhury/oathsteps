@@ -28,6 +28,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --prod --audit-level=high
       - run: pnpm db:generate
       - run: pnpm content:validate
       - run: pnpm typecheck
@@ -50,4 +51,9 @@ jobs:
       - run: docker compose config -q
         env:
           BETTER_AUTH_SECRET: ci-only-secret-not-for-production-0123456789
-      - run: docker build --target runner -t oathsteps:ci .
+      - run: docker compose -f docker-compose.yml -f deploy/docker-compose.prod.yml config -q
+        env:
+          BETTER_AUTH_SECRET: ci-only-secret-not-for-production-0123456789
+          DOMAIN: study.example.org
+      # Builds the images, starts the stack, and proves the app serves and can write to its database.
+      - run: bash scripts/docker-smoke.sh

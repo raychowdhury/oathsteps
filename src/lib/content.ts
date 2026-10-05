@@ -36,7 +36,7 @@ export interface ContentPack {
   generatedAt: string;
   rules: { standard: { asked: number; pass: number; stopIncorrect: number }; special: { asked: number; pass: number; stopIncorrect: number } };
   source: { id: string; title: string; url: string; sha256: string; retrievedAt: string };
-  review: { machineChecked: boolean; humanReviewed: boolean; note: string };
+  review: { machineChecked: boolean; humanReviewed: boolean; note: string; reviewedAt?: string; reviewerCredential?: string };
   questions: Question[];
 }
 export interface GuideSource {

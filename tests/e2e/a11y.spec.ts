@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { setupProfile, startToday } from "./helpers";
 
-const pages = ["/", "/practice", "/practice/session?kind=daily", "/practice/mock?kind=walkthrough", "/interview", "/interview/voice", "/interview/writing", "/journey", "/journey/guide", "/readiness", "/settings", "/account"];
+const pages = ["/", "/practice", "/practice/session?kind=daily", "/practice/mock?kind=walkthrough", "/interview", "/interview/voice", "/interview/writing", "/journey", "/journey/guide", "/readiness", "/settings", "/account", "/account/reset", "/privacy", "/terms"];
 
 test.describe.configure({ timeout: 240_000 });
 

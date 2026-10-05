@@ -71,6 +71,9 @@ export function Welcome() {
             </div>
             <div>We never ask for your SSN, A-Number, ID or USCIS password.</div>
           </div>
+          <p className="o-meta">
+            <Link href="/privacy">Privacy notice</Link> · <Link href="/terms">Terms of use</Link>
+          </p>
         </div>
         <div className="o-actions">
           <Link href="/setup" className="o-btn o-btn-p o-btn-lg o-btn-block" data-testid="start-setup">

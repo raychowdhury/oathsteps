@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authClient, useSession } from "@/lib/auth-client";
@@ -15,7 +16,7 @@ export default function AccountPage() {
   const { data: session, isPending, refetch } = useSession();
   const router = useRouter();
   const { data } = useData(async () => ({ outbox: await outboxSummary(), sync: await getMeta<SyncStatus>("sync"), consent: await getMeta<{ grantedAt: string }>("consent:migrate-guest-progress"), attempts: (await listAttempts()).length }));
-  const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-up");
+  const [mode, setMode] = useState<"sign-in" | "sign-up" | "forgot">("sign-up");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -27,6 +28,13 @@ export default function AccountPage() {
     e.preventDefault();
     setBusy(true);
     setMsg(null);
+    if (mode === "forgot") {
+      const r = await authClient.requestPasswordReset({ email, redirectTo: "/account/reset" });
+      setBusy(false);
+      // The server answers the same way whether or not the address has an account.
+      if (r.error) return setMsg({ ok: false, text: r.error.message ?? "Could not send the reset link. Try again." });
+      return setMsg({ ok: true, text: "If an account exists for that email, a reset link is on its way. It works for one hour." });
+    }
     const r = mode === "sign-up" ? await authClient.signUp.email({ email, password, name: name || email.split("@")[0] }) : await authClient.signIn.email({ email, password });
     setBusy(false);
     if (r.error) return setMsg({ ok: false, text: r.error.message ?? "Could not sign in." });
@@ -93,19 +101,26 @@ export default function AccountPage() {
         )}
         {!session ? (
           <section className="o-card">
-            <fieldset style={{ border: 0, margin: 0, padding: 0 }}>
-              <legend className="o-sr">Sign in or create account</legend>
-              <div className="o-seg">
-                <label className={mode === "sign-up" ? "o-on" : ""}>
-                  <input type="radio" name="acct-mode" checked={mode === "sign-up"} onChange={() => setMode("sign-up")} />
-                  <span>Create account</span>
-                </label>
-                <label className={mode === "sign-in" ? "o-on" : ""}>
-                  <input type="radio" name="acct-mode" checked={mode === "sign-in"} onChange={() => setMode("sign-in")} />
-                  <span>Sign in</span>
-                </label>
+            {mode === "forgot" ? (
+              <div className="o-stack-s">
+                <h2 className="o-h2">Reset your password</h2>
+                <p className="o-help">Enter your account email. We will send a link to choose a new password.</p>
               </div>
-            </fieldset>
+            ) : (
+              <fieldset style={{ border: 0, margin: 0, padding: 0 }}>
+                <legend className="o-sr">Sign in or create account</legend>
+                <div className="o-seg">
+                  <label className={mode === "sign-up" ? "o-on" : ""}>
+                    <input type="radio" name="acct-mode" checked={mode === "sign-up"} onChange={() => setMode("sign-up")} />
+                    <span>Create account</span>
+                  </label>
+                  <label className={mode === "sign-in" ? "o-on" : ""}>
+                    <input type="radio" name="acct-mode" checked={mode === "sign-in"} onChange={() => setMode("sign-in")} />
+                    <span>Sign in</span>
+                  </label>
+                </div>
+              </fieldset>
+            )}
             <form onSubmit={submit} className="o-stack">
               {mode === "sign-up" && (
                 <div>
@@ -121,20 +136,39 @@ export default function AccountPage() {
                 </label>
                 <input id="email" className="o-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" required />
               </div>
-              <div>
-                <label className="o-label" htmlFor="password">
-                  Password
-                </label>
-                <input id="password" className="o-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete={mode === "sign-up" ? "new-password" : "current-password"} minLength={10} required />
-                <div className="o-meta" style={{ marginTop: ".375em" }}>
-                  At least 10 characters.
+              {mode !== "forgot" && (
+                <div>
+                  <label className="o-label" htmlFor="password">
+                    Password
+                  </label>
+                  <input id="password" className="o-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete={mode === "sign-up" ? "new-password" : "current-password"} minLength={10} required />
+                  <div className="o-meta" style={{ marginTop: ".375em" }}>
+                    At least 10 characters.
+                  </div>
                 </div>
-              </div>
-              <button className="o-btn o-btn-p o-btn-lg o-btn-block" type="submit" disabled={busy} data-testid="account-submit">
-                {mode === "sign-up" ? "Create account" : "Sign in"}
+              )}
+              <button className="o-btn o-btn-p o-btn-lg o-btn-block" type="submit" disabled={busy} data-testid={mode === "forgot" ? "forgot-submit" : "account-submit"}>
+                {mode === "sign-up" ? "Create account" : mode === "forgot" ? "Send reset link" : "Sign in"}
               </button>
+              {mode === "sign-in" && (
+                <button className="o-btn o-btn-g" type="button" onClick={() => { setMode("forgot"); setMsg(null); }} style={{ alignSelf: "flex-start" }} data-testid="forgot-link">
+                  Forgot your password?
+                </button>
+              )}
+              {mode === "forgot" && (
+                <button className="o-btn o-btn-g" type="button" onClick={() => { setMode("sign-in"); setMsg(null); }} style={{ alignSelf: "flex-start" }}>
+                  Back to sign in
+                </button>
+              )}
+              {mode === "sign-up" && (
+                <p className="o-meta">
+                  By creating an account you accept the <Link href="/terms">Terms</Link> and the <Link href="/privacy">Privacy notice</Link>.
+                </p>
+              )}
             </form>
-            <p className="o-meta">We store your email, a password hash and your synced study records. Nothing else.</p>
+            <p className="o-meta">
+              We store your email, name, a password hash, your sign-in sessions and the study records you choose to sync. Details are in the <Link href="/privacy">Privacy notice</Link>.
+            </p>
           </section>
         ) : (
           <>

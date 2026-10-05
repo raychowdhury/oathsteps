@@ -1,0 +1,10 @@
+# Caddy terminates TLS (a free Let's Encrypt certificate is requested and renewed automatically)
+# and forwards to the app container. DOMAIN comes from .env, for example study.example.org.
+{$DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		-Server
+	}
+	reverse_proxy app:3000
+}

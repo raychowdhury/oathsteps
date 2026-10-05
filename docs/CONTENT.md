@@ -19,17 +19,17 @@ Text extraction: `pnpm content:extract` (pypdf via `uv`). The `.txt` files are c
 - `requiredCount` inferred from "Name two", "What are three …" wording (reviewed; overrides live in `ingest-rules.ts`).
 - `special: true` for the asterisked 65/20 questions (20 per bank).
 - `dynamic` for the 18 questions whose answers change (officeholders, state capital, party of the President, number of justices). Each carries an official lookup URL. The app never generates these answers.
-- `version` = bank + first 8 hex of the content hash, `contentHash` over the body, `generatedAt`.
+- `version` = bank + first 8 hex of the content hash, `contentHash` over the content (everything except `review`), `generatedAt`. The `review` block is filled from review records, see below.
 
 ## Validation
 
-`pnpm content:validate` exits nonzero if: source hashes drift, counts are not 128/20/8 and 100/20/10, ids or numbering break, a prompt looks truncated, an answer is empty, `requiredCount` exceeds the answers, a varying answer lacks a dynamic rule, the content hash does not match (someone edited a pack by hand), a pack claims human review without a reviewer record, or a guide source is not on an official domain.
+`pnpm content:validate` exits nonzero if: source hashes drift, counts are not 128/20/8 and 100/20/10, ids or numbering break, a prompt looks truncated, an answer is empty, `requiredCount` exceeds the answers, a varying answer lacks a dynamic rule, the content hash does not match (someone edited a pack by hand), a pack, the guide or the English material claims human review without an approved review record for exactly that content, a review record exists but the pack was not regenerated, a review record is malformed, or a guide source is not on an official domain.
 
 The project PostToolUse hook runs this check whenever a content file changes.
 
 ## Review levels
 
-Each pack and the guide carry `review.machineChecked` and `review.humanReviewed`. Everything in this release is machine-checked only, and the Settings screen says so. To record a human review: add a `reviewer` record (name, role, date, scope) to the pack's `review` object in the ingest step, regenerate, and extend the validator to require it when `humanReviewed` is true.
+Each pack, the guide and the English material carry `review.machineChecked` and `review.humanReviewed`. Everything in this release is machine-checked only, and the screens say so. A human review is a record in `content/review/records/` that names the exact content by hash, so later edits cannot inherit an old approval. `pnpm content:review-packet` builds what a reviewer works from. The full procedure, who can review which scope and how to find a reviewer are in [content/review/REVIEW.md](../content/review/REVIEW.md).
 
 ## Updating official content
 

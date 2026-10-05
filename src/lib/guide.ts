@@ -19,7 +19,8 @@ export interface GuideStage {
 }
 export interface Guide {
   version: string;
-  review: { machineChecked: boolean; humanReviewed: boolean; reviewedAt: string; note: string };
+  /** reviewedAt is when the sources were last checked; humanReviewedAt and reviewerCredential are set with humanReviewed (content/review/REVIEW.md). */
+  review: { machineChecked: boolean; humanReviewed: boolean; reviewedAt: string; humanReviewedAt?: string; reviewerCredential?: string; note: string };
   sources: Record<string, GuideSource>;
   stages: GuideStage[];
 }

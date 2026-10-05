@@ -5,12 +5,12 @@
  * - Static assets (_next/static, icons, manifest): cache first.
  * - Never caches /api/auth, /api/sync, /api/account, /api/export or any non-GET request.
  */
-const VERSION = "oathsteps-v2";
+const VERSION = "oathsteps-v3";
 const SHELL = `${VERSION}-shell`;
 const CONTENT = `${VERSION}-content`;
 const NEVER_CACHE = [/^\/api\//];
 const OFFLINE_URL = "/offline";
-const APP_ROUTES = ["/", "/setup", "/practice", "/practice/session?kind=daily", "/practice/mock?kind=walkthrough", "/interview", "/interview/voice", "/interview/reading", "/interview/writing", "/interview/instructions", "/interview/n400", "/journey", "/journey/guide", "/readiness", "/settings", OFFLINE_URL];
+const APP_ROUTES = ["/", "/setup", "/practice", "/practice/session?kind=daily", "/practice/mock?kind=walkthrough", "/interview", "/interview/voice", "/interview/reading", "/interview/writing", "/interview/instructions", "/interview/n400", "/journey", "/journey/guide", "/readiness", "/settings", "/privacy", "/terms", OFFLINE_URL];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(SHELL).then((c) => c.add(OFFLINE_URL)).then(() => self.skipWaiting()));
