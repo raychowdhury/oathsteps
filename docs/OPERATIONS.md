@@ -78,7 +78,7 @@ Changing only `DATABASE_URL` does not migrate between providers. The honest path
 
 Sign-up confirmation and password-reset emails are sent without blocking the request, so a provider outage cannot break sign-up or reveal whether an address has an account. A failure is logged as `[mail] not delivered: <reason>` with no address. Sign-up does not require a confirmed email. Password reset (Account, "Forgot your password?") needs working mail; it signs the user out of every device when the password changes.
 
-Both provider paths are covered by unit tests against a mocked HTTP call. Neither has been exercised against a live account, because that needs your account and key. Send yourself a confirmation email after the first deploy.
+Both provider paths are covered by unit tests against a mocked HTTP call. The Brevo path was also run live on 2026-10-05: one test email, sent through `deliverMail` from a sender verified in Brevo, reached an inbox. Resend has not been run live. After the first deploy, still send yourself a confirmation email to check the server's own settings.
 
 ## Content updates and rollback
 

@@ -86,7 +86,7 @@ The app sends only two kinds of email: confirm your address, and reset your pass
 
 What to expect without a domain of your own: Brevo cannot authenticate a free address such as Gmail, so it sends from its own shared domain. Most inboxes accept that. Outlook and Hotmail may put the message in spam. When you have a domain, authenticate it in Brevo (it shows the DNS records to add) and use an address on it. Delivery improves a lot.
 
-The Brevo code path is covered by unit tests against a mocked call. Send yourself a real confirmation email after the first deploy.
+The Brevo code path is covered by unit tests, and one live test email sent through it on 2026-10-05 reached an inbox. After the first deploy, still send yourself a real confirmation email to check the server's own settings.
 
 Alternative: `MAIL_PROVIDER=resend` with `RESEND_API_KEY`. Resend's free tier also works but needs a verified domain.
 
