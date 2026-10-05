@@ -6,6 +6,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { routeFor } from "../../src/lib/path";
+import { writeReviewPdf } from "./review-pdf";
 import { handwrittenHash } from "./review";
 
 const ROOT = join(import.meta.dirname, "..");
@@ -98,5 +99,19 @@ Rules the app applies: the 2025 test asks up to 20 questions, 12 correct to pass
 3. For each scope you approve, the owner records: your name, your credential (for example "Licensed attorney, New York" or "DOJ-accredited representative"), the date, and the content reference above. Only your credential and date appear in the app. Your name stays in the project's records and is shown only with your consent.
 `,
 );
-console.log(`Review packet written to ${OUT}`);
-for (const [s, h] of refs) console.log(`${s}\t${h}`);
+async function main() {
+  const pdf = await writeReviewPdf(
+    {
+      date: new Date().toISOString().slice(0, 10),
+      refs: refs.map(([scope, ref, label]) => ({ scope, label, ref })),
+      packs: packs.map((p) => ({ bank: p.bank, title: p.title, version: p.version, questions: p.questions })),
+      guide,
+      english,
+      routes: routes.map(({ label, r }) => ({ label, text: [`${r.name}.`, ...r.lines.map((l: string) => `${l}.`), r.reason].filter((x) => x && x !== ".").join(" ") })),
+    },
+    join(OUT, "OathSteps-content-review-packet.pdf"),
+  );
+  console.log(`Review packet written to ${OUT}${pdf ? " (including the PDF)" : ""}`);
+  for (const [s, h] of refs) console.log(`${s}\t${h}`);
+}
+void main();

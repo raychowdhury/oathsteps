@@ -5,13 +5,15 @@ x-config: &config
   # Public URL users reach the app on (https in production).
   BETTER_AUTH_URL: ${APP_URL:-http://localhost:3000}
   NEXT_PUBLIC_APP_URL: ${APP_URL:-http://localhost:3000}
-  # Production mail (Resend). Leave empty to keep the development sink. See docs/DEPLOY.md.
+  # Production mail: brevo (free tier, no domain needed) or resend. Leave empty to keep the development sink. See docs/DEPLOY.md.
   MAIL_PROVIDER: ${MAIL_PROVIDER:-}
+  BREVO_API_KEY: ${BREVO_API_KEY:-}
   RESEND_API_KEY: ${RESEND_API_KEY:-}
   MAIL_FROM: ${MAIL_FROM:-}
   # Shown on the Privacy notice and Terms pages.
   LEGAL_ENTITY: ${LEGAL_ENTITY:-}
   LEGAL_CONTACT_EMAIL: ${LEGAL_CONTACT_EMAIL:-}
+  LEGAL_CONTACT_URL: ${LEGAL_CONTACT_URL:-}
   LEGAL_JURISDICTION: ${LEGAL_JURISDICTION:-}
   LEGAL_REVIEWED_ON: ${LEGAL_REVIEWED_ON:-}
 

@@ -55,5 +55,9 @@ jobs:
         env:
           BETTER_AUTH_SECRET: ci-only-secret-not-for-production-0123456789
           DOMAIN: study.example.org
+      - run: docker compose -f docker-compose.yml -f deploy/docker-compose.cloudflare.yml config -q
+        env:
+          BETTER_AUTH_SECRET: ci-only-secret-not-for-production-0123456789
+          CLOUDFLARE_TUNNEL_TOKEN: ci-placeholder
       # Builds the images, starts the stack, and proves the app serves and can write to its database.
       - run: bash scripts/docker-smoke.sh

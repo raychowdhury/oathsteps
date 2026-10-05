@@ -2,7 +2,7 @@ import { mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import { deliverMail, mailProvider } from "./mail";
+import { deliverMail, mailConfigured, mailProvider, parseFrom } from "./mail";
 
 const msg = { to: "learner@example.com", subject: "Hello", text: "Body" };
 
@@ -10,6 +10,7 @@ describe("mail provider selection", () => {
   it("prefers an explicit provider, falls back to the sink only when a sink dir exists, else none", () => {
     expect(mailProvider({ MAIL_PROVIDER: "resend", MAIL_SINK_DIR: "x" })).toBe("resend");
     expect(mailProvider({ MAIL_PROVIDER: " Resend " })).toBe("resend");
+    expect(mailProvider({ MAIL_PROVIDER: "BREVO" })).toBe("brevo");
     expect(mailProvider({ MAIL_SINK_DIR: "x" })).toBe("sink");
     expect(mailProvider({ MAIL_PROVIDER: "sink" })).toBe("sink");
     expect(mailProvider({})).toBe("none");
@@ -44,5 +45,42 @@ describe("deliverMail", () => {
     const bad = vi.fn(async () => new Response('{"message":"bad address learner@example.com"}', { status: 422 }));
     const err = await deliverMail(msg, { env: { MAIL_PROVIDER: "resend", RESEND_API_KEY: "k", MAIL_FROM: "a@b.co" }, fetch: bad as unknown as typeof fetch }).catch((e: Error) => e);
     expect((err as Error).message).toBe("Mail provider rejected the message (HTTP 422).");
+  });
+});
+
+describe("brevo", () => {
+  const env = { MAIL_PROVIDER: "brevo", BREVO_API_KEY: "xkeysib-test", MAIL_FROM: "OathSteps <no-reply@example.org>" };
+
+  it("posts the documented body with the api-key header and returns the message id", async () => {
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify({ messageId: "<1@smtp-relay.brevo.com>" }), { status: 201 }));
+    const r = await deliverMail(msg, { env, fetch: fetchMock as unknown as typeof fetch });
+    expect(r).toEqual({ delivered: "brevo", id: "<1@smtp-relay.brevo.com>" });
+    const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    expect(url).toBe("https://api.brevo.com/v3/smtp/email");
+    expect((init.headers as Record<string, string>)["api-key"]).toBe("xkeysib-test");
+    expect(JSON.parse(init.body as string)).toEqual({ sender: { name: "OathSteps", email: "no-reply@example.org" }, to: [{ email: "learner@example.com" }], subject: "Hello", textContent: "Body" });
+  });
+
+  it("needs a key and a well-formed sender, and does not leak the response body", async () => {
+    await expect(deliverMail(msg, { env: { MAIL_PROVIDER: "brevo" } })).rejects.toThrow(/BREVO_API_KEY and MAIL_FROM/);
+    await expect(deliverMail(msg, { env: { ...env, MAIL_FROM: "not an address" } })).rejects.toThrow(/MAIL_FROM must look like/);
+    const bad = vi.fn(async () => new Response('{"message":"sender learner@example.com not valid"}', { status: 400 }));
+    const err = await deliverMail(msg, { env, fetch: bad as unknown as typeof fetch }).catch((e: Error) => e);
+    expect((err as Error).message).toBe("Mail provider rejected the message (HTTP 400).");
+  });
+
+  it("is configured only with provider, key and sender", () => {
+    expect(mailConfigured(env)).toBe(true);
+    expect(mailConfigured({ ...env, BREVO_API_KEY: "" })).toBe(false);
+    expect(mailConfigured({ ...env, MAIL_PROVIDER: "resend" })).toBe(false);
+    expect(mailConfigured({ MAIL_SINK_DIR: "x" })).toBe(false);
+  });
+
+  it("parses sender addresses", () => {
+    expect(parseFrom("no-reply@example.org")).toEqual({ email: "no-reply@example.org" });
+    expect(parseFrom('"OathSteps App" <no-reply@example.org>')).toEqual({ name: "OathSteps App", email: "no-reply@example.org" });
+    expect(parseFrom("<no-reply@example.org>")).toEqual({ email: "no-reply@example.org" });
+    expect(parseFrom("OathSteps no-reply@example.org")).toBeNull();
+    expect(parseFrom("")).toBeNull();
   });
 });

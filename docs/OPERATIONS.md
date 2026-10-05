@@ -20,11 +20,13 @@ Copy `.env.example` to `.env`. Variables:
 | `BETTER_AUTH_SECRET` | 32+ random characters. `openssl rand -base64 32`. Rotating it invalidates sessions. |
 | `BETTER_AUTH_URL`, `NEXT_PUBLIC_APP_URL` | Public origin (https in production). Used for cookies, trusted origins and mail links. |
 | `DATABASE_URL` | `file:` path to the SQLite database. Must be on durable storage. |
-| `MAIL_PROVIDER` | `resend` for production delivery. Empty keeps the development sink. |
-| `RESEND_API_KEY`, `MAIL_FROM` | Required with `MAIL_PROVIDER=resend`. `MAIL_FROM` is an address on a domain verified at the provider. |
+| `MAIL_PROVIDER` | `brevo` (free tier, no domain needed) or `resend` for production delivery. Empty keeps the development sink. |
+| `BREVO_API_KEY`, `RESEND_API_KEY`, `MAIL_FROM` | The key for the chosen provider, plus the sender. `MAIL_FROM` must be a sender verified at Brevo, or an address on a domain verified at Resend. |
+| `TRUSTED_IP_HEADER` | Header that carries the real client IP, for rate limits. `cf-connecting-ip` behind a Cloudflare Tunnel (set by the overlay). Leave empty behind Caddy, which sets `x-forwarded-for`. |
+| `CLOUDFLARE_TUNNEL_TOKEN` | Read by `deploy/docker-compose.cloudflare.yml` only. |
 | `AUTH_RATE_LIMIT` | `off` disables the sign-in and sign-up rate limiter. For the browser tests only; the server refuses it on a public address. |
 | `MAIL_SINK_DIR` | Development mail sink. Verification and reset emails are written here as `.eml` files. |
-| `LEGAL_ENTITY`, `LEGAL_CONTACT_EMAIL`, `LEGAL_JURISDICTION` | Shown on the Privacy notice and Terms. Read at request time. |
+| `LEGAL_ENTITY`, `LEGAL_CONTACT_EMAIL`, `LEGAL_CONTACT_URL`, `LEGAL_JURISDICTION` | Shown on the Privacy notice and Terms. Read at request time. The contact URL is used when no email is published. |
 | `LEGAL_REVIEWED_ON` | `YYYY-MM-DD` a lawyer signed off on the Privacy notice and Terms. Empty keeps the "Draft" notice. |
 | `SPEECH_PROVIDER`, `USCIS_STATUS_PROVIDER`, `PAYMENTS_PROVIDER`, `PUSH_PROVIDER` | `disabled` in this release; any other value fails startup until an adapter exists. See `INTEGRATIONS.md`. |
 
@@ -35,7 +37,7 @@ In production (`NODE_ENV=production`) the server checks its configuration at sta
 ## Running
 
 - Local development: `pnpm bootstrap` once, then `pnpm dev`.
-- Production (container): follow [DEPLOY.md](DEPLOY.md). Short form: `docker compose -f docker-compose.yml -f deploy/docker-compose.prod.yml up -d --build` with a `.env` holding `DOMAIN`, `APP_URL`, `BETTER_AUTH_SECRET` and the mail and legal settings. The `migrate` service applies Prisma migrations to the shared volume, hands the database to the unprivileged app user, and exits; `app` starts after it succeeds; Caddy terminates TLS. Without the overlay, the app is published on loopback only (`127.0.0.1:3000`).
+- Production (container): follow [DEPLOY.md](DEPLOY.md). Short form: `docker compose -f docker-compose.yml -f deploy/docker-compose.cloudflare.yml up -d --build` (Cloudflare Tunnel) or `-f deploy/docker-compose.prod.yml` (Caddy), with a `.env` holding `APP_URL`, `BETTER_AUTH_SECRET`, the tunnel token or `DOMAIN`, and the mail and legal settings. The `migrate` service applies Prisma migrations to the shared volume, hands the database to the unprivileged app user, and exits; `app` starts after it succeeds; Caddy terminates TLS. Without the overlay, the app is published on loopback only (`127.0.0.1:3000`).
 - Production (bare Node): `BUILD_STANDALONE=1 pnpm build`, copy `.next/standalone`, `.next/static` into `.next/standalone/.next/static`, and `public` into `.next/standalone/public`, run `pnpm db:deploy` against the production `DATABASE_URL`, then `node server.js`.
 
 Put a TLS-terminating reverse proxy in front (the overlay uses Caddy and adds HSTS). The app sets its own security headers (CSP, frame-ancestors none, nosniff, referrer policy).
@@ -72,11 +74,11 @@ Changing only `DATABASE_URL` does not migrate between providers. The honest path
 
 ## Mail
 
-`src/server/mail.ts` has two transports, chosen by `MAIL_PROVIDER`: `resend` (production; HTTPS call to the Resend API with a 10 second timeout) and the development sink (`.eml` files in `MAIL_SINK_DIR`, used by the browser tests). With neither configured, sending fails loudly. Another provider is one more branch in `deliverMail`.
+`src/server/mail.ts` has three transports, chosen by `MAIL_PROVIDER`: `brevo` (production, free tier; HTTPS call to the Brevo transactional API) and `resend` (production; HTTPS call to the Resend API), each with a 10 second timeout, and the development sink (`.eml` files in `MAIL_SINK_DIR`, used by the browser tests). With neither configured, sending fails loudly. Another provider is one more branch in `deliverMail`.
 
 Sign-up confirmation and password-reset emails are sent without blocking the request, so a provider outage cannot break sign-up or reveal whether an address has an account. A failure is logged as `[mail] not delivered: <reason>` with no address. Sign-up does not require a confirmed email. Password reset (Account, "Forgot your password?") needs working mail; it signs the user out of every device when the password changes.
 
-The Resend path is covered by unit tests against a mocked HTTP call. It has not been exercised against a live Resend account, because that needs your account and a verified domain. Send yourself a confirmation email after the first deploy.
+Both provider paths are covered by unit tests against a mocked HTTP call. Neither has been exercised against a live account, because that needs your account and key. Send yourself a confirmation email after the first deploy.
 
 ## Content updates and rollback
 

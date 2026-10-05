@@ -21,6 +21,12 @@ describe("production config", () => {
     expect(checkConfig({ ...good, BETTER_AUTH_URL: "not a url" }).errors.join()).toMatch(/full URL/);
   });
 
+  it("treats brevo like resend: needs its own key, and counts as real mail", () => {
+    const brevo = { ...good, MAIL_PROVIDER: "brevo", RESEND_API_KEY: undefined, BREVO_API_KEY: "k" };
+    expect(checkConfig(brevo)).toEqual({ errors: [], warnings: [] });
+    expect(checkConfig({ ...brevo, BREVO_API_KEY: undefined }).errors.join()).toMatch(/BREVO_API_KEY/);
+  });
+
   it("rejects mismatched public origins", () => {
     expect(checkConfig({ ...good, NEXT_PUBLIC_APP_URL: "https://other.example.org" }).errors.join()).toMatch(/same origin/);
   });
@@ -36,6 +42,11 @@ describe("production config", () => {
   it("lets the browser tests turn the auth rate limit off locally but never on a public address", () => {
     expect(checkConfig({ ...good, BETTER_AUTH_URL: "http://127.0.0.1:3100", NEXT_PUBLIC_APP_URL: "http://127.0.0.1:3100", AUTH_RATE_LIMIT: "off" }).errors).toEqual([]);
     expect(checkConfig({ ...good, AUTH_RATE_LIMIT: "off" }).errors.join()).toMatch(/AUTH_RATE_LIMIT/);
+  });
+
+  it("accepts a header name for the trusted client IP and rejects anything else", () => {
+    expect(checkConfig({ ...good, TRUSTED_IP_HEADER: "cf-connecting-ip" }).errors).toEqual([]);
+    expect(checkConfig({ ...good, TRUSTED_IP_HEADER: "x-forwarded-for, evil" }).errors.join()).toMatch(/TRUSTED_IP_HEADER/);
   });
 
   it("only throws in production", () => {

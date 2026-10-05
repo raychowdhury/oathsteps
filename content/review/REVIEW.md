@@ -22,7 +22,7 @@ These are different skills. One person's approval of one scope does not cover an
 
 ## Steps
 
-1. Generate the packet: `pnpm content:review-packet`. It writes `content/review/out/` (not committed): `REVIEW-PACKET.md`, `questions-2025.csv`, `questions-2008.csv`, `guide.csv`, `english-and-interview.csv`. Give the reviewer those files and the two PDFs in `content/sources/`.
+1. Generate the packet: `pnpm content:review-packet`. It writes `content/review/out/` (not committed): `OathSteps-content-review-packet.pdf` (about 40 pages, Letter landscape, with check boxes, comment columns and a sign-off page; print it or annotate it on screen), plus `REVIEW-PACKET.md` and the same material as spreadsheets (`questions-2025.csv`, `questions-2008.csv`, `guide.csv`, `english-and-interview.csv`). Give the reviewer the PDF and, if they want to verify wording, the two source PDFs in `content/sources/`.
 2. The reviewer marks the spreadsheets and says, per scope, approve or what must change.
 3. Fix what they found. Wording from USCIS is never edited by hand: change the parser rules in `content/scripts/ingest-rules.ts` and re-run `pnpm content:ingest`. Guide and English text are edited in their JSON files. Then generate a new packet. **Any change to a scope's content changes its content reference, and an approval only covers the content reference it names.**
 4. Record each approval as a file in `content/review/records/`, for example `2026-11-02-guide.json`:

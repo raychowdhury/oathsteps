@@ -1,0 +1,27 @@
+# Production overlay for a Cloudflare Tunnel: cloudflared makes an outbound connection to Cloudflare, which serves
+# your domain over HTTPS and forwards requests to the app. No inbound ports are opened and no certificate is managed here.
+# Use this OR deploy/docker-compose.prod.yml (Caddy), not both. Run from the repository root:
+#   docker compose -f docker-compose.yml -f deploy/docker-compose.cloudflare.yml up -d --build
+services:
+  app:
+    mem_limit: 768m
+    cpus: 1.0
+    environment:
+      # The tunnel is the only way in (the app's port is bound to loopback), so Cloudflare's client-IP header can be trusted.
+      TRUSTED_IP_HEADER: cf-connecting-ip
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:?set CLOUDFLARE_TUNNEL_TOKEN in .env (Cloudflare dashboard, Tunnels)}
+    depends_on:
+      app:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }

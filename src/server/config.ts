@@ -1,4 +1,4 @@
-import { mailProvider } from "./mail";
+import { API_KEY_VAR, mailConfigured, mailProvider } from "./mail";
 
 type Env = Record<string, string | undefined>;
 export interface ConfigReport {
@@ -33,9 +33,11 @@ export function checkConfig(env: Env = process.env): ConfigReport {
 
   if (env.AUTH_RATE_LIMIT === "off" && !local) errors.push("AUTH_RATE_LIMIT=off is only allowed on a local address (it exists for the browser tests).");
 
+  if (env.TRUSTED_IP_HEADER && !/^[A-Za-z0-9-]+$/.test(env.TRUSTED_IP_HEADER.trim())) errors.push("TRUSTED_IP_HEADER must be a single header name such as cf-connecting-ip.");
+
   const provider = mailProvider(env);
-  if (provider === "resend" && (!env.RESEND_API_KEY || !env.MAIL_FROM)) errors.push("MAIL_PROVIDER=resend needs RESEND_API_KEY and MAIL_FROM.");
-  if (!local && provider !== "resend") warnings.push("No production mail provider: confirmation and password-reset emails are NOT delivered.");
+  if ((provider === "resend" || provider === "brevo") && !mailConfigured(env)) errors.push(`MAIL_PROVIDER=${provider} needs ${API_KEY_VAR[provider]} and MAIL_FROM.`);
+  if (!local && !mailConfigured(env)) warnings.push("No production mail provider: confirmation and password-reset emails are NOT delivered.");
   if (!local && (!env.LEGAL_ENTITY || !env.LEGAL_CONTACT_EMAIL)) warnings.push("LEGAL_ENTITY and LEGAL_CONTACT_EMAIL are not set: the Privacy and Terms pages show that the operator is not named.");
 
   return { errors, warnings };

@@ -714,7 +714,7 @@
     },
     {
       "id": "F-025",
-      "title": "Release readiness: production mail, password reset, startup config guard, container deployment, legal pages, expert-review gate",
+      "title": "Release readiness: free production mail (Brevo, Resend), password reset, startup config guard, container deployment (Cloudflare Tunnel or Caddy), legal pages (app and GitHub Pages), expert-review gate with PDF packet",
       "track": "core",
       "priority": 3,
       "dependsOn": [
@@ -731,7 +731,11 @@
         "Docker smoke test in CI: stack becomes healthy and a sign-up writes to the database as the unprivileged user",
         "Privacy notice and Terms reachable from Welcome, sign-up and Settings, show Draft until LEGAL_REVIEWED_ON, pass the accessibility sweep",
         "Review records bound to content hash; validator rejects unreviewed claims and stale records",
-        "pnpm release:check lists open gates and exits nonzero while any is open"
+        "pnpm release:check lists open gates and exits nonzero while any is open",
+        "Brevo and Resend transports unit-tested against mocked calls; sender parsing validated",
+        "Cloudflare Tunnel and Caddy compose overlays validate in CI; trusted client IP header configurable and validated",
+        "Privacy notice and Terms text shared by the app and the static GitHub Pages build, covered by rendering tests",
+        "pnpm content:review-packet writes a PDF with check boxes, comment columns and a sign-off page"
       ],
       "status": "verified",
       "evidence": [

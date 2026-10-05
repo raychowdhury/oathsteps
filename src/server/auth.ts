@@ -40,6 +40,9 @@ export const auth = betterAuth({
   },
   advanced: {
     useSecureCookies: baseURL.startsWith("https://"),
+    // Rate limits are per client IP. Behind Caddy the default x-forwarded-for is right. Behind a Cloudflare Tunnel set
+    // TRUSTED_IP_HEADER=cf-connecting-ip, and only when the tunnel is the app's sole entrance (anyone can forge the header otherwise).
+    ...(process.env.TRUSTED_IP_HEADER ? { ipAddress: { ipAddressHeaders: [process.env.TRUSTED_IP_HEADER.trim().toLowerCase()] } } : {}),
   },
   // On everywhere. Only the browser tests turn it off, and checkConfig refuses that on a public address.
   rateLimit: { enabled: process.env.AUTH_RATE_LIMIT !== "off", window: 60, max: 30 },

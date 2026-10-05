@@ -23,6 +23,7 @@
     "verify": "node scripts/verify.mjs",
     "verify:quick": "node scripts/verify.mjs --quick",
     "release:check": "tsx scripts/release-check.ts",
+    "legal:site": "tsx scripts/build-legal-site.tsx",
     "bootstrap": "bash scripts/bootstrap.sh"
   },
   "dependencies": {

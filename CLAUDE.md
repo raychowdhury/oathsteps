@@ -13,7 +13,8 @@ Mobile-first installable web app (PWA) that helps adults prepare for the U.S. na
 | Content | `pnpm content:ingest` then `pnpm content:validate` (never edit `content/packs/*.json` by hand) |
 | Database | `pnpm db:generate`, `pnpm db:migrate` (dev), `pnpm db:deploy` (prod) |
 | Launch gates | `pnpm release:check` (nonzero while mail, operator details, legal review or content review are open) |
-| Review packet | `pnpm content:review-packet` (spreadsheets and cover sheet for an expert reviewer) |
+| Review packet | `pnpm content:review-packet` (PDF, spreadsheets and cover sheet for an expert reviewer) |
+| Legal pages for GitHub Pages | `pnpm legal:site` (writes `site/`; `.github/workflows/pages.yml` publishes it) |
 | Container smoke test | `bash scripts/docker-smoke.sh` (needs a Docker daemon; CI runs it) |
 | Everything | `pnpm verify` (writes `.harness/evidence/latest.json`, nonzero on any required failure); `pnpm verify:quick` skips build and e2e |
 
@@ -23,7 +24,7 @@ Mobile-first installable web app (PWA) that helps adults prepare for the U.S. na
 - `src/domain/` pure, tested logic: date-only handling with injectable clock, test-path routing (`CUTOVER_DATE = 2025-10-20`), mock state machine (full rules + 5-question walkthrough), review scheduler, daily plan, readiness, answer matching, writing word diff, filing/interview/milestone validation, journey slots.
 - `src/lib/` IndexedDB store (`store/`), content loader, guide loader, route wording (`path.ts`), Today snapshot/plan helpers (`today.ts`), speech synthesis + recognition (`speech.ts`), sync client, offline download, demo learner.
 - `src/server/` Prisma client, Better Auth, mail transports (`mail.ts`), production config checks (`config.ts`, run at startup by `src/instrumentation.ts`), operator/legal details (`legal.ts`), release gates (`release.ts`), sync/account handlers, request guards, integration contracts.
-- `deploy/` Caddy and the production compose overlay. `docs/DEPLOY.md` is the runbook. `content/review/` holds the expert-review protocol and signed records.
+- `deploy/` Cloudflare Tunnel and Caddy compose overlays. `docs/DEPLOY.md` is the runbook. `content/review/` holds the expert-review protocol and signed records.
 - `src/components/` design-system shell: `Screen` (top bar, tabs, offline banner, sticky actions), `Overlay` (toasts, sheets, error line), `icons`, `ListenButton`, `FilingSheet`, `MilestoneSheet`, `Welcome`, `AppRoot` (tokens, theme, text size).
 - `src/app/` screens: `/` (welcome or Today), `/privacy`, `/terms`, `/api/health`, `/account/reset`, `/setup`, `/readiness`, `/practice`, `/practice/session`, `/practice/mock`, `/interview` + `voice|reading|writing|instructions|n400|coach`, `/journey`, `/journey/guide`, `/settings`, `/account`, API routes.
 - Styles: `src/app/globals.css` holds the design handoff's `.o-*` system verbatim (tokens on `.o-app`, container-query desktop layout, `.o-dark` theme). Use those classes; do not reintroduce Tailwind utility styling in screens.

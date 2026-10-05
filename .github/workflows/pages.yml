@@ -1,0 +1,54 @@
+name: Legal pages
+
+# Publishes the Privacy notice and Terms to GitHub Pages from the same components the app serves.
+# Operator details come from repository variables (Settings, Secrets and variables, Actions, Variables):
+# LEGAL_ENTITY, LEGAL_CONTACT_EMAIL, LEGAL_CONTACT_URL, LEGAL_JURISDICTION, LEGAL_REVIEWED_ON, MAIL_PROVIDER.
+# Keep them equal to the values in the server's .env so the two copies match.
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/components/LegalText.tsx
+      - src/server/legal.ts
+      - scripts/build-legal-site.tsx
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      LEGAL_ENTITY: ${{ vars.LEGAL_ENTITY || 'The OathSteps project (maintained by raychowdhury on GitHub)' }}
+      LEGAL_CONTACT_EMAIL: ${{ vars.LEGAL_CONTACT_EMAIL }}
+      LEGAL_CONTACT_URL: ${{ vars.LEGAL_CONTACT_URL || 'https://github.com/raychowdhury/oathsteps/issues' }}
+      LEGAL_JURISDICTION: ${{ vars.LEGAL_JURISDICTION }}
+      LEGAL_REVIEWED_ON: ${{ vars.LEGAL_REVIEWED_ON }}
+      MAIL_PROVIDER: ${{ vars.MAIL_PROVIDER || 'brevo' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm legal:site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

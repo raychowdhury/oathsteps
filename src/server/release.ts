@@ -1,6 +1,6 @@
 import { checkConfig, isLocal } from "./config";
 import { legalInfo } from "./legal";
-import { mailProvider } from "./mail";
+import { mailConfigured } from "./mail";
 
 type Env = Record<string, string | undefined>;
 
@@ -31,10 +31,10 @@ export function releaseChecks(env: Env, content: ContentState): Check[] {
   }
   add("public-address", Boolean(host) && !isLocal(host), `Served at https://${host}.`, "BETTER_AUTH_URL is missing or a local address. Set the public https address.");
 
-  add("mail", mailProvider(env) === "resend" && Boolean(env.RESEND_API_KEY) && Boolean(env.MAIL_FROM), "Confirmation and password-reset emails are sent through the configured provider.", "No production mail provider. Set MAIL_PROVIDER=resend, RESEND_API_KEY and MAIL_FROM, or accounts cannot confirm email or reset passwords.");
+  add("mail", mailConfigured(env), "Confirmation and password-reset emails are sent through the configured provider.", "No production mail provider. Set MAIL_PROVIDER=brevo (free) or resend, with its API key and MAIL_FROM, or accounts cannot confirm email or reset passwords.");
 
   const legal = legalInfo(env);
-  add("legal-details", Boolean(legal.entity && legal.contactEmail), `Operator named: ${legal.entity}.`, "Set LEGAL_ENTITY and LEGAL_CONTACT_EMAIL so the Privacy notice and Terms name who runs the service.");
+  add("legal-details", Boolean(legal.entity && (legal.contactEmail || legal.contactUrl)), `Operator named: ${legal.entity}.`, "Set LEGAL_ENTITY and LEGAL_CONTACT_EMAIL (or LEGAL_CONTACT_URL) so the Privacy notice and Terms name who runs the service.");
   add("legal-review", Boolean(legal.reviewedOn), `Privacy notice and Terms reviewed ${legal.reviewedOn}.`, "Privacy notice and Terms are still marked Draft. Have a lawyer review them, then set LEGAL_REVIEWED_ON.");
 
   for (const p of content.packs) add(`content-${p.id}`, p.humanReviewed, `${p.id} has a recorded expert review.`, `${p.id} is machine-checked only. Record an expert review (content/review/REVIEW.md).`);

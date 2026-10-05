@@ -56,7 +56,7 @@ docs/         OPERATIONS, CONTENT, INTEGRATIONS
 
 ## Deployment
 
-Step-by-step server setup with automatic HTTPS, mail, backups and rollback: [docs/DEPLOY.md](docs/DEPLOY.md). `pnpm release:check` lists what still blocks a public launch. Content review: [content/review/REVIEW.md](content/review/REVIEW.md).
+Step-by-step setup with Cloudflare Tunnel (or Caddy), free Brevo email, GitHub Pages for the legal pages, backups and rollback: [docs/DEPLOY.md](docs/DEPLOY.md). `pnpm release:check` lists what still blocks a public launch. Content review: [content/review/REVIEW.md](content/review/REVIEW.md).
 
 `docker compose up -d --build` runs migrations and then the app with SQLite on a persistent volume. See [docs/OPERATIONS.md](docs/OPERATIONS.md) for environment variables, backup/restore, the PostgreSQL migration path and open release gates, [docs/CONTENT.md](docs/CONTENT.md) for content updates and rollback, and [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md) for the speech, USCIS status, payments and push adapters that are contract-only in this release.
 

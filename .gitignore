@@ -57,3 +57,4 @@ next-env.d.ts
 
 # generated reviewer packet
 /content/review/out/
+/site/
