@@ -22,6 +22,7 @@ Copy `.env.example` to `.env`. Variables:
 | `DATABASE_URL` | `file:` path to the SQLite database. Must be on durable storage. |
 | `MAIL_PROVIDER` | `resend` for production delivery. Empty keeps the development sink. |
 | `RESEND_API_KEY`, `MAIL_FROM` | Required with `MAIL_PROVIDER=resend`. `MAIL_FROM` is an address on a domain verified at the provider. |
+| `AUTH_RATE_LIMIT` | `off` disables the sign-in and sign-up rate limiter. For the browser tests only; the server refuses it on a public address. |
 | `MAIL_SINK_DIR` | Development mail sink. Verification and reset emails are written here as `.eml` files. |
 | `LEGAL_ENTITY`, `LEGAL_CONTACT_EMAIL`, `LEGAL_JURISDICTION` | Shown on the Privacy notice and Terms. Read at request time. |
 | `LEGAL_REVIEWED_ON` | `YYYY-MM-DD` a lawyer signed off on the Privacy notice and Terms. Empty keeps the "Draft" notice. |

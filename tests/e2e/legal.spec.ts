@@ -22,8 +22,9 @@ test.describe("legal pages and health", () => {
     await expect(legalHelp).toHaveAttribute("target", "_blank");
 
     await page.goto("/account");
-    await expect(page.getByText("By creating an account you accept")).toContainText("Terms");
-    await page.getByRole("link", { name: "Privacy notice" }).click();
+    const consent = page.getByText("By creating an account you accept");
+    await expect(consent).toContainText("Terms");
+    await consent.getByRole("link", { name: "Privacy notice" }).click();
     await expect(page).toHaveURL(/\/privacy$/);
 
     await page.goto("/settings");

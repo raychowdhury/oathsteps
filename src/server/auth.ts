@@ -41,7 +41,8 @@ export const auth = betterAuth({
   advanced: {
     useSecureCookies: baseURL.startsWith("https://"),
   },
-  rateLimit: { enabled: true, window: 60, max: 30 },
+  // On everywhere. Only the browser tests turn it off, and checkConfig refuses that on a public address.
+  rateLimit: { enabled: process.env.AUTH_RATE_LIMIT !== "off", window: 60, max: 30 },
   trustedOrigins: [baseURL],
   plugins: [nextCookies()],
 });

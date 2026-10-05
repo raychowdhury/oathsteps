@@ -33,6 +33,11 @@ describe("production config", () => {
     expect(r.warnings.join()).toMatch(/LEGAL_ENTITY/);
   });
 
+  it("lets the browser tests turn the auth rate limit off locally but never on a public address", () => {
+    expect(checkConfig({ ...good, BETTER_AUTH_URL: "http://127.0.0.1:3100", NEXT_PUBLIC_APP_URL: "http://127.0.0.1:3100", AUTH_RATE_LIMIT: "off" }).errors).toEqual([]);
+    expect(checkConfig({ ...good, AUTH_RATE_LIMIT: "off" }).errors.join()).toMatch(/AUTH_RATE_LIMIT/);
+  });
+
   it("only throws in production", () => {
     expect(() => assertConfig({ NODE_ENV: "development", BETTER_AUTH_SECRET: "x" })).not.toThrow();
     expect(() => assertConfig({ NODE_ENV: "production", BETTER_AUTH_SECRET: "x" })).toThrow(/Invalid production configuration/);

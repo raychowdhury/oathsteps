@@ -29,6 +29,8 @@ export default defineConfig({
     env: {
       DATABASE_URL: "file:./data/e2e.db",
       MAIL_SINK_DIR: "./data/e2e-mail",
+      // The suite signs up many accounts from one address in seconds. The limiter is asserted in scripts/docker-smoke.sh.
+      AUTH_RATE_LIMIT: "off",
       BETTER_AUTH_URL: baseURL,
       NEXT_PUBLIC_APP_URL: baseURL,
       BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET ?? "e2e-only-secret-not-for-production-0123456789",

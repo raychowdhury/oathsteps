@@ -31,6 +31,8 @@ export function checkConfig(env: Env = process.env): ConfigReport {
     errors.push("BETTER_AUTH_URL must be a full URL such as https://oathsteps.example.org.");
   }
 
+  if (env.AUTH_RATE_LIMIT === "off" && !local) errors.push("AUTH_RATE_LIMIT=off is only allowed on a local address (it exists for the browser tests).");
+
   const provider = mailProvider(env);
   if (provider === "resend" && (!env.RESEND_API_KEY || !env.MAIL_FROM)) errors.push("MAIL_PROVIDER=resend needs RESEND_API_KEY and MAIL_FROM.");
   if (!local && provider !== "resend") warnings.push("No production mail provider: confirmation and password-reset emails are NOT delivered.");

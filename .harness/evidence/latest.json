@@ -1,26 +1,26 @@
 {
-  "recordedAt": "2026-10-05T06:19:08.442Z",
-  "commit": "2359d271c6f0cfad857822539ab1b38dfcc120fa",
+  "recordedAt": "2026-10-05T07:00:04.065Z",
+  "commit": "24ce48be58a77e40f511c8f802801e1fa12185eb",
   "workingTreeDirty": false,
   "node": "v24.11.0",
   "mode": "full",
-  "ok": true,
+  "ok": false,
   "results": [
     {
       "id": "content",
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 328,
+      "durationMs": 273,
       "command": "pnpm content:validate",
-      "outputTail": "\n> oathsteps@0.1.0 content:validate /Users/ray/Dev/OathSteps- US Citizenship Prep\n> tsx content/scripts/validate.ts\n\n{\n  \"ok\": true,\n  \"checkedAt\": \"2026-10-05T06:17:30.658Z\",\n  \"failures\": []\n}\n"
+      "outputTail": "\n> oathsteps@0.1.0 content:validate /Users/ray/Dev/OathSteps- US Citizenship Prep\n> tsx content/scripts/validate.ts\n\n{\n  \"ok\": true,\n  \"checkedAt\": \"2026-10-05T06:57:31.913Z\",\n  \"failures\": []\n}\n"
     },
     {
       "id": "typecheck",
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 1359,
+      "durationMs": 1206,
       "command": "pnpm typecheck",
       "outputTail": "\n> oathsteps@0.1.0 typecheck /Users/ray/Dev/OathSteps- US Citizenship Prep\n> next typegen && tsc --noEmit\n\nGenerating route types...\n✓ Types generated successfully\n"
     },
@@ -29,7 +29,7 @@
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 2264,
+      "durationMs": 2446,
       "command": "pnpm lint",
       "outputTail": "\n> oathsteps@0.1.0 lint /Users/ray/Dev/OathSteps- US Citizenship Prep\n> eslint .\n\n"
     },
@@ -38,27 +38,27 @@
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 904,
+      "durationMs": 991,
       "command": "pnpm test -- --run",
-      "outputTail": "\n> oathsteps@0.1.0 test /Users/ray/Dev/OathSteps- US Citizenship Prep\n> vitest run -- --run\n\n\n RUN  v5.0.3 /Users/ray/Dev/OathSteps- US Citizenship Prep\n\n\n Test Files  15 passed (15)\n      Tests  78 passed (78)\n   Start at  02:17:34\n   Duration  528ms (setup 67%, transform 18%, import 8%, tests 6%, worker 1%)\n\n\u001b[33m(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\u001b[39m\n"
+      "outputTail": "\n> oathsteps@0.1.0 test /Users/ray/Dev/OathSteps- US Citizenship Prep\n> vitest run -- --run\n\n\n RUN  v5.0.3 /Users/ray/Dev/OathSteps- US Citizenship Prep\n\n\n Test Files  20 passed (20)\n      Tests  101 passed (101)\n   Start at  02:57:35\n   Duration  636ms (setup 64%, transform 17%, import 9%, tests 8%, worker 2%)\n\n\u001b[33m(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\u001b[39m\n"
     },
     {
       "id": "build",
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 3822,
+      "durationMs": 5126,
       "command": "pnpm build",
-      "outputTail": "\n> oathsteps@0.1.0 build /Users/ray/Dev/OathSteps- US Citizenship Prep\n> next build\n\n▲ Next.js 16.3.8 (Turbopack)\n- Environments: .env\n✓ Running next.config.ts took 11ms\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 531ms\n  Running TypeScript ...\n  Finished TypeScript in 1185ms ...\n  Collecting page data using 9 workers ...\n  Generating static pages using 9 workers (0/22) ...\n  Generating static pages using 9 workers (5/22) \r\n  Generating static pages using 9 workers (10/22) \r\n  Generating static pages using 9 workers (16/22) \r\n✓ Generating static pages using 9 workers (22/22) in 163ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ○ /account\n├ ƒ /api/account\n├ ƒ /api/auth/[...all]\n├ ƒ /api/sync\n├ ○ /interview\n├ ○ /interview/coach\n├ ○ /interview/instructions\n├ ○ /interview/n400\n├ ○ /interview/reading\n├ ○ /interview/voice\n├ ○ /interview/writing\n├ ○ /journey\n├ ○ /journey/guide\n├ ○ /manifest.webmanifest\n├ ○ /offline\n├ ○ /practice\n├ ○ /practice/mock\n├ ○ /practice/session\n├ ○ /readiness\n├ ○ /settings\n└ ○ /setup\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n"
+      "outputTail": "\n> oathsteps@0.1.0 build /Users/ray/Dev/OathSteps- US Citizenship Prep\n> next build\n\n▲ Next.js 16.3.8 (Turbopack)\n- Environments: .env\n✓ Running next.config.ts took 13ms\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1020ms\n  Running TypeScript ...\n  Finished TypeScript in 1973ms ...\n  Collecting page data using 9 workers ...\n  Generating static pages using 9 workers (0/23) ...\n  Generating static pages using 9 workers (5/23) \r\n  Generating static pages using 9 workers (11/23) \r\n  Generating static pages using 9 workers (17/23) \r\n✓ Generating static pages using 9 workers (23/23) in 172ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ○ /account\n├ ○ /account/reset\n├ ƒ /api/account\n├ ƒ /api/auth/[...all]\n├ ƒ /api/health\n├ ƒ /api/sync\n├ ○ /interview\n├ ○ /interview/coach\n├ ○ /interview/instructions\n├ ○ /interview/n400\n├ ○ /interview/reading\n├ ○ /interview/voice\n├ ○ /interview/writing\n├ ○ /journey\n├ ○ /journey/guide\n├ ○ /manifest.webmanifest\n├ ○ /offline\n├ ○ /practice\n├ ○ /practice/mock\n├ ○ /practice/session\n├ ƒ /privacy\n├ ○ /readiness\n├ ○ /settings\n├ ○ /setup\n└ ƒ /terms\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n"
     },
     {
       "id": "e2e",
-      "status": "passed",
+      "status": "failed",
       "required": true,
-      "exitCode": 0,
-      "durationMs": 89405,
+      "exitCode": 1,
+      "durationMs": 142352,
       "command": "pnpm test:e2e",
-      "outputTail": "\n> oathsteps@0.1.0 test:e2e /Users/ray/Dev/OathSteps- US Citizenship Prep\n> playwright test\n\n\nRunning 29 tests using 1 worker\n·····························\n  29 passed (1.5m)\n::notice title=🎭 Playwright Run Summary::  29 passed (1.5m)\n[WebServer] Loaded Prisma config from prisma.config.ts.\n[WebServer] \n[WebServer] Prisma schema loaded from prisma/schema.prisma.\n[WebServer] 2026-10-05T06:18:02.120Z WARN [Better Auth]: User not found\n"
+      "outputTail": ").click();\n    > 61 |   await expect(page.getByText(\"Signed in as\")).toBeVisible();\n         |                                                ^\n      62 | }\n      63 |\n      64 | export async function signIn(page: Page, email: string, password = \"correct-horse-battery-10\") {\n        at signUp (/Users/ray/Dev/OathSteps- US Citizenship Prep/tests/e2e/helpers.ts:61:48)\n        at /Users/ray/Dev/OathSteps- US Citizenship Prep/tests/e2e/security.spec.ts:20:5\n\n    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────\n    test-results/security-security-headers--2fad7-and-bad-bodies-are-rejected-phone-retry1/test-failed-1.png\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n    Error Context: test-results/security-security-headers--2fad7-and-bad-bodies-are-rejected-phone-retry1/error-context.md\n\n    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────\n    test-results/security-security-headers--2fad7-and-bad-bodies-are-rejected-phone-retry1/trace.zip\n    Usage:\n\n        pnpm exec playwright show-trace test-results/security-security-headers--2fad7-and-bad-bodies-are-rejected-phone-retry1/trace.zip\n\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n  3 failed\n    [phone] › tests/e2e/account.spec.ts:66:7 › accounts, migration, sync, isolation, deletion › forgot password: the emailed link sets a new password, the old one stops working, and a bad link is refused \n    [phone] › tests/e2e/legal.spec.ts:6:7 › legal pages and health › Privacy notice and Terms are reachable from Welcome, sign-up and Settings, say what the app does, and show Draft until reviewed \n    [phone] › tests/e2e/security.spec.ts:19:7 › security headers and request boundaries › a signed-in session cannot be driven cross-origin, and bad bodies are rejected \n  29 passed (2.4m)\n::notice title=🎭 Playwright Run Summary::  3 failed%0A    [phone] › tests/e2e/account.spec.ts:66:7 › accounts, migration, sync, isolation, deletion › forgot password: the emailed link sets a new password, the old one stops working, and a bad link is refused %0A    [phone] › tests/e2e/legal.spec.ts:6:7 › legal pages and health › Privacy notice and Terms are reachable from Welcome, sign-up and Settings, say what the app does, and show Draft until reviewed %0A    [phone] › tests/e2e/security.spec.ts:19:7 › security headers and request boundaries › a signed-in session cannot be driven cross-origin, and bad bodies are rejected %0A  29 passed (2.4m)\n ELIFECYCLE  Command failed with exit code 1.\n[WebServer] Loaded Prisma config from prisma.config.ts.\n[WebServer] \n[WebServer] Prisma schema loaded from prisma/schema.prisma.\n[WebServer] 2026-10-05T06:58:09.001Z WARN [Better Auth]: User not found\n[WebServer] 2026-10-05T06:58:09.806Z WARN [Better Auth]: Invalid password\n[WebServer] 2026-10-05T06:58:21.147Z WARN [Better Auth]: Invalid password\n"
     }
   ]
 }
