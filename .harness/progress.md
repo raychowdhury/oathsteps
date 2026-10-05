@@ -1,27 +1,30 @@
 # Progress
 
 state: complete
-next action: owner gates only (see "Open findings"); on any code change rerun `pnpm verify`, then `node scripts/ledger.mjs verify <ids> --checks content,typecheck,lint,unit,build,e2e`
+next action: owner gates only (see "Open findings"); `pnpm release:check` lists them. On any code change rerun `pnpm verify`, then `node scripts/ledger.mjs verify <ids> --checks content,typecheck,lint,unit,build,e2e`
 
 ## Current slice
-Done. Every `track: core` feature (F-001 … F-024) is `verified` with evidence recorded for commit 2359d27 (`pnpm verify`, full mode, clean tree). The ledger stamp itself lands in the following commit, which changes only `.harness/*`.
+Done. All 25 `track: core` features (F-001 … F-025) are `verified` with evidence for commit dac6ef0 (`pnpm verify`, full mode, clean tree). The stamp itself lands in the following commit, which changes only `.harness/*`. F-025 is the release-readiness slice: production mail, password reset, startup config guard, container deployment with HTTPS, legal pages, expert-review gate, `release:check`.
 
-## Latest verified (2026-10-05, commit 2359d27)
-- `pnpm content:validate`: 2025 pack 128 questions / 20 designated 65-20 / 8 dynamic; 2008 pack 100 / 20 / 10; source hashes match `SOURCES.json`; guide stages link only to listed official sources.
-- `pnpm typecheck`, `pnpm lint`: clean.
-- `pnpm test`: 78 unit tests pass (routing boundary 2025-10-19 vs 2025-10-20, full and walkthrough stop rules, answer matching, writing word diff, filing/interview/milestone validation, journey slots and .ics, scheduler, plan, readiness, sync server, same-origin guard, integrations, i18n).
-- `pnpm build`: production build passes.
-- `pnpm test:e2e`: 29 browser tests pass against the production build (phone 375px and desktop 1280px projects): onboarding and routing, practice modes and sheets, dynamic answers, walkthrough and full mocks incl. pause/resume and 2008 path, interview reading/writing/instructions/N-400/voice fallbacks, readiness, journey milestones/guide/reminders/.ics, settings export/reset/delete, offline download, accounts with migration/sync/sign-out/delete, security headers and cross-origin rejection, axe sweep in light and dark with no serious or critical violations, keyboard-only card.
-- Fresh clone of origin/main (2026-10-05, commit 4760245): `bash scripts/bootstrap.sh --no-browsers`, `pnpm build` and `pnpm start` succeed; main routes, manifest and service worker return 200; security headers present; cross-origin sign-up returns 403. This found `.env.example` was gitignored; fixed in 4760245.
-- CI on 99fafdd: all jobs green, including `docker build --target runner` and the browser suite, so the Docker image build is verified there.
+## Latest verified (2026-10-05, commit dac6ef0)
+- `pnpm content:validate`, `pnpm typecheck`, `pnpm lint`: clean.
+- `pnpm test`: 102 unit tests pass (adds mail transports, production config guard, legal info, release gates, review records).
+- `pnpm build`: passes. `pnpm audit --prod`: no known vulnerabilities (two transitive advisories cleared with pnpm overrides).
+- `pnpm test:e2e`: 32 browser tests pass against the production build (phone and desktop). New: legal pages and links, the health endpoint, and the forgot-password round trip through the dev mail sink. The accessibility sweep now includes `/account/reset`, `/privacy` and `/terms`.
+- Container, run locally on Docker Desktop on 2026-10-05: `bash scripts/docker-smoke.sh` passes (stack healthy, sign-up writes to the database as the unprivileged user, auth rate limiter returns 429, mail sink writes). The production overlay was also run with Caddy on `localhost`: HTTPS served, HTTP redirects, HSTS and CSP present, cross-origin sign-up refused, weak-secret start refused. `release:check` run inside the image reports exactly the human gates.
+- Defect found only by running the image, now fixed: the migrate step created a database the app user could not write (`SQLITE_READONLY`). CI now runs the smoke test.
+- Fresh clone of origin/main (commit 4760245): `bash scripts/bootstrap.sh --no-browsers`, `pnpm build` and `pnpm start` succeed. This earlier found that `.env.example` was gitignored.
+- CI on 99fafdd was green including the Docker build. CI for the commits after it has not been checked yet.
 - Manual walkthrough (dev server, 2026-10-05): 375px phone and 1280px desktop, light and dark; Today, Setup, Practice, recall card, mock, Interview hub, Journey, Guide, Settings render as in the design handoff.
 
 ## Open findings (owner decisions, not code gaps)
-- Content is machine-checked only; a qualified reviewer has not signed off on wording, guide text or English tasks. The UI says so.
-- Docker image build could not run on this machine (daemon off); CI built the `runner` target successfully on 99fafdd.
-- Production mail provider, hosting and `BETTER_AUTH_SECRET` are owner-provisioned. Dev uses the mail sink directory.
-- Conditional integrations (speech provider, USCIS case status, payments, push) ship as disabled contracts with tests; the UI never presents them as working.
-- Voice practice uses the browser's Web Speech API and is labeled experimental; typed and self-check paths are the supported fallbacks.
+- Expert review of content has not happened. Packets come from `pnpm content:review-packet`; the procedure and record format are in `content/review/REVIEW.md`. Until records exist the UI says "machine-checked, not yet expert-reviewed".
+- Privacy notice and Terms are drafts written from what the code stores. They show "Draft" until a lawyer reviews them and `LEGAL_REVIEWED_ON` is set. They are not legal advice.
+- Resend delivery is unit-tested against a mocked call only. It needs your Resend account, a verified sending domain and one real test email after the first deploy.
+- Hosting is not chosen. `docs/DEPLOY.md` is a tested path for one VPS with Docker and Caddy; DNS, the server and the real certificate are yours.
+- Off-server backups, an uptime monitor and the mail domain's SPF/DKIM records cannot be checked by software.
+- Conditional integrations (speech provider, USCIS case status, payments, push) remain disabled contracts. Voice practice uses the browser's Web Speech API and is labeled experimental.
+- Browser tests ran in Chromium only. Safari, Firefox and a real phone are untested. There is no native iOS app, only the installable web app.
 
 ## Resume procedure
 1. Read this file, `.harness/features.json` and `.harness/decisions.md`.
