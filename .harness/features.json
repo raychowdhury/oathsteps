@@ -1,6 +1,6 @@
 {
   "$comment": "Feature ledger. status: planned | in-progress | verified | blocked. A feature is verified only when `evidence` cites a check result recorded against the current code (see .harness/evidence/). Changing the code that a feature depends on resets it to in-progress until re-verified.",
-  "updatedAt": "2026-10-05",
+  "updatedAt": "2026-10-06",
   "features": [
     {
       "id": "F-001",
@@ -17,8 +17,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -27,7 +27,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -47,8 +47,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -57,7 +57,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -77,8 +77,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -87,7 +87,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -108,8 +108,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -118,7 +118,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -139,8 +139,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -149,7 +149,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -168,8 +168,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -178,7 +178,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -197,8 +197,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -207,7 +207,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -228,8 +228,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -238,7 +238,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -257,8 +257,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -267,7 +267,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -290,8 +290,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -300,7 +300,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -319,8 +319,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -329,7 +329,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -349,8 +349,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -359,7 +359,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -378,8 +378,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -388,7 +388,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -405,8 +405,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -415,7 +415,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -434,8 +434,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -444,7 +444,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -464,8 +464,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -474,7 +474,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -493,8 +493,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -503,7 +503,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -523,8 +523,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -533,7 +533,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -552,8 +552,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -562,7 +562,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -582,8 +582,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -592,7 +592,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -613,8 +613,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -623,7 +623,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -641,8 +641,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -651,7 +651,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -668,8 +668,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -678,7 +678,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -698,8 +698,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -708,7 +708,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -742,8 +742,8 @@
       "status": "verified",
       "evidence": [
         {
-          "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-          "recordedAt": "2026-10-05T19:01:33.751Z",
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
           "checks": [
             "content",
             "typecheck",
@@ -752,7 +752,7 @@
             "build",
             "e2e"
           ],
-          "note": null
+          "note": "pnpm verify full, clean tree"
         }
       ]
     },
@@ -786,8 +786,24 @@
         "Privacy notice covers the iPhone app: on-device storage and speech, local reminders, Keychain sign-in",
         "CI workflow runs the Swift tests and the UI tests on a macOS runner"
       ],
-      "status": "in-progress",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        {
+          "commit": "160226bef2908caa4c9599e314a3ccc2efe1fddd",
+          "recordedAt": "2026-10-06T03:05:51.566Z",
+          "checks": [
+            "content",
+            "typecheck",
+            "lint",
+            "unit",
+            "build",
+            "e2e",
+            "ios-core",
+            "ios-ui"
+          ],
+          "note": "pnpm verify full on macOS, clean tree: 77 Swift core tests, 6 simulator UI tests incl. account sync against the local server"
+        }
+      ]
     },
     {
       "id": "C-001",

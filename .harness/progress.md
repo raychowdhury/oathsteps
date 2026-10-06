@@ -1,12 +1,17 @@
 # Progress
 
 state: complete
-next action: owner gates only (see "Open findings"); `pnpm release:check` lists them. On any code change rerun `pnpm verify`, then `node scripts/ledger.mjs verify <ids> --checks content,typecheck,lint,unit,build,e2e`
+next action: owner gates only (see "Open findings"); `pnpm release:check` lists them. On any code change rerun `pnpm verify` (on a Mac it includes the iOS checks), then `node scripts/ledger.mjs verify <ids> --checks content,typecheck,lint,unit,build,e2e` (add `,ios-core,ios-ui` for F-026)
 
 ## Current slice
-Done. All 25 `track: core` features (F-001 … F-025) are `verified` with evidence for commit d96f5b1 (`pnpm verify`, full mode, clean tree). The stamp itself lands in the following commit, which changes only `.harness/*`. F-025 is the release-readiness slice: production mail, password reset, startup config guard, container deployment with HTTPS, legal pages, expert-review gate, `release:check`.
+Done. All 26 `track: core` features (F-001 … F-026) are `verified` with evidence for commit 160226b (`pnpm verify`, full mode, clean tree, iOS checks included). The stamp itself lands in the following commit, which changes only `.harness/*`. F-026 is the native iPhone app (`ios/`, SwiftUI) with parity to the web app; see `ios/README.md`.
 
-## Latest verified (2026-10-05, commit d96f5b1)
+## Latest verified (2026-10-05, commit 160226b)
+- `pnpm verify` full mode on a clean tree: content, typecheck, lint, 119 unit tests, build, 35 browser tests (phone and desktop), 77 Swift core tests, 6 iPhone UI tests on the iOS 26.5 simulator (setup and test path, practice card, walkthrough stop rule, journey and guide, settings data controls with typed DELETE, light and dark tour, and an account sign-up, consented migration, sync and deletion against the local server with a bearer token).
+- Native walkthrough screenshots (light and dark: Today, Practice, Interview, Journey; plus Welcome, practice card, walkthrough results, guide, settings, account) are attachments in the UI test result bundle (`ios/build/ui.xcresult`, uploaded by CI).
+- Found and fixed during the native work: the sync server rejected `journey` events (whole batches failed for anyone with a milestone date); Better Auth's 5-minute session cookie cache kept a deleted account's session usable for sync on clients that keep cookies; stored cookies made the iOS app's next sign-in fail with 403; dates were shown as the UTC day (a day ahead on US evenings) in both apps; web Clear demo left the fictional interview date and checklist; a main-actor color closure crashed the iOS app when SwiftUI resolved colors on its render thread; an unreadable iOS data file would have been overwritten (now kept aside).
+
+## Earlier verification (2026-10-05, commit d96f5b1)
 - `pnpm content:validate`, `pnpm typecheck`, `pnpm lint`: clean.
 - `pnpm test`: 117 unit tests pass (mail transports incl. Brevo, production config guard, legal info and shared legal text, release gates, review records, Home Screen tip detection).
 - `pnpm build`: passes. `pnpm audit --prod`: no known vulnerabilities (two transitive advisories cleared with pnpm overrides).
@@ -29,7 +34,8 @@ Done. All 25 `track: core` features (F-001 … F-025) are `verified` with eviden
 - Legal pages are also published by GitHub Pages (`.github/workflows/pages.yml`), as drafts naming the project and pointing to GitHub issues, until repository variables are set.
 - Off-server backups, an uptime monitor and the mail domain's SPF/DKIM records cannot be checked by software.
 - Conditional integrations (speech provider, USCIS case status, payments, push) remain disabled contracts. Voice practice uses the browser's Web Speech API and is labeled experimental.
-- Automated browser tests run in Chromium. iPhone Safari was checked by hand in the iOS 26.5 simulator; a real phone, Firefox and desktop Safari are untested, and microphone input was not tested. There is no native iOS app, only the installable web app.
+- Automated browser tests run in Chromium. iPhone Safari was checked by hand in the iOS 26.5 simulator; a real phone, Firefox and desktop Safari are untested, and microphone input was not tested.
+- Native iPhone app: tested only in the simulator. A real iPhone (microphone and on-device speech, notification delivery, VoiceOver, largest text sizes) is untested. App Store release needs the owner's Apple Developer account and team ID. Release builds are guest-only until the deployed HTTPS address is set as `OATHSTEPS_API_BASE_URL` (ios/README.md, "Before the App Store"). The iOS CI job (`.github/workflows/ios.yml`, macos-26 runner) is new; its first run is checked after the push.
 - Request emails for the reviewer and the lawyer are drafted in `content/review/OUTREACH.md`; sending them is the owner's step.
 
 ## Resume procedure
