@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { todayDateOnly } from "@/domain/dates";
-import { statusLabel } from "@/domain/journey";
+import { emptyJourney, statusLabel } from "@/domain/journey";
 import type { StudyProfile } from "@/domain/types";
 import { fmtDate } from "@/domain/validation";
 import { useSession } from "@/lib/auth-client";
@@ -12,7 +12,7 @@ import { loadDemoLearner } from "@/lib/demo";
 import { guide } from "@/lib/guide";
 import { clearOfflineCaches, downloadForOffline } from "@/lib/offline";
 import { destroyDb } from "@/lib/store/db";
-import { exportAll, getMeta, listChecklist, listReports, outboxSummary, resetPractice, saveProfile, setMeta } from "@/lib/store/repo";
+import { exportAll, getMeta, listChecklist, listReports, outboxSummary, resetPractice, saveJourney, saveProfile, setChecklist, setMeta } from "@/lib/store/repo";
 import { useData } from "@/lib/store/useData";
 import { loadSnapshot } from "@/lib/today";
 import { US_STATES } from "@/lib/us-states";
@@ -95,6 +95,9 @@ export default function SettingsPage() {
   };
   const clearDemo = async () => {
     await resetPractice();
+    // The demo's interview date and checklist are fictional too.
+    await saveJourney(emptyJourney());
+    for (const c of extra.checklist) await setChecklist({ itemId: c.itemId, completedAt: null, remind: false });
     await saveProfile({ onboarded: false, filingDate: null, filingDateUnknown: false, specialConsideration: false, state: null });
     toast("Demo data cleared.");
     router.push("/");

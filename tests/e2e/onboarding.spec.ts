@@ -109,6 +109,11 @@ test.describe("welcome, setup and first practice", () => {
     await page.getByRole("button", { name: "Clear demo" }).click();
     await expect(page.getByRole("heading", { name: "OathSteps" })).toBeVisible();
     await expect(page.getByText("Demo", { exact: true })).toHaveCount(0);
+    // The fictional interview date and checklist go too.
+    await setupProfile(page, { filingDate: "2026-01-15" });
+    await expect(page.getByTestId("countdown")).toHaveCount(0);
+    await page.goto("/journey");
+    await expect(page.getByText("1 of 18 done")).toBeVisible();
   });
 
   test("iPhone Safari without a Home Screen install shows how to keep progress; other browsers never do", async ({ page, browser }) => {

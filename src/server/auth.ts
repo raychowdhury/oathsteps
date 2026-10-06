@@ -49,8 +49,8 @@ export const auth = betterAuth({
   rateLimit: { enabled: process.env.AUTH_RATE_LIMIT !== "off", window: 60, max: 30 },
   trustedOrigins: [baseURL],
   // bearer: the native iOS app sends the signed session token in an Authorization header instead of a cookie.
-  // Only signed tokens (the value returned in the set-auth-token header) are accepted.
-  plugins: [nextCookies(), bearer({ requireSignature: true })],
+  // Only signed tokens (the value returned in the set-auth-token header) are accepted. nextCookies must stay last.
+  plugins: [bearer({ requireSignature: true }), nextCookies()],
 });
 
 export type Session = typeof auth.$Infer.Session;
