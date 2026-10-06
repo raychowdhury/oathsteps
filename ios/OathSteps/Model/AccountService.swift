@@ -24,7 +24,7 @@ struct AccountError: LocalizedError {
 
 /// The signed session token, kept in the Keychain (this device only).
 enum TokenStore {
-    private static let service = "io.github.raychowdhury.oathsteps.session"
+    private static let service = "com.raychowdhury.oathsteps.session"
     private static var base: [String: Any] { [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: "session"] }
 
     static func read() -> String? {

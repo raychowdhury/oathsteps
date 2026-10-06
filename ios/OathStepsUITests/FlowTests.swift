@@ -137,6 +137,35 @@ extension FlowTests {
         }
     }
 
+    /// App Store screenshots. Skipped unless run with TEST_RUNNER_APPSTORE_SCREENSHOTS=1 (see ios/README.md).
+    func testAppStoreScreenshots() throws {
+        guard ProcessInfo.processInfo.environment["APPSTORE_SCREENSHOTS"] == "1" else { throw XCTSkip("Set TEST_RUNNER_APPSTORE_SCREENSHOTS=1") }
+        launch()
+        tap("load-demo")
+        wait("countdown")
+        tap("open-settings")
+        app.buttons["Light"].firstMatch.tap()
+        tap("close-settings")
+        sleep(5) // let the demo toast disappear
+        snap("appstore-1-today")
+        tab("Interview"); snap("appstore-4-interview")
+        tab("Journey"); wait("ms-interview"); snap("appstore-5-journey")
+        tab("Today")
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Readiness details'")).firstMatch.tap()
+        wait("rd-seen"); snap("appstore-6-readiness")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        tap("start-today")
+        tap("reveal")
+        wait("answer-card")
+        snap("appstore-2-practice")
+        tab("Practice")
+        tap("start-walkthrough")
+        tap("start-mock")
+        for _ in 0..<4 { tap("mock-reveal"); tap("mock-correct") }
+        wait("mock-score")
+        snap("appstore-3-mock")
+    }
+
     /// Needs the local server from `pnpm dev -p 3500` (the Debug build's API base URL); skipped otherwise.
     func testAccountSignUpMigrateSyncAndDelete() throws {
         guard let url = URL(string: "http://localhost:3500/api/health"), (try? Data(contentsOf: url)) != nil else {

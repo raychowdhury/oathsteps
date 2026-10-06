@@ -22,6 +22,14 @@ UI tests run on a simulator. They start from an empty device each time (`-uitest
 ios/test-ui.sh    # a booted iPhone simulator, else the first available; SIMULATOR_UDID overrides
 ```
 
+App Store screenshots (6.9-inch, 1320 × 2868) come from a test that is skipped unless asked for:
+
+```bash
+TEST_RUNNER_APPSTORE_SCREENSHOTS=1 ios/test-ui.sh -only-testing:OathStepsUITests/FlowTests/testAppStoreScreenshots
+```
+
+Run it on an iPhone 17 Pro Max simulator (`SIMULATOR_UDID`), with `xcrun simctl status_bar <udid> override --time 9:41` first.
+
 The account test signs up, migrates, syncs and deletes a throwaway account against `pnpm dev -p 3500`. Without that server it is skipped. On a Mac, `pnpm verify` runs both iOS checks; CI runs them in `.github/workflows/ios.yml`.
 
 ## Layout
@@ -56,8 +64,8 @@ Accounts use the server's Better Auth bearer plugin: sign-in returns a signed to
 
 ## Before the App Store
 
-1. Set `DEVELOPMENT_TEAM` in `project.yml` and a unique bundle identifier if needed.
+1. Signing: team F5MY9BC25S, bundle identifier `com.raychowdhury.oathsteps`, automatic signing. iPhone only.
 2. Set the Release `OATHSTEPS_API_BASE_URL`, or leave it empty to ship guest-only.
-3. App Privacy answers: with accounts, email address, name and "other user content" (study records) are collected, linked to the user, for app functionality only, no tracking. Guest-only builds collect nothing. `OathSteps/Resources/PrivacyInfo.xcprivacy` matches the account case.
+3. App Privacy answers: a guest-only build collects nothing ("Data Not Collected"), which is what `OathSteps/Resources/PrivacyInfo.xcprivacy` declares. With accounts switched on, email address, name and "other user content" (study records) are collected, linked to the user, for app functionality only, no tracking: add them to the manifest and the answers.
 4. Review notes: not affiliated with USCIS, content sourced from official USCIS PDFs, no eligibility decisions, no account required.
 5. Test on a real iPhone: microphone and speech, notifications, VoiceOver and the largest text sizes. Only the simulator has been used so far.
