@@ -39,7 +39,9 @@ export function sameOrigin(req: Request): boolean {
 
 /** Resolve the signed-in user or respond 401. Applies a per-user rate limit. */
 export async function requireUser(req: Request): Promise<{ userId: string } | NextResponse> {
-  const session = await auth.api.getSession({ headers: await headers() });
+  // Data endpoints always check the database. The 5-minute session cookie cache would otherwise keep a
+  // signed-out or deleted session working for those minutes on any client that keeps cookies.
+  const session = await auth.api.getSession({ headers: await headers(), query: { disableCookieCache: true } });
   if (!session) return json({ error: "Sign in required" }, 401);
   if (!allowRequest(`user:${session.user.id}`)) return json({ error: "Too many requests, try again in a minute" }, 429);
   if (req.method !== "GET" && !sameOrigin(req)) return json({ error: "Cross-origin request rejected" }, 403);

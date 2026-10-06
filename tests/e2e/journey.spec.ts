@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
-import { errorLine, setupProfile } from "./helpers";
+import { errorLine, localDay, setupProfile } from "./helpers";
 
-const d = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString().slice(0, 10);
+const d = localDay;
 
 test.describe.configure({ timeout: 120_000 });
 

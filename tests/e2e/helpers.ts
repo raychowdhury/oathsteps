@@ -48,6 +48,13 @@ export async function markMock(page: Page, outcome: "correct" | "incorrect" | "u
   await expect(button).toBeHidden();
 }
 
+/** Today plus `days` as YYYY-MM-DD in local time, the way the app computes "today". A UTC date is a day ahead on US evenings. */
+export function localDay(days = 0) {
+  const t = new Date();
+  t.setDate(t.getDate() + days);
+  return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
+}
+
 export function uniqueEmail(prefix = "learner") {
   return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 1e6)}@example.test`;
 }

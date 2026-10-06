@@ -68,3 +68,6 @@ Each entry: date, decision, why, consequence. Newest first.
 - **Unreadable data is kept, not overwritten.** If the native data file cannot be decoded, it is moved aside and the app says so.
 - **Swift concurrency.** Default main-actor isolation; anything UIKit or SwiftUI may call off the main thread (the dynamic color provider, `Transferable` representations, the speech listener) is explicitly `nonisolated`. A main-actor color provider crashed when SwiftUI resolved it on its render thread.
 - **App icon** matches the installed web app's icon, redrawn at 1024 px without transparency.
+- **Data endpoints skip the session cookie cache.** `requireUser` calls `getSession` with `disableCookieCache`. Found by the native token test: Better Auth's 5-minute `session_data` cookie let a deleted account's session keep reading and writing for those minutes on any client that keeps cookies, web browsers on other devices included. Sync and account calls now always check the database.
+- **The iPhone app never handles cookies** (`httpShouldHandleCookies = false`). Stored cookies sent without an `Origin` made Better Auth refuse a later sign-up or sign-in with 403.
+- **Browser tests compute "today" in local time**, as the app does. They used the UTC date and failed every evening in US time zones.

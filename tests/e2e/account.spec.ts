@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test, type Browser } from "@playwright/test";
-import { answerCard, setupProfile, signIn, signUp, uniqueEmail } from "./helpers";
+import { answerCard, localDay, setupProfile, signIn, signUp, uniqueEmail } from "./helpers";
 
 async function freshPage(browser: Browser) {
   const ctx = await browser.newContext();
@@ -14,7 +14,7 @@ test.describe("accounts, migration, sync, isolation, deletion", () => {
   test("guest progress migrates with consent, restores on a new device, is isolated per user, and can be deleted", async ({ page, browser, request }) => {
     const email = uniqueEmail("one");
     // An interview date makes a journey event, which must sync alongside practice (it once broke the whole push).
-    const soon = new Date(Date.now() + 10 * 86_400_000).toISOString().slice(0, 10);
+    const soon = localDay(10);
     await setupProfile(page, { filingDate: "2026-01-15", interviewDate: soon });
     await page.goto("/practice/session?kind=daily");
     await answerCard(page, "got");

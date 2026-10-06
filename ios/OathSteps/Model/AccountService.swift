@@ -72,6 +72,8 @@ final class AccountService {
         var r = URLRequest(url: baseURL.appendingPathComponent(path))
         r.httpMethod = method
         r.timeoutInterval = 20
+        // The bearer token is the only credential; never keep or send the server's cookies.
+        r.httpShouldHandleCookies = false
         r.setValue("application/json", forHTTPHeaderField: "Accept")
         if let body {
             r.setValue("application/json", forHTTPHeaderField: "Content-Type")

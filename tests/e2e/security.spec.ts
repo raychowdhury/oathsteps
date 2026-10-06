@@ -41,7 +41,8 @@ test.describe("security headers and request boundaries", () => {
     expect(token).toContain(".");
     await signup.dispose();
 
-    // A fresh context has no cookies and sends no Origin, like the iOS app.
+    // A fresh context sends no Origin, like the iOS app. It does keep cookies, so it also proves the server's
+    // session cookie cache cannot keep a deleted account's token alive.
     const api = await playwright.request.newContext({ baseURL });
     const auth = { authorization: `Bearer ${token}` };
     expect((await api.get("/api/sync", { headers: auth })).status()).toBe(200);

@@ -1,5 +1,5 @@
 import { devices, expect, test } from "@playwright/test";
-import { answerCard, errorLine, setupProfile, startToday } from "./helpers";
+import { answerCard, errorLine, localDay, setupProfile, startToday } from "./helpers";
 
 test.describe.configure({ timeout: 120_000 });
 
@@ -87,7 +87,7 @@ test.describe("welcome, setup and first practice", () => {
   });
 
   test("65/20 and an interview date give a countdown and the 20-question set", async ({ page }) => {
-    const soon = new Date(Date.now() + 10 * 86_400_000).toISOString().slice(0, 10);
+    const soon = localDay(10);
     await setupProfile(page, { filingDate: "2026-02-01", special: true, interviewDate: soon, state: "NY" });
     await expect(page.getByTestId("path-tag")).toHaveText("2025 civics test · 65/20");
     await expect(page.getByTestId("countdown")).toContainText("Interview in 10 days");
