@@ -29,7 +29,7 @@ It prints a random `https://….trycloudflare.com` address that changes every ru
 1. **Cloudflare account and domain.** Create a free account. Add your domain to Cloudflare (change its nameservers as Cloudflare instructs), or register one there.
 2. **Create the tunnel.** In the Cloudflare dashboard open Zero Trust, then Networks, then Tunnels, and create a tunnel of type Cloudflared. Copy the tunnel token (the long string after `--token`). Menu names move around; Cloudflare's own guide is https://developers.cloudflare.com/tunnel/setup/.
 3. **Add a public hostname** to the tunnel: subdomain `study` (or whatever you like), your domain, service type `HTTP`, URL `app:3000`.
-4. **Put the machine in order.** Install Docker, then:
+4. **Put the machine in order.** On a fresh Ubuntu 24.04 server, `deploy/server-setup.sh` does all of this step and part of the next: Docker from Ubuntu's archive, a 2 GB swap file for the build, a firewall that allows only SSH, key-only SSH, automatic security updates, the repository in `/srv/oathsteps`, a `.env` with a new secret, and the nightly backup cron job. Run it as root: `curl -fsSLO https://raw.githubusercontent.com/raychowdhury/oathsteps/main/deploy/server-setup.sh && bash server-setup.sh`. By hand instead: install Docker, then:
 
    ```bash
    git clone https://github.com/raychowdhury/oathsteps.git
