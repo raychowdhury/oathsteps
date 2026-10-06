@@ -18,6 +18,7 @@ const args = process.argv.slice(2);
 const quick = args.includes("--quick");
 const only = args.includes("--only") ? args[args.indexOf("--only") + 1] : null;
 
+const onMac = process.platform === "darwin";
 const checks = [
   { id: "content", cmd: "pnpm", argv: ["content:validate"], required: true, quick: true },
   { id: "typecheck", cmd: "pnpm", argv: ["typecheck"], required: true, quick: true },
@@ -25,6 +26,9 @@ const checks = [
   { id: "unit", cmd: "pnpm", argv: ["test", "--", "--run"], required: true, quick: true },
   { id: "build", cmd: "pnpm", argv: ["build"], required: true, quick: false },
   { id: "e2e", cmd: "pnpm", argv: ["test:e2e"], required: true, quick: false, skipIf: () => (existsSync(join(root, "node_modules/.bin/playwright")) ? null : "playwright not installed") },
+  // The iPhone app needs macOS with Xcode. Required there; recorded as skipped elsewhere (Linux CI runs them in ios.yml).
+  { id: "ios-core", cmd: "swift", argv: ["test", "--package-path", "ios/OathStepsCore"], required: onMac, quick: true, skipIf: () => (onMac ? null : "needs macOS with Xcode") },
+  { id: "ios-ui", cmd: "bash", argv: ["ios/test-ui.sh"], required: onMac, quick: false, skipIf: () => (!onMac ? "needs macOS with Xcode" : spawnSync("which", ["xcodegen"]).status === 0 ? null : "xcodegen not installed (brew install xcodegen)") },
 ];
 
 const results = [];

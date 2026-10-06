@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import tasksJson from "../../../content/english/tasks.json";
-import { fmtDate } from "@/domain/validation";
+import { fmtLocalDay } from "@/domain/validation";
 import { useData } from "@/lib/store/useData";
 import { lastEnglish, loadSnapshot } from "@/lib/today";
 import { Icon, type IconName } from "@/components/icons";
@@ -16,8 +16,8 @@ export default function InterviewPage() {
   const wr = lastEnglish(s, "writing");
   const rows: { title: string; sub: string; meta: string; icon: IconName; href: string }[] = [
     { title: "Civics out loud", sub: "Voice optional", meta: "5 questions from your list", icon: "mic", href: "/interview/voice" },
-    { title: "Reading", sub: "Read one sentence aloud", meta: rd ? `Last practiced ${fmtDate(rd.at.slice(0, 10))}` : "Not practiced yet", icon: "guide", href: "/interview/reading" },
-    { title: "Writing", sub: "Write one sentence you hear", meta: wr ? `Last practiced ${fmtDate(wr.at.slice(0, 10))}` : "Not practiced yet", icon: "pencil", href: "/interview/writing" },
+    { title: "Reading", sub: "Read one sentence aloud", meta: rd ? `Last practiced ${fmtLocalDay(rd.at)}` : "Not practiced yet", icon: "guide", href: "/interview/reading" },
+    { title: "Writing", sub: "Write one sentence you hear", meta: wr ? `Last practiced ${fmtLocalDay(wr.at)}` : "Not practiced yet", icon: "pencil", href: "/interview/writing" },
     { title: "Interview instructions", sub: "What the officer may say", meta: `${tasks.instructions.length} common phrases`, icon: "interview", href: "/interview/instructions" },
     { title: "N-400 words and conversation", sub: "Key words, truthful answers", meta: `${tasks.vocabulary.length} words · ${tasks.conversation.length} prompts`, icon: "doc", href: "/interview/n400" },
   ];

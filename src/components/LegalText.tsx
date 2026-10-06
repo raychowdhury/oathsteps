@@ -117,6 +117,15 @@ export function PrivacySections({ legal }: { legal: LegalInfo }) {
         <p>If you tap Say your answer, your browser’s speech recognition turns your voice into text. Depending on your browser, your voice may be sent to the company that makes it, for example Google for Chrome. OathSteps does not record or keep your audio or the text it hears.</p>
         <p>You can type your answer or check yourself instead. Read-aloud uses your device’s voices. Some browsers use online voices.</p>
       </Section>
+      <Section title="The iPhone app">
+        <ul className="o-bullets">
+          <li>Your study data is saved in a file inside the app on your iPhone, protected by the iPhone’s data protection. Deleting the app deletes it. Your iPhone or iCloud backups may include it.</li>
+          <li>Answering aloud uses Apple’s speech recognition on your iPhone only. Your audio is not sent to Apple or to us. If your iPhone cannot recognize speech on the device, the app says so and you can type or check yourself instead.</li>
+          <li>The app asks for microphone and speech recognition permission only when you choose to answer aloud.</li>
+          <li>Reminders are notifications scheduled on your iPhone. Nothing is sent from our server. You can turn them off in the app’s Settings or in iPhone Settings.</li>
+          <li>If you sign in, the app keeps a sign-in token in the iPhone Keychain, on that device only. It sends the token instead of a cookie.</li>
+        </ul>
+      </Section>
       <Section title="Cookies and storage">
         <p>OathSteps sets one cookie, only when you sign in. It keeps you signed in. We use no advertising or analytics cookies. We use your browser’s storage and a service worker, a small helper that lets the app work offline.</p>
       </Section>

@@ -158,6 +158,10 @@ Point a free uptime monitor at `https://study.example.org/api/health` and alert 
 
 Cloudflare Email Routing (free, once the domain is on Cloudflare) forwards `privacy@your-domain` to your own inbox. Use that address as `LEGAL_CONTACT_EMAIL`.
 
+## iPhone app
+
+Once the server has an HTTPS address, set it as the Release `OATHSTEPS_API_BASE_URL` in `ios/project.yml` so the native app can offer accounts. Until then the app ships guest-only, with accounts hidden. Publishing to the App Store needs an Apple Developer account; the checklist is in `ios/README.md`.
+
 ## Not covered
 
 PostgreSQL and more than one app instance (see OPERATIONS.md), and any integration that is still a disabled placeholder (speech scoring, USCIS case status, payments, push).

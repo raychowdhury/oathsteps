@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fmtDate, validateFiling, validateInterviewDate } from "./validation";
+import { fmtDate, fmtLocalDay, validateFiling, validateInterviewDate } from "./validation";
 
 const TODAY = "2026-10-05";
 
@@ -26,5 +26,9 @@ describe("interview date validation", () => {
   it("formats dates for people", () => {
     expect(fmtDate("2026-01-15")).toBe("Jan 15, 2026");
     expect(fmtDate("")).toBe("");
+    // 9 pm in New York on Oct 5 is already Oct 6 in UTC; the learner should see Oct 5.
+    expect(fmtLocalDay("2026-10-06T01:30:00.000Z", "America/New_York")).toBe("Oct 5, 2026");
+    expect(fmtLocalDay("2026-10-06T01:30:00.000Z", "UTC")).toBe("Oct 6, 2026");
+    expect(fmtLocalDay(null)).toBe("");
   });
 });

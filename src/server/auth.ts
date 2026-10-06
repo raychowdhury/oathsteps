@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
+import { bearer } from "better-auth/plugins";
 import { prisma } from "./prisma";
 import { deliverMail, type MailMessage } from "./mail";
 
@@ -47,7 +48,9 @@ export const auth = betterAuth({
   // On everywhere. Only the browser tests turn it off, and checkConfig refuses that on a public address.
   rateLimit: { enabled: process.env.AUTH_RATE_LIMIT !== "off", window: 60, max: 30 },
   trustedOrigins: [baseURL],
-  plugins: [nextCookies()],
+  // bearer: the native iOS app sends the signed session token in an Authorization header instead of a cookie.
+  // Only signed tokens (the value returned in the set-auth-token header) are accepted.
+  plugins: [nextCookies(), bearer({ requireSignature: true })],
 });
 
 export type Session = typeof auth.$Infer.Session;

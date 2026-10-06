@@ -13,7 +13,9 @@ test.describe.configure({ timeout: 120_000 });
 test.describe("accounts, migration, sync, isolation, deletion", () => {
   test("guest progress migrates with consent, restores on a new device, is isolated per user, and can be deleted", async ({ page, browser, request }) => {
     const email = uniqueEmail("one");
-    await setupProfile(page, { filingDate: "2026-01-15" });
+    // An interview date makes a journey event, which must sync alongside practice (it once broke the whole push).
+    const soon = new Date(Date.now() + 10 * 86_400_000).toISOString().slice(0, 10);
+    await setupProfile(page, { filingDate: "2026-01-15", interviewDate: soon });
     await page.goto("/practice/session?kind=daily");
     await answerCard(page, "got");
     await answerCard(page, "got");
@@ -31,6 +33,7 @@ test.describe("accounts, migration, sync, isolation, deletion", () => {
     await expect(page2.getByTestId("account-msg")).toContainText(/merged \d+ records/);
     await page2.goto("/");
     await expect(page2.getByText("Seen 2 of 128")).toBeVisible();
+    await expect(page2.getByTestId("countdown")).toContainText("Interview in 10 days");
     await expect(page2.getByTestId("path-tag")).toHaveText("2025 civics test");
 
     // Another user cannot see the first user's data; anonymous access is refused.

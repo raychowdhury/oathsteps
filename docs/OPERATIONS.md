@@ -63,6 +63,10 @@ Tested on the iOS 26.5 simulator (iPhone 17) in Safari and as an installed Home 
 - Fixed during that pass: date fields overflowing the screen, the light page showing behind Safari's bars in dark mode, and the action bar sitting under the home indicator in the installed app.
 - Voice practice offers speech recognition in Safari; the typed and self-check paths remain the dependable ones. Microphone input was not tested in the simulator.
 
+### Native iPhone app
+
+The SwiftUI app in `ios/` talks to the same server. It authenticates with a bearer token (Better Auth `bearer` plugin, signed tokens only) instead of a cookie, and its requests carry no `Origin`, which the request guard already allows. Sync, consent and account deletion use the same endpoints as the web app. Nothing else changes on the server. Build and release steps are in `ios/README.md`.
+
 ## Moving to PostgreSQL
 
 Changing only `DATABASE_URL` does not migrate between providers. The honest path:

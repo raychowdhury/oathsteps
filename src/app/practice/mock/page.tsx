@@ -5,7 +5,7 @@ import { Suspense, useState } from "react";
 import { abandonMock, answerMock, createMock, currentQuestionId, pauseMock, resumeMock, startMock, WALKTHROUGH_RULES, type MockState } from "@/domain/mock";
 import { randomSeed } from "@/domain/rng";
 import type { Outcome, PracticeAttempt } from "@/domain/types";
-import { fmtDate } from "@/domain/validation";
+import { fmtLocalDay } from "@/domain/validation";
 import { getPack, getQuestion } from "@/lib/content";
 import { practiceBank } from "@/lib/path";
 import { getOpenMock, listDynamicAnswers, listMocks, recordAttempt, saveMock, setChecklist } from "@/lib/store/repo";
@@ -98,7 +98,7 @@ function MockInner() {
           <div className="o-stack-xs">
             <h1 className="o-h1">{kind === "walkthrough" ? "Walkthrough results" : "Mock results"}</h1>
             <span className="o-meta">
-              {fmtDate(result.finishedAt?.slice(0, 10))} · {label.toLowerCase()}
+              {fmtLocalDay(result.finishedAt)} · {label.toLowerCase()}
               {result.config.special ? " · 65/20 format" : ""}
             </span>
           </div>
@@ -326,7 +326,7 @@ function MockInner() {
                   <div className="o-strong">
                     {m.result!.correct} of {m.result!.attempted} correct
                   </div>
-                  <div className="o-meta">{fmtDate(m.finishedAt?.slice(0, 10))}</div>
+                  <div className="o-meta">{fmtLocalDay(m.finishedAt)}</div>
                 </div>
                 <span className="o-meta">
                   {m.result!.incorrect} incorrect · {m.result!.uncertain} not sure

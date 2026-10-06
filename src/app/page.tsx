@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { fmtDate } from "@/domain/validation";
+import { fmtLocalDay } from "@/domain/validation";
 import { FilingSheet } from "@/components/FilingSheet";
 import { MilestoneSheet } from "@/components/MilestoneSheet";
 import { Icon } from "@/components/icons";
@@ -44,7 +44,7 @@ export default function TodayPage() {
 
   const improve: { title: string; sub: string; icon: "flag" | "pencil" | "save"; amber?: boolean; href: string }[] = [];
   if (unc.length) improve.push({ title: `Review ${unc.length} answer${unc.length === 1 ? "" : "s"} to try again`, sub: "Not sure or missed", icon: "flag", amber: true, href: "/practice/session?kind=weak" });
-  if (lastWr && lastWr.outcome !== "correct") improve.push({ title: "Writing: try one more sentence", sub: `Last try ${fmtDate(lastWr.at.slice(0, 10))}: ${lastWr.text}`, icon: "pencil", href: "/interview/writing" });
+  if (lastWr && lastWr.outcome !== "correct") improve.push({ title: "Writing: try one more sentence", sub: `Last try ${fmtLocalDay(lastWr.at)}: ${lastWr.text}`, icon: "pencil", href: "/interview/writing" });
   if (saved.length) improve.push({ title: `${saved.length} saved question${saved.length === 1 ? "" : "s"}`, sub: "Saved by you", icon: "save", href: "/practice/session?kind=saved" });
 
   const startButton = (

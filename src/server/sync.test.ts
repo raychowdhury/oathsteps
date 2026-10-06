@@ -34,6 +34,15 @@ describe("validatePush", () => {
   });
 });
 
+describe("event types the clients send", () => {
+  it("accepts every outbox type the web and iOS clients produce, including journey", () => {
+    const types = ["attempt", "mock", "journey", "checklist", "english", "profile", "dynamic-answer", "bookmark", "report"];
+    const r = validatePush({ events: types.map((type, i) => ({ eventId: uuid(900 + i), type, payload: {}, createdAt: T })) });
+    expect(r).toMatchObject({ ok: true, rejected: [] });
+    if (r.ok) expect(r.events.map((e) => e.type)).toEqual(types);
+  });
+});
+
 describe("storeEvents", () => {
   it("stores once, treats replays as duplicates, and refuses ids owned by another user", async () => {
     const ev = { eventId: uuid(10), type: "attempt" as const, payload: { questionId: "2025-001" }, createdAt: T };

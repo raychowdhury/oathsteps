@@ -4,7 +4,8 @@ import type { PrismaClient } from "@/generated/prisma/client";
 /** Wire format for one outbox event. Payloads are opaque JSON but bounded in size. */
 export const eventSchema = z.object({
   eventId: z.string().uuid().or(z.string().regex(/^mock:[0-9a-f-]{36}$/)),
-  type: z.enum(["attempt", "review", "mock", "milestone", "checklist", "english", "profile", "dynamic-answer", "bookmark", "report"]),
+  // "journey" carries the seven milestone slots the clients send; "milestone" stays accepted for older clients.
+  type: z.enum(["attempt", "review", "mock", "journey", "milestone", "checklist", "english", "profile", "dynamic-answer", "bookmark", "report"]),
   payload: z.unknown(),
   createdAt: z.string().datetime(),
 });

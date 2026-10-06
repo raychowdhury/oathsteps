@@ -1,9 +1,9 @@
 {
-  "recordedAt": "2026-10-05T19:01:33.751Z",
-  "commit": "d96f5b19cf52ac941de1b59167f4b5255c54fc97",
-  "workingTreeDirty": false,
+  "recordedAt": "2026-10-06T02:44:11.029Z",
+  "commit": "4a1fcf5a55027c6bcd123c039a4fc553ac7582e5",
+  "workingTreeDirty": true,
   "node": "v24.11.0",
-  "mode": "full",
+  "mode": "quick",
   "ok": true,
   "results": [
     {
@@ -11,54 +11,60 @@
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 675,
+      "durationMs": 341,
       "command": "pnpm content:validate",
-      "outputTail": "\n> oathsteps@0.1.0 content:validate /Users/ray/Dev/OathSteps- US Citizenship Prep\n> tsx content/scripts/validate.ts\n\n{\n  \"ok\": true,\n  \"checkedAt\": \"2026-10-05T18:59:42.687Z\",\n  \"failures\": []\n}\n"
+      "outputTail": "{\n  \"ok\": true,\n  \"checkedAt\": \"2026-10-06T02:44:04.238Z\",\n  \"failures\": []\n}\n"
     },
     {
       "id": "typecheck",
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 1423,
+      "durationMs": 1527,
       "command": "pnpm typecheck",
-      "outputTail": "\n> oathsteps@0.1.0 typecheck /Users/ray/Dev/OathSteps- US Citizenship Prep\n> next typegen && tsc --noEmit\n\nGenerating route types...\n✓ Types generated successfully\n"
+      "outputTail": "Generating route types...\n✓ Types generated successfully\n"
     },
     {
       "id": "lint",
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 2534,
+      "durationMs": 2845,
       "command": "pnpm lint",
-      "outputTail": "\n> oathsteps@0.1.0 lint /Users/ray/Dev/OathSteps- US Citizenship Prep\n> eslint .\n\n"
+      "outputTail": ""
     },
     {
       "id": "unit",
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 1193,
+      "durationMs": 1214,
       "command": "pnpm test -- --run",
-      "outputTail": "\n> oathsteps@0.1.0 test /Users/ray/Dev/OathSteps- US Citizenship Prep\n> vitest run -- --run\n\n\n RUN  v5.0.3 /Users/ray/Dev/OathSteps- US Citizenship Prep\n\n\n Test Files  22 passed (22)\n      Tests  117 passed (117)\n   Start at  14:59:46\n   Duration  794ms (setup 62%, transform 20%, import 9%, tests 7%, worker 1%)\n\n\u001b[33m(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\u001b[39m\n"
+      "outputTail": "\n RUN  v5.0.3 /Users/ray/Dev/OathSteps- US Citizenship Prep\n\n\n Test Files  22 passed (22)\n      Tests  119 passed (119)\n   Start at  22:44:09\n   Duration  769ms (setup 64%, transform 19%, import 8%, tests 7%, worker 1%)\n\n\u001b[33m(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\u001b[39m\n"
     },
     {
       "id": "build",
-      "status": "passed",
-      "required": true,
-      "exitCode": 0,
-      "durationMs": 3582,
-      "command": "pnpm build",
-      "outputTail": "\n> oathsteps@0.1.0 build /Users/ray/Dev/OathSteps- US Citizenship Prep\n> next build\n\n▲ Next.js 16.3.8 (Turbopack)\n- Environments: .env\n✓ Running next.config.ts took 13ms\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 631ms\n  Running TypeScript ...\n  Finished TypeScript in 857ms ...\n  Collecting page data using 9 workers ...\n  Generating static pages using 9 workers (0/23) ...\n  Generating static pages using 9 workers (5/23) \r\n  Generating static pages using 9 workers (11/23) \r\n  Generating static pages using 9 workers (17/23) \r\n✓ Generating static pages using 9 workers (23/23) in 150ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ○ /account\n├ ○ /account/reset\n├ ƒ /api/account\n├ ƒ /api/auth/[...all]\n├ ƒ /api/health\n├ ƒ /api/sync\n├ ○ /interview\n├ ○ /interview/coach\n├ ○ /interview/instructions\n├ ○ /interview/n400\n├ ○ /interview/reading\n├ ○ /interview/voice\n├ ○ /interview/writing\n├ ○ /journey\n├ ○ /journey/guide\n├ ○ /manifest.webmanifest\n├ ○ /offline\n├ ○ /practice\n├ ○ /practice/mock\n├ ○ /practice/session\n├ ƒ /privacy\n├ ○ /readiness\n├ ○ /settings\n├ ○ /setup\n└ ƒ /terms\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n"
+      "status": "skipped",
+      "reason": "--quick"
     },
     {
       "id": "e2e",
+      "status": "skipped",
+      "reason": "--quick"
+    },
+    {
+      "id": "ios-core",
       "status": "passed",
       "required": true,
       "exitCode": 0,
-      "durationMs": 102293,
-      "command": "pnpm test:e2e",
-      "outputTail": "\n> oathsteps@0.1.0 test:e2e /Users/ray/Dev/OathSteps- US Citizenship Prep\n> playwright test\n\n\nRunning 34 tests using 1 worker\n··································\n  34 passed (1.7m)\n::notice title=🎭 Playwright Run Summary::  34 passed (1.7m)\n[WebServer] Loaded Prisma config from prisma.config.ts.\n[WebServer] \n[WebServer] Prisma schema loaded from prisma/schema.prisma.\n[WebServer] 2026-10-05T19:00:19.890Z WARN [Better Auth]: User not found\n[WebServer] 2026-10-05T19:00:20.705Z WARN [Better Auth]: Invalid password\n"
+      "durationMs": 1181,
+      "command": "swift test --package-path ios/OathStepsCore",
+      "outputTail": "esThePathItsLinesAndReason() passed after 0.004 seconds.\n✔ Test stopsEarlyWithAFailAt9Incorrect() passed after 0.005 seconds.\n✔ Test pausesAndResumesWithoutLosingAnswers() passed after 0.005 seconds.\n✔ Test recordsAnAbandonedSessionHonestly() passed after 0.004 seconds.\n✔ Test filingDate() passed after 0.004 seconds.\n✔ Test interviewDate() passed after 0.004 seconds.\n✔ Test reportsExhaustedWhenThePoolIsShort() passed after 0.004 seconds.\n✔ Test the20thAnswerDecides() passed after 0.004 seconds.\n✔ Test stopsEarlyWithAPassAt12Correct() passed after 0.004 seconds.\n✔ Test keepsAttemptsInTimeOrder() passed after 0.004 seconds.\n✔ Test refusesDynamicQuestionsAndIsReproducible() passed after 0.006 seconds.\n✔ Test bookmarksToggleAndEveryChangeIsQueued() passed after 0.004 seconds.\n✔ Test resetKeepsJourneyAndSettings() passed after 0.004 seconds.\n✔ Test readsWebClientPayloads() passed after 0.006 seconds.\n✔ Test outboxStatusAndSummary() passed after 0.004 seconds.\n✔ Test finishedMocksAreQueuedWithAStableId() passed after 0.004 seconds.\n✔ Test recordsAnAttemptOnceAndQueuesItForSync() passed after 0.004 seconds.\n✔ Suite \"journey\" passed after 0.006 seconds.\n✔ Suite \"writing comparison\" passed after 0.006 seconds.\n✔ Suite \"2008 and 65/20 mocks\" passed after 0.006 seconds.\n✔ Suite \"readiness\" passed after 0.006 seconds.\n✔ Suite \"seeded randomness matches the web client\" passed after 0.007 seconds.\n✔ Suite \"test path routing\" passed after 0.006 seconds.\n✔ Suite \"daily plan\" passed after 0.006 seconds.\n✔ Test typedMatchingAcceptsExactContainedAndNearComplete() passed after 0.006 seconds.\n✔ Suite \"sample walkthrough: 5 asked, 4 to pass, stop at 3 wrong\" passed after 0.006 seconds.\n✔ Suite \"question selection\" passed after 0.006 seconds.\n✔ Suite \"date-only values\" passed after 0.006 seconds.\n✔ Suite \"notification schedule\" passed after 0.006 seconds.\n✔ Suite \"account snapshot merge\" passed after 0.006 seconds.\n✔ Suite \"validation\" passed after 0.006 seconds.\n✔ Suite \"2025 mock: 20 asked, 12 to pass, stop at 9 incorrect\" passed after 0.006 seconds.\n✔ Suite \"answers\" passed after 0.007 seconds.\n✔ Test exportsTheWebFormat() passed after 0.004 seconds.\n✔ Test persistsAndReloadsLosslessly() passed after 0.005 seconds.\n✔ Suite \"on-device store\" passed after 0.007 seconds.\n✔ Test appliesThe6520FormatOnTopOfTheVersion() passed after 0.005 seconds.\n✔ Suite \"route wording\" passed after 0.007 seconds.\n✔ Test freshLearnerPlanAndDailyQuestions() passed after 0.007 seconds.\n✔ Test loadsTheOfficialBanksGuideAndEnglishMaterial() passed after 0.007 seconds.\n✔ Suite \"bundled content\" passed after 0.008 seconds.\n✔ Test demoLearnerMatchesTheWebStory() passed after 0.011 seconds.\n✔ Suite \"demo learner and Today\" passed after 0.011 seconds.\n✔ Test returnsACappedMostOverdueFirstCatchUp() passed after 0.020 seconds.\n✔ Suite \"review scheduler\" passed after 0.020 seconds.\n✔ Test run with 77 tests in 20 suites passed after 0.021 seconds.\nBuilding for debugging...\nBuild complete! (0.17 sec)\n"
+    },
+    {
+      "id": "ios-ui",
+      "status": "skipped",
+      "reason": "--quick"
     }
   ]
 }

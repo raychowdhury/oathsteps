@@ -757,6 +757,39 @@
       ]
     },
     {
+      "id": "F-026",
+      "title": "Native iPhone app (SwiftUI) with parity: guest study, official content, mocks, interview English, journey and guide, readiness, settings, local reminders, on-device speech, optional accounts and sync",
+      "track": "core",
+      "priority": 3,
+      "dependsOn": [
+        "F-002",
+        "F-005",
+        "F-006",
+        "F-008",
+        "F-009",
+        "F-010",
+        "F-011",
+        "F-012",
+        "F-013",
+        "F-016",
+        "F-019"
+      ],
+      "requirement": "A native iOS app that follows the same rules and content as the web app, works fully without an account, and can sign in to the same server and sync with consent.",
+      "acceptance": [
+        "Core Swift package ports the domain rules; swift test passes, including bit-for-bit mock selection parity with the web generator",
+        "The app bundles the same content JSON files as the web app",
+        "UI tests on the simulator: setup chooses the test from the filing date, a practice card reveals and grades, the sample walkthrough stops at 4 correct, journey, guide toggle with undo, settings reset and typed DELETE",
+        "UI test against the local server: sign up, consented migration, sync, delete account, all with a bearer token",
+        "Browser test: bearer token works from a fresh context, unsigned and missing tokens get 401, the token stops working after account deletion",
+        "Sync server accepts every outbox type both clients produce, including journey",
+        "Light and dark walkthrough screenshots of Today, Practice, Interview and Journey",
+        "Privacy notice covers the iPhone app: on-device storage and speech, local reminders, Keychain sign-in",
+        "CI workflow runs the Swift tests and the UI tests on a macOS runner"
+      ],
+      "status": "in-progress",
+      "evidence": []
+    },
+    {
       "id": "C-001",
       "title": "Speech transcription and feedback provider",
       "track": "conditional",
@@ -818,7 +851,7 @@
     },
     {
       "id": "L-001",
-      "title": "Additional reviewed translations, helper/class tools, native apps",
+      "title": "Additional reviewed translations, helper/class tools, Android app",
       "track": "later",
       "priority": 20,
       "dependsOn": [],

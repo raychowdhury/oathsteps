@@ -1,0 +1,85 @@
+# XcodeGen spec. Generate the Xcode project with:  cd ios && xcodegen generate
+name: OathSteps
+options:
+  bundleIdPrefix: io.github.raychowdhury
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # Set your Apple team ID to run on a device or submit to the App Store.
+    DEVELOPMENT_TEAM: ""
+packages:
+  OathStepsCore:
+    path: OathStepsCore
+targets:
+  OathSteps:
+    type: application
+    platform: iOS
+    sources:
+      - path: OathSteps
+      # The same content files the web app imports. One source, two clients.
+      - path: ../content/packs/civics-2025.json
+        buildPhase: resources
+      - path: ../content/packs/civics-2008.json
+        buildPhase: resources
+      - path: ../content/guide/stages.json
+        buildPhase: resources
+      - path: ../content/english/tasks.json
+        buildPhase: resources
+    dependencies:
+      - package: OathStepsCore
+    info:
+      path: OathSteps/Info.plist
+      properties:
+        CFBundleDisplayName: OathSteps
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen:
+          UIColorName: AccentColor
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        NSMicrophoneUsageDescription: OathSteps listens only while you answer a question aloud, to compare what you say with the accepted answers. Nothing is recorded or kept.
+        NSSpeechRecognitionUsageDescription: Speech recognition turns your spoken answer into text on this iPhone so you can compare it with the accepted answers. OathSteps uses on-device recognition only.
+        ITSAppUsesNonExemptEncryption: false
+        # Server for optional accounts. Empty hides accounts. See ios/README.md.
+        OathStepsAPIBaseURL: $(OATHSTEPS_API_BASE_URL)
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.raychowdhury.oathsteps
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+        SWIFT_APPROACHABLE_CONCURRENCY: "YES"
+        ENABLE_PREVIEWS: "YES"
+        OATHSTEPS_API_BASE_URL: ""
+      configs:
+        Debug:
+          # The local dev server (pnpm dev -p 3500). Release builds leave this empty until you deploy.
+          OATHSTEPS_API_BASE_URL: http://localhost:3500
+  OathStepsUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: OathStepsUITests
+    dependencies:
+      - target: OathSteps
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.raychowdhury.oathsteps.uitests
+schemes:
+  OathSteps:
+    build:
+      targets:
+        OathSteps: all
+        OathStepsUITests: [test]
+    test:
+      targets:
+        - OathStepsUITests

@@ -18,6 +18,7 @@ Mobile-first installable web app (PWA) that helps adults prepare for the U.S. na
 | Container smoke test | `bash scripts/docker-smoke.sh` (needs a Docker daemon; CI runs it) |
 | Backup / restore (host) | `bash scripts/backup.sh`, `bash scripts/restore.sh <file>` (see docs/DEPLOY.md) |
 | Everything | `pnpm verify` (writes `.harness/evidence/latest.json`, nonzero on any required failure); `pnpm verify:quick` skips build and e2e |
+| iPhone app | `ios/build.sh` (XcodeGen + simulator build), `swift test --package-path ios/OathStepsCore`, `ios/test-ui.sh` (UI tests; account test needs `pnpm dev -p 3500`). On a Mac, `pnpm verify` runs both iOS checks |
 
 ## Architecture
 
@@ -30,6 +31,7 @@ Mobile-first installable web app (PWA) that helps adults prepare for the U.S. na
 - `src/app/` screens: `/` (welcome or Today), `/privacy`, `/terms`, `/api/health`, `/account/reset`, `/setup`, `/readiness`, `/practice`, `/practice/session`, `/practice/mock`, `/interview` + `voice|reading|writing|instructions|n400|coach`, `/journey`, `/journey/guide`, `/settings`, `/account`, API routes.
 - Styles: `src/app/globals.css` holds the design handoff's `.o-*` system verbatim (tokens on `.o-app`, container-query desktop layout, `.o-dark` theme). Use those classes; do not reintroduce Tailwind utility styling in screens.
 - `public/sw.js` hand-written service worker: app shell + content after explicit download; never caches `/api`.
+- `ios/` native SwiftUI app (see `ios/README.md`): `OathStepsCore` Swift package ports `src/domain` + `src/lib/today.ts` and the store/sync merge; the app bundles the same `content/` JSON files; accounts use the bearer token plugin. Keep both clients' rules in step: a domain change in `src/domain` needs the matching Swift change and test.
 - `.harness/` feature ledger, progress, decisions, evidence. `scripts/verify.mjs` is the runner; `scripts/ledger.mjs` stamps features with evidence. `.claude/` holds project hooks.
 - Design source: `oathsteps-handoff.zip` / the Claude Design canvas (see `.harness/decisions.md`, "design handoff").
 
@@ -52,3 +54,13 @@ Every `track: core` feature in `.harness/features.json` is `verified` with evide
 2. Run `pnpm verify:quick`.
 3. Continue from the recorded next action. Update progress and evidence at each checkpoint; commit task-owned changes only.
 4. To stop the Stop-hook reminders: set `state: complete` or `state: blocked` in `progress.md`, or `touch .harness/pause`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

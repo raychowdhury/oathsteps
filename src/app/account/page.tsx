@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { fmtLocalDay } from "@/domain/validation";
 import { authClient, useSession } from "@/lib/auth-client";
 import { clearOfflineCaches } from "@/lib/offline";
 import { destroyDb } from "@/lib/store/db";
@@ -190,8 +191,8 @@ export default function AccountPage() {
               ) : (
                 <>
                   <p className="o-meta">
-                    Sync consent given {data.consent.grantedAt.slice(0, 10)}. {data.outbox.pending} pending, {data.outbox.failed} failed.
-                    {data.sync?.lastPushAt && ` Last sent ${data.sync.lastPushAt.slice(0, 16).replace("T", " ")}.`}
+                    Sync consent given {fmtLocalDay(data.consent.grantedAt)}. {data.outbox.pending} pending, {data.outbox.failed} failed.
+                    {data.sync?.lastPushAt && ` Last sent ${new Date(data.sync.lastPushAt).toLocaleString()}.`}
                   </p>
                   {data.sync?.lastError && <ErrorLine>Last error: {data.sync.lastError}</ErrorLine>}
                   <button className="o-btn o-btn-s" type="button" onClick={syncNow} disabled={busy} style={{ alignSelf: "flex-start" }} data-testid="sync-now">

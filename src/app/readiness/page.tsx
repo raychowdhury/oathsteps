@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { fmtDate } from "@/domain/validation";
+import { fmtLocalDay } from "@/domain/validation";
 import { useData } from "@/lib/store/useData";
 import { delayedRecalled, encountered, lastEnglish, loadSnapshot, uncertainIds } from "@/lib/today";
 import { Icon } from "@/components/icons";
@@ -92,7 +92,7 @@ export default function ReadinessPage() {
                   <div key={m.config.id} className="o-li">
                     <div className="o-grow">
                       <div className="o-strong">{m.config.kind === "walkthrough" ? "Sample walkthrough" : `Full-format mock${m.config.special ? " · 65/20" : ""}`}</div>
-                      <div className="o-meta">{fmtDate(m.finishedAt!.slice(0, 10))}</div>
+                      <div className="o-meta">{fmtLocalDay(m.finishedAt)}</div>
                     </div>
                     <div style={{ textAlign: "right" }}>
                       <div className="o-strong">
@@ -117,7 +117,7 @@ export default function ReadinessPage() {
                   <div className="o-grow">
                     <div className="o-strong">Reading</div>
                     <div className="o-meta" data-testid="rd-reading">
-                      {rd ? `Last: ${fmtDate(rd.at.slice(0, 10))} · ${rd.text}` : "Not practiced yet"}
+                      {rd ? `Last: ${fmtLocalDay(rd.at)} · ${rd.text}` : "Not practiced yet"}
                     </div>
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export default function ReadinessPage() {
                   <div className="o-grow">
                     <div className="o-strong">Writing</div>
                     <div className="o-meta" data-testid="rd-writing">
-                      {wr ? `Last: ${fmtDate(wr.at.slice(0, 10))} · ${wr.text}` : "Not practiced yet"}
+                      {wr ? `Last: ${fmtLocalDay(wr.at)} · ${wr.text}` : "Not practiced yet"}
                     </div>
                   </div>
                 </div>

@@ -15,6 +15,10 @@ A mobile-first, installable web app (PWA) for adults preparing for the U.S. natu
 
 OathSteps is a private educational tool. It is not affiliated with USCIS, does not decide eligibility, does not predict outcomes and is not legal advice. Content is machine-checked against the official USCIS PDFs and not yet reviewed by a qualified person; the app says so.
 
+## iPhone app
+
+`ios/` holds a native SwiftUI app with the same rules, content and screens: guest study on the device, mocks, interview English, journey and guide, readiness, local reminders, on-device speech, and optional accounts that sync with this server. See [ios/README.md](ios/README.md).
+
 ## Quick start
 
 Requirements: Node 20.9+ (24 recommended), pnpm 10 (`corepack enable`).

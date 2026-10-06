@@ -16,6 +16,14 @@ describe("legal text shared by the app and the GitHub Pages build", () => {
     expect(t).toContain("We use no advertising or analytics cookies");
   });
 
+  it("covers the iPhone app: on-device storage and speech, local reminders, Keychain sign-in", () => {
+    const t = html(<PrivacySections legal={none} />);
+    expect(t).toContain("Your audio is not sent to Apple or to us.");
+    expect(t).toContain("Your iPhone or iCloud backups may include it.");
+    expect(t).toContain("Reminders are notifications scheduled on your iPhone. Nothing is sent from our server.");
+    expect(t).toContain("keeps a sign-in token in the iPhone Keychain, on that device only");
+  });
+
   it("names the mail provider only when one is configured", () => {
     expect(html(<PrivacySections legal={none} />)).toContain("We use an email delivery service to send it.");
     expect(html(<PrivacySections legal={{ ...none, mailProvider: "Brevo" }} />)).toContain("We use Brevo to send it.");
